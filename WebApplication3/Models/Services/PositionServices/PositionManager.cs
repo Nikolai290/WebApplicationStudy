@@ -2,91 +2,84 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
+using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services.EmployeeServices;
 
 namespace WebApplication3.Models.Services.PositionServices {
     public class PositionManager {
-
         EmployeeManager employeeManager = new EmployeeManager();
+
         DbManager dbManager = new DbManager();
 
+        // Команды
+        public bool Create(Position pos) {
+            if (IsValid(pos)) {
+                return dbManager.Add<Position>(pos);
+            }
+            return false;
+        }
 
+
+        // Валидность
+        private bool IsValid (Position pos, bool isNew=true) {
+
+            if (isNew && IsAlreadyExist(pos)) return false;
+            if (IsEmptyValue(pos)) return false;
+
+            return true;
+        }
+
+        private bool IsEmptyValue(Position pos)
+            => (String.IsNullOrEmpty(pos.Name) && String.IsNullOrEmpty(pos.Subname));
+
+        private bool IsAlreadyExist(Position pos)
+            => (dbManager.GetAll<Position>().Where(x=> x.Name==pos.Name && x.Subname==pos.Subname).Any());
+        //
+        // Команды
+        public bool Update(Position pos) {
+            if (IsValid(pos)) {
+                return dbManager.Update<Position>(pos);
+            }
+            return false;
+        }
+
+        public bool Delete(Position pos) {
+
+
+            return dbManager.Delete<Position>(pos); 
+        }
+
+        public bool Delete(int id)
+            => Delete(GetById(id));
+
+        // Запросы
+        public IList<Position> GetAll() 
+            => dbManager.GetAll<Position>().ToList();
+
+        public Position GetById(int id)
+            => GetAll().Where(x => x.Id == id).First();
+
+        public IList<Position> Find(string find) 
+            => GetAll().Where(x => x.Subname.ToUpper().Contains(find.ToUpper())).ToList();
+        
+        public IList<Position> GetAllWithEmpls() {
+            var poss = GetAll();
+
+            foreach (var pos in poss)
+                Compare(pos);
+            return poss;
+        }
         public Position Compare(Position pos) {
             pos.Employees = employeeManager.GetEmployeeByPosition(pos);
             return pos;
         }
 
-        public bool CreateNewPosition(Position pos) {
-            var result = false;
-            if (IsValid(pos, true))
-                result = dbManager.Add(pos);
-            return result;
-        }
-
-        public bool DeletePosition(Position pos) {
-
-            var emps = employeeManager.GetAllEmployee().Where(x => x.Position.Id == pos.Id);
-            foreach (var emp in emps) {
-                emp.Position = null;
-                employeeManager.UpdateEmployee(emp, emp.Id);
-            }
-
-            return dbManager.Delete(pos);
-        }
-        public bool DeletePosition(int id)
-            => DeletePosition(GetPositionById(id));
-
-        public IList<Position> GetAllPosition()
-            => dbManager.GetAll<Position>();
-
-        public IList<Position> GetAllPositionWithEmployees() {
-            var poss = GetAllPosition();
-            foreach (var pos in poss) {
-                Compare(pos);
-            }
-            return poss;
-        }
-
-        public Position GetPosition(Employee emp)
-           => GetAllPosition().Where(x => x.Id == emp.Position.Id).First();
+        public IList<string> GetDistinctNames() 
+            => GetAll().OrderBy(x => x.Name).Select(x => x.Name).Distinct().ToArray();
+        
 
 
-        public Position GetPositionById(int id)
-            => dbManager.GetById<Position>(id);
-
-        public IList<Position> GetPositionByStringFind(string find)
-            => GetAllPosition().Where(x => x.Subname.ToUpper().Contains(find.ToUpper())).ToList();
-
-        public bool IsValid(Position obj, bool newPosition = true) {
-            bool result = true;
-            if (newPosition) {
-                if (GetAllPosition().Where(x => x.Subname == obj.Subname && x.Name == obj.Name).Any()) {
-                    result = false;
-                }
-            }
-            if (StringsIsEmptyOrNull(obj))
-                result = false;
-
-
-            return result;
-        }
-
-
-        private bool StringsIsEmptyOrNull(Position pos)
-            => (String.IsNullOrEmpty(pos.Subname) || String.IsNullOrEmpty(pos.Name));
-
-
-        public bool UpdatePosition(Position pos, int id) {
-            bool result = false;
-            if (IsValid(pos, false)) {
-                Position upd = GetPositionById(id);
-                pos.CopyTo(upd);
-                result = dbManager.Update(upd);
-            }
-
-            return result;
-        }
+        
     }
 }

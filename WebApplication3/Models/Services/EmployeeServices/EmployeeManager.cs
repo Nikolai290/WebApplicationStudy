@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
-using WebApplication3.Models.Services.PositionServices;
-
 namespace WebApplication3.Models.Services.EmployeeServices {
     public class EmployeeManager {
 
-        PositionManager positionManager;
+        //PositionManager positionManager;
         DbManager dbManager = new DbManager();
 
         public EmployeeManager() {
-            positionManager = new PositionManager();
+            //positionManager = new PositionManager();
         }
 
         public bool CreateNewEmployee(Employee emp) {
@@ -43,9 +41,10 @@ namespace WebApplication3.Models.Services.EmployeeServices {
 
             return emps;
         }
-
+        
         public Employee Compare(Employee emp) {
-            emp.Position = dbManager.GetById<Position>(emp.Position.Id);
+            if(emp.Position !=null)
+                emp.Position = dbManager.GetById<Position>(emp.Position.Id);
             return emp;
         }
 

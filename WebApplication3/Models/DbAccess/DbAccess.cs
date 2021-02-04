@@ -9,7 +9,7 @@ namespace WebApplication3.Models.DbAccess {
 
     public class DbAccess {
 
-        private string ConnectionString = @"C:\Users\Zoom\source\repos\WebApplication3\WebApplication3\App_data\Mainbase.db";
+        private static string ConnectionString;
         private ISessionFactory sessionFactory;
 
         private static DbAccess instance;
@@ -18,7 +18,6 @@ namespace WebApplication3.Models.DbAccess {
 
 
         private DbAccess() {
-            sessionFactory = CreateSessionFactory();
         }
 
         public static DbAccess GetInstance() {
@@ -35,12 +34,15 @@ namespace WebApplication3.Models.DbAccess {
         }
 
 
+
         public ISessionFactory GetSessionFactory() {
             return sessionFactory;
         }
 
         public void SetConnectionString(string connectionString) {
            ConnectionString = connectionString;
+           sessionFactory = CreateSessionFactory();
+
         }
 
         private ISessionFactory CreateSessionFactory() {

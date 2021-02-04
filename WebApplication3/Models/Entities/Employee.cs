@@ -28,7 +28,10 @@ namespace WebApplication3.Models.Entities {
         }
 
         public override string ToString() {
-            string source = this.Id + " " + this.Lastname + " " + this.Name + " " + this.Fathername + " " + this.TableNumber + " " + this.Position.Name + " " + this.Position.Subname;
+            string source = this.Id + " " + this.Lastname + " " + this.Name + " " + this.Fathername + " " + this.TableNumber;
+            if (Position !=null)
+                source += " " + this.Position.Name + " " + this.Position.Subname;
+            
 
             return source;
         }

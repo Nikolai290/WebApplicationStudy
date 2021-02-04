@@ -3,7 +3,11 @@
 
 
 @{
-    ViewData["Title"] = "Добавление должности";
+    if (String.IsNullOrEmpty(Model.Name)) {
+        ViewData["Title"] = "Добавление должности";
+    } else {
+        ViewData["Title"] = "Изменение должности";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

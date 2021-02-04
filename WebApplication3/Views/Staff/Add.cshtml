@@ -2,7 +2,11 @@
 @model Employee
 
 @{
-    ViewData["Title"] = "Добавление сотрудника";
+    if (String.IsNullOrEmpty(Model.Name)) {
+        ViewData["Title"] = "Добавление сотрудника";
+    } else {
+        ViewData["Title"] = "Изменение сотрудника";
+    }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +34,7 @@
             <tr>
                 <td><label for="Position">Должность:</label></td>
                 <td>
-                    <select id="position" name="Position">
+                    <select id="position" name="PosId">
                         @if (Model.Position != null) {
                             <option value="@Model.Position.Id" selected>@Model.Position.Subname</option>
                         }

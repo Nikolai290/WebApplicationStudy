@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services.PositionServices;
-using WebApplication3.Models.Services.EmployeeServices;
 
 
 namespace WebApplication3.Controllers {
@@ -14,11 +13,10 @@ namespace WebApplication3.Controllers {
 
         PositionManager positionManager = new PositionManager();
 
-        // Зависает намертво, скорее всего где-то здесь или в PositionManager ошибка
 
         public IActionResult Index() {
 
-            ViewBag.Positions = positionManager.GetAllPositionWithEmployees();
+            ViewBag.Positions = positionManager.GetAllWithEmpls();
 
             return View("Positions");
         }
@@ -30,22 +28,20 @@ namespace WebApplication3.Controllers {
                 pos = new Position();
             }
             else {
-                pos = positionManager.GetPositionById(id);
+                pos = positionManager.GetById(id);
             }
-            var list = positionManager.GetAllPosition();
-            var arr = list.OrderBy(x => x.Name).Select(x => x.Name).Distinct();
 
-            ViewBag.Positions = arr;
+            ViewBag.Positions = positionManager.GetDistinctNames();
 
             return View("Add", pos);
         }
 
         [HttpPost]
         public IActionResult Add(Position pos) {
-            bool result = positionManager.CreateNewPosition(pos);
+            bool result = positionManager.Create(pos);
             string message;
             if (result) {
-                message = "Объект сохранён";
+            message = "Объект сохранён";
             } else {
                 message = "Не удалось";
             }
@@ -55,7 +51,7 @@ namespace WebApplication3.Controllers {
 
         [HttpGet]
         public IActionResult Delete(int id) {
-            bool result = positionManager.DeletePosition(id);
+            bool result = positionManager.Delete(id);
             string message;
             if (result) {
                 message = "Объект удалён";

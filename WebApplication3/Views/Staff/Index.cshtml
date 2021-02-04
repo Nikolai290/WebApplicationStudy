@@ -1,5 +1,6 @@
 ﻿
 @{
+    
     ViewData["Title"] = "Список сотрудников";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -30,7 +31,10 @@
                 <td><p>@emp.Name</p></td>
                 <td><p>@emp.Fathername</p></td>
                 <td><p>@emp.TableNumber</p></td>
-                <td><p>@emp.Position.Subname</p></td>
+                <td><p>@if(emp.Position !=null)
+                    @emp.Position.Subname
+                    </p>
+                </td>
                 <td><a href="~/staff/Add?id=@emp.Id" class="change button button-on-table">Изменить</a></td>
                 <td><a href="~/staff/delete?id=@emp.Id" class="delete button">Удалить</a></td>
             </tr>

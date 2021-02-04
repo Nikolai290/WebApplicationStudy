@@ -46,6 +46,11 @@ namespace WebApplication3.Models.Services.PositionServices {
 
         public bool Delete(Position pos) {
 
+            var emps = employeeManager.GetEmployeeByPosition(pos);
+            foreach (var emp in emps) {
+                emp.Position = null;
+                employeeManager.UpdateEmployee(emp, emp.Id);
+            }
 
             return dbManager.Delete<Position>(pos); 
         }

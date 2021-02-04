@@ -1,0 +1,55 @@
+﻿@using WebApplication3.Models.Entities;
+@model Employee
+
+@{
+    ViewData["Title"] = "Добавление сотрудника";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-div add-employee">
+    <form class="form-add-employee" method="post">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <table class="table add-employee-table">
+            <tr>
+                <td><label for="Lastname">Фамилия:</label></td>
+                <td><input class="input-data-employye" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Lastname" maxlength="20" required /></td>
+            </tr>
+            <tr>
+                <td><label for="Name">Имя:</label></td>
+                <td><input class="input-data-employye" type="text" name="Name" placeholder="Введите имя" value="@Model.Name" maxlength="20" required /></td>
+            </tr>
+            <tr>
+                <td><label for="Fathername">Отчество:</label></td>
+                <td><input class="input-data-employye" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Fathername" maxlength="20" /></td>
+            </tr>
+            <tr>
+                <td><label for="TableNumber">Табельный номер:</label></td>
+                <td><input class="input-data-employye" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.TableNumber" min="1000" max="999999" /></td>
+            </tr>
+            <tr>
+                <td><label for="Position">Должность:</label></td>
+                <td>
+                    <select id="position" name="Position">
+                        @if (Model.Position != null) {
+                            <option value="@Model.Position.Id" selected>@Model.Position.Subname</option>
+                        }
+
+
+                        @foreach (var pos in ViewBag.Positions) {
+                            <option value="@pos.Id">@pos.Subname</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><button type="submit" href="~staff/add?@Model.Id">Отправить</button></td>
+                <td><button type="reset">Сбросить</button></td>
+            </tr>
+
+        </table>
+        <input type="submit" href="~staff/add" />
+
+    </form>
+
+</div>

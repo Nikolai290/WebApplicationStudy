@@ -1,0 +1,136 @@
+﻿body {
+}
+
+div {
+}
+
+#wrapper {
+    background-color: #ccc;
+    padding: 10px;
+}
+
+.border-radius {
+    border-radius: 10px;
+}
+
+#main {
+    padding: 20px;
+    background-color: #dee;
+}
+
+#title {
+    padding: 10px 0 10px 30px;
+}
+
+#nav ul li {
+    display: inline;
+}
+
+#nav ul {
+    list-style: none;
+}
+
+    #nav ul li {
+        display: inline;
+    }
+
+        #nav ul li a {
+            display: inline-block;
+            width: 10em;
+            height: 3em;
+            padding: 10px;
+            background-color: #ddd;
+            text-decoration: none;
+            color: #222;
+            text-align: center;
+        }
+
+            #nav ul li a:hover {
+                background-color: #ccc;
+            }
+
+            #nav ul li a:active {
+                background-color: #bbb;
+            }
+
+header {
+    background-color: #eee;
+}
+
+#nav {
+    padding: 0;
+    display: block;
+}
+
+#menu {
+    padding: 0;
+    margin: 0 0 0 20px;
+}
+
+/*Список сотрудников*/
+.submenu {
+    margin-bottom: 10px;
+}
+
+    .submenu a {
+        display: inline-block;
+        border-style: outset;
+        height: 2em;
+        background-color: #DDD;
+        text-decoration: none;
+        color: black;
+        padding: 0px;
+        text-align: center;
+        width: 10em;
+    }
+
+        .submenu a:hover {
+            background-color: #ccc;
+        }
+
+        .submenu a:active {
+            transform: scale(0.95);
+        }
+
+.staff-table table {
+    text-align: center;
+}
+
+    .staff-table table td {
+        border: 1px solid black;
+    }
+
+        .staff-table table td p {
+            margin: 5px;
+        }
+
+    .staff-table table th {
+        border: 1px solid black;
+    }
+
+        .staff-table table th p {
+            margin: 5px;
+        }
+
+    .staff-table table td a {
+        display: block;
+        background-color: #00ffff;
+        text-decoration: none;
+        color: black;
+        text-align: center;
+        height: 2.5em;
+        width: 5em;
+        border-style: outset;
+    }
+
+        .staff-table table td a:active {
+            transform: scale(0.95);
+        }
+/* Строка поиска */
+.find {
+    margin: 10px 0;
+}
+
+.find-input {
+    width: 20em;
+}

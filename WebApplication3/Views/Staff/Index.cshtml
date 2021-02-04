@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "Список сотрудников";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="staff-table">
+    <div class="submenu">
+        <a href="staff/add?0" class="button add-employye staffbutton submenu-button">Добавить</a>
+    </div>
+    <div class="find">
+        <form class="find-form" method="get">
+            <input type="search" name="find" class="find-input" placeholder="Введите строку для поиска" maxlength="50" />
+            <input type="submit" class="button find-button" value="Найти"/>
+        </form>
+    </div>
+    <table>
+        <tr>
+            <th><p>Id</p></th>
+            <th><p>Фамилия</p></th>
+            <th><p>Имя</p></th>
+            <th><p>Отчество</p></th>
+            <th><p>Табельный номер</p></th>
+            <th><p>Должность</p></th>
+        </tr>
+        @foreach (var emp in ViewBag.Employees) {
+            <tr>
+                <td><p>@emp.Id</p></td>
+                <td><p>@emp.Lastname</p></td>
+                <td><p>@emp.Name</p></td>
+                <td><p>@emp.Fathername</p></td>
+                <td><p>@emp.TableNumber</p></td>
+                <td><p>@emp.Position.Subname</p></td>
+                <td><a href="~/staff/Add?id=@emp.Id" class="change button button-on-table">Изменить</a></td>
+                <td><a href="~/staff/delete?id=@emp.Id" class="delete button">Удалить</a></td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,37 @@
+﻿@using WebApplication3.Models.Entities;
+@model Position;
+
+
+@{
+    ViewData["Title"] = "Добавление должности";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form-div add-position">
+    <form class="form-add-position" method="post">
+        <table class="table add-position-table">
+            <tr>
+                <td>
+                    <p><label for="Name">Категория</label></p>
+                    <p><input type="text" list="Namelist" name="Name" value="@Model.Name" placeholder="Категория" maxlength="20" required /></p>
+                </td>
+                <td>
+                    <p><label for="Subname">Категория</label></p>
+                    <p><input type="text" name="Subname" value="@Model.Subname" placeholder="Должность" maxlength="30" /></p>
+                </td>
+            </tr>
+            <tr>
+                <td><button type="submit">Отправить</button></td>
+                <td><button type="reset">Сбросить</button></td>
+            </tr>
+        </table>
+
+        <datalist id="Namelist">
+            @foreach (var pos in ViewBag.Positions) {
+                <option value="@pos"></option>
+            }
+        </datalist>
+
+    </form>
+
+</div>

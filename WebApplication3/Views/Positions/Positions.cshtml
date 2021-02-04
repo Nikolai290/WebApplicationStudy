@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "Список сотрудников";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="position-table">
+    <div class="submenu">
+        <a href="positions/add" class="button add-position positionbutton submenu-button">Добавить</a>
+    </div>
+    <table>
+        <tr>
+            <th><p>Id</p></th>
+            <th><p>Категория</p></th>
+            <th><p>Должность</p></th>
+            <th><p>Сотрудники</p></th>
+        </tr>
+        @foreach (var pos in ViewBag.Positions) {
+            <tr>
+                <td><p>@pos.Id</p></td>
+                <td><p>@pos.Name</p></td>
+                <td><p>@pos.Subname</p></td>
+                <td>
+                    @foreach(var emp in pos.Employees) {
+                    <p>@emp.GetFIO()</p>
+                    }
+                </td>
+                <td><a href="/add?id=@pos.Id" class="change button button-on-table">Изменить</a></td>
+                <td><a href="/delete?id=@pos.Id" class="delete button">Удалить</a></td>
+            </tr>
+        }
+    </table>
+</div>

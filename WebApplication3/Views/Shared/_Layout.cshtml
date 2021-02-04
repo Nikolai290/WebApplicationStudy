@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+
+</head>
+<body>
+    <div id="wrapper"  class="border-radius">
+        <header>
+            <div id="title">
+                <h3>@ViewData["Title"]</h3>
+            </div>
+            <nav id="nav">
+                <ul id="menu">
+                    <li><a href="~/home">Главная</a></li>
+                    <li><a href="~/staff">Сотрудники</a></li>
+                    <li><a href="~/positions">Должности</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div id="container">
+            <main id="main">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - WebApplication3 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

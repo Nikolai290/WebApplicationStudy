@@ -9,20 +9,20 @@ namespace WebApplication3.Models.DbAccess {
 
     public class DbAccess {
 
-        private static string ConnectionString;
+        private static string connectionString;
         private ISessionFactory sessionFactory;
+        private static bool rebuild = false;
 
         private static DbAccess instance;
         private static readonly object block = new object();
 
 
 
-        private DbAccess() {
-        }
+        private DbAccess() { }
 
         public static DbAccess GetInstance() {
 
-            if(instance == null) {
+            if (instance == null) {
                 lock (block) {
                     if (instance == null) {
                         instance = new DbAccess();
@@ -40,26 +40,38 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         public void SetConnectionString(string connectionString) {
-           ConnectionString = connectionString;
-           sessionFactory = CreateSessionFactory();
+            DbAccess.connectionString = connectionString;
+            sessionFactory = CreateSessionFactory();
 
         }
 
         private ISessionFactory CreateSessionFactory() {
             return Fluently.Configure()
-                .Database(SQLiteConfiguration.Standard.UsingFile(ConnectionString))
+                .Database(SQLiteConfiguration.Standard.UsingFile(connectionString))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Program>())
-                //.ExposeConfiguration(BuildSchema)
+                .ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
         private void BuildSchema(Configuration config) {
-            if (File.Exists(ConnectionString)) {
-               // File.Delete(connectionString);
-            }
+            if (!File.Exists(connectionString)) {
+                new SchemaExport(config)
+                    .Create(false, true);
 
-            new SchemaExport(config)
-                .Create(false, true);
+            } else if (rebuild) {
+
+                File.Delete(connectionString);
+                new SchemaExport(config)
+                    .Create(false, true);
+                rebuild = false;
+
+            }
+        }
+
+        public static void Rebuild() {
+            rebuild = true;
+            instance.CreateSessionFactory();
+
         }
     }
 }

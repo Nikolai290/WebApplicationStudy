@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplication3.Models.Entities;
-using WebApplication3.Models.DbAccess;
-using WebApplication3.Models.Services.EmployeeServices;
-using WebApplication3.Models.Services.PositionServices;
+using WebApplication3.Models.Services;
 
 
 namespace WebApplication3.Controllers {
@@ -17,13 +12,23 @@ namespace WebApplication3.Controllers {
 
 
         [HttpGet]
-        public IActionResult Index(string find="") {
-            if (!String.IsNullOrEmpty(find))
+        public IActionResult Index(string find) {
+
+
+            if (!String.IsNullOrEmpty(find=""))
                 ViewBag.Employees = employeeManager.GetAllEmployee();
             else
                 ViewBag.Employees = employeeManager.GetEmployeesByStringFind(find);
             return View();
         }
+
+
+        public IActionResult Initialize() {
+            new InitializeDb().Start();
+            return View("Result", "База успешно инициализрована!");
+
+        }
+
 
         [HttpGet]
         public IActionResult Add(int id) {
@@ -74,7 +79,6 @@ namespace WebApplication3.Controllers {
             }
             return View("Result", message);
         }
-
 
     }
 

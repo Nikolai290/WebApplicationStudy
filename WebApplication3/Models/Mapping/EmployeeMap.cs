@@ -11,6 +11,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.Fathername);
             Map(x => x.TableNumber);
             References(x => x.Position);
+            HasManyToMany(x => x.Orders);
         }
     }
 }

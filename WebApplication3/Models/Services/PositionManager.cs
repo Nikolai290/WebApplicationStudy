@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
-using WebApplication3.Models.Services.EmployeeServices;
 
-namespace WebApplication3.Models.Services.PositionServices {
+namespace WebApplication3.Models.Services {
     public class PositionManager {
         EmployeeManager employeeManager = new EmployeeManager();
 
@@ -48,7 +46,7 @@ namespace WebApplication3.Models.Services.PositionServices {
 
             var emps = employeeManager.GetEmployeeByPosition(pos);
             foreach (var emp in emps) {
-                emp.Position = null;
+                emp.Position = dbManager.GetById<Position>(1);
                 employeeManager.UpdateEmployee(emp, emp.Id);
             }
 
@@ -66,7 +64,7 @@ namespace WebApplication3.Models.Services.PositionServices {
             => GetAll().Where(x => x.Id == id).First();
 
         public IList<Position> Find(string find) 
-            => GetAll().Where(x => x.Subname.ToUpper().Contains(find.ToUpper())).ToList();
+            => GetAll().Where(x => x.ToString().ToUpper().Contains(find.ToUpper())).ToList();
         
         public IList<Position> GetAllWithEmpls() {
             var poss = GetAll();
@@ -80,8 +78,17 @@ namespace WebApplication3.Models.Services.PositionServices {
             return pos;
         }
 
-        public IList<string> GetDistinctNames() 
-            => GetAll().OrderBy(x => x.Name).Select(x => x.Name).Distinct().ToArray();
+        public IList<string> GetDistinctNames() { 
+
+            var all = GetAll().OrderBy(x => x.Name).Select(x => x.Name).ToArray();
+            IList<string> result = new List<string>();
+            foreach (var line in all) {
+                if (!result.Contains(line))
+                    result.Add(line);
+            }
+
+            return result;
+        }
         
 
 

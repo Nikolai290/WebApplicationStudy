@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
-namespace WebApplication3.Models.Services.EmployeeServices {
+
+namespace WebApplication3.Models.Services {
     public class EmployeeManager {
 
         //PositionManager positionManager;

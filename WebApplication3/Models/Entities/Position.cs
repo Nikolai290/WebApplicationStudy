@@ -22,7 +22,7 @@ namespace WebApplication3.Models.Entities {
         }
 
         public override string ToString() {
-            return this.Subname;
+            return (this.Name + " " + this.Subname);
         }
 
         public virtual void CopyTo(Position upd) {

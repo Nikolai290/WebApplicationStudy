@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Models.DbAccess;
 
 namespace WebApplication3 {
@@ -20,6 +19,7 @@ namespace WebApplication3 {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             DbAccess.GetInstance().SetConnectionString(connectionString);
             services.AddControllersWithViews();
+            services.AddCors(options => options.AddDefaultPolicy(x => x.AllowAnyOrigin()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +31,7 @@ namespace WebApplication3 {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using WebApplication3.Models.DbAccess;
 using NHibernate;
 using WebApplication3.Models.Entities;
 
@@ -11,6 +8,7 @@ namespace WebApplication3.Models.DbAccess {
     public class DbManager {
 
         ISessionFactory sessionFactory = DbAccess.GetInstance().GetSessionFactory();
+        public static bool IsEmpty { get; private set; }
 
         public bool Add<T>(T obj) where T : DbEntities {
             bool result = true;
@@ -62,6 +60,8 @@ namespace WebApplication3.Models.DbAccess {
 
             using var session = sessionFactory.OpenSession();
             result = session.QueryOver<T>().List();
+            if (result.Count == 0)
+                IsEmpty = true;
 
             return result;
         }

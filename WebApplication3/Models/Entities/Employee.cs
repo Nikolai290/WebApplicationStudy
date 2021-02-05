@@ -7,6 +7,7 @@ namespace WebApplication3.Models.Entities {
         public virtual string Fathername { get; set; }
         public virtual int TableNumber { get; set; }
         public virtual Position Position { get; set; }
+        public virtual IList<Order> Orders { get; set; }
 
         public Employee() {
             new Position();
@@ -24,7 +25,7 @@ namespace WebApplication3.Models.Entities {
 
         public Employee(string name, string lastname, string fathername, int tablenum, Position position) : this(name, lastname, fathername, tablenum) {
             this.Position = position;
-            position.Employees.Add(this);
+            //position.Employees.Add(this);
         }
 
         public override string ToString() {

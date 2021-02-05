@@ -10,6 +10,7 @@ namespace WebApplication3.Models.Services {
 
         DbManager dbManager = new DbManager();
         EmployeeManager employeeManager = new EmployeeManager();
+        OrderManager orderManager = new OrderManager();
 
         public void Start() {
             DbAccess.DbAccess.Rebuild();
@@ -105,10 +106,20 @@ namespace WebApplication3.Models.Services {
             var poss = dbManager.GetAll<Position>();
             IList<Employee> Employees = new List<Employee>();
             Employees.Add(new Employee("Василий", "Петров", "Геннадьевич", 1234, poss[1]));
+            Employees.Add(new Employee("Иннокентий", "Афанасьев", "Михайлович", 34532, poss[1]));
+            Employees.Add(new Employee("Афанасий", "Иннокеньтев", "Петрович", 45345, poss[1]));
             Employees.Add(new Employee("Петр", "Сергеев", "Васильевич", 4523, poss[2]));
+            Employees.Add(new Employee("Алексей", "Иванов", "Сергеевич", 3454, poss[2]));
+            Employees.Add(new Employee("Михаил", "Данилов", "Алексеевич", 6345, poss[2]));
+            Employees.Add(new Employee("Сергей", "Алексеев", "Петрович", 26576, poss[3]));
+            Employees.Add(new Employee("Даниил", "Петров", "Андреевич", 34235, poss[3]));
             Employees.Add(new Employee("Сергей", "Алексеев", "Петрович", 24923, poss[3]));
             Employees.Add(new Employee("Алексей", "Васильев", "Сергеевич", 725246, poss[4]));
+            Employees.Add(new Employee("Иннокентий", "Иванов", "Афанасьевич", 3634, poss[4]));
+            Employees.Add(new Employee("Алексей", "Васильев", "Сергеевич", 2342, poss[4]));
             Employees.Add(new Employee("Максим", "Николаев", "Андреевич", 635418, poss[5]));
+            Employees.Add(new Employee("Федор", "Максимов", "Артёмович", 5235, poss[5]));
+            Employees.Add(new Employee("Артём", "Малахов", "Максимович", 7567, poss[5]));
             Employees.Add(new Employee("Андрей", "Макаревич", "", 78861, poss[6]));
             Employees.Add(new Employee("Николай", "Максимов", "Николаевич", 87654, poss[7]));
             Employees.Add(new Employee("Геннадий", "Малахов", "Андреевич", 45368, poss[8]));
@@ -136,6 +147,18 @@ namespace WebApplication3.Models.Services {
             PullToDb(QuarryPlasts);
             PullToDb(Groups);
             PullToDb(Machineries);
+
+            var disps = employeeManager.GetEmployeesByStringFind("диспетчер");
+            var chiefs = employeeManager.GetEmployeesByStringFind("начальник");
+            var masters = employeeManager.GetEmployeesByStringFind("горный мастер");
+            var orderArea = dbManager.GetAll<OrderArea>().First();
+
+
+            Order order = new Order();
+            order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
+
+            orderManager.Create(order);
+
         }
 
         public void PullToDb<T>(IList<T> objs) where T : DbEntities {

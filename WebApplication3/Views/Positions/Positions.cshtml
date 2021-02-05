@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Список сотрудников";
+    ViewData["Title"] = "Positions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,12 +8,13 @@
     <div class="submenu">
         <a href="positions/add" class="button add-position positionbutton submenu-button">Добавить</a>
     </div>
-    <table>
+    <table class="table1">
         <tr>
-            <th><p>Id</p></th>
-            <th><p>Категория</p></th>
-            <th><p>Должность</p></th>
-            <th><p>Сотрудники</p></th>
+            <td><h6>Id</h6></td>
+            <td><h6>Категория</h6></td>
+            <td><h6>Должность</h6></td>
+            <td><h6>Сотрудники</h6></td>
+            <td colspan="2"></td>
         </tr>
         @foreach (var pos in ViewBag.Positions) {
             <tr>
@@ -25,8 +26,8 @@
                     <p>@emp.GetFIO()</p>
                     }
                 </td>
-                <td><a href="positions/add?id=@pos.Id" class="change button button-on-table">Изменить</a></td>
-                <td><a href="positions/delete?id=@pos.Id" class="delete button">Удалить</a></td>
+                <td><a href="positions/add?id=@pos.Id" class="button-on-table">Изменить</a></td>
+                <td><a href="positions/delete?id=@pos.Id" class="button-on-table">Удалить</a></td>
             </tr>
         }
     </table>

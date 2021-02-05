@@ -1,7 +1,7 @@
 ﻿
 @{
     
-    ViewData["Title"] = "Список сотрудников";
+    ViewData["Title"] = "Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,14 +16,15 @@
             <input type="submit" class="button find-button" value="Найти"/>
         </form>
     </div>
-    <table>
+    <table class="table1">
         <tr>
-            <th><p>Id</p></th>
-            <th><p>Фамилия</p></th>
-            <th><p>Имя</p></th>
-            <th><p>Отчество</p></th>
-            <th><p>Табельный номер</p></th>
-            <th><p>Должность</p></th>
+            <td><h6>Id</h6></td>
+            <td><h6>Фамилия</h6></td>
+            <td><h6>Имя</h6></td>
+            <td><h6>Отчество</h6></td>
+            <td><h6>Табельный номер</h6></td>
+            <td><h6>Должность</h6></td>
+            <td colspan="2"></td>
         </tr>
         @foreach (var emp in ViewBag.Employees) {
             <tr>
@@ -36,8 +37,8 @@
                     @emp.Position.Subname
                     </p>
                 </td>
-                <td><a href="~/staff/Add?id=@emp.Id" class="change button button-on-table">Изменить</a></td>
-                <td><a href="~/staff/delete?id=@emp.Id" class="delete button">Удалить</a></td>
+                <td><a href="~/staff/Add?id=@emp.Id" class="button-on-table">Изменить</a></td>
+                <td><a href="~/staff/delete?id=@emp.Id" class="button-on-table">Удалить</a></td>
             </tr>
         }
     </table>

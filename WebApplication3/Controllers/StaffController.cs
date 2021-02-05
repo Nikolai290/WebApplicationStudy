@@ -12,10 +12,10 @@ namespace WebApplication3.Controllers {
 
 
         [HttpGet]
-        public IActionResult Index(string find) {
+        public IActionResult Index(string find="") {
 
 
-            if (!String.IsNullOrEmpty(find=""))
+            if (String.IsNullOrEmpty(find))
                 ViewBag.Employees = employeeManager.GetAllEmployee();
             else
                 ViewBag.Employees = employeeManager.GetEmployeesByStringFind(find);

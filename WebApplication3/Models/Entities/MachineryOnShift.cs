@@ -7,20 +7,28 @@ namespace WebApplication3.Models.Entities {
     public class MachineryOnShift : Machinery {
         // DbEntities.Id
         // Machinerty.Name
-        public virtual Order Order { get; protected set; }
+        public virtual Order Order { get; protected set; } // link
 
         // Location
-        public virtual QuarryArea Area { get; protected set; }
-        public virtual QuarryField Field { get; protected set; }
-        public virtual QuarryPlast Plast { get; protected set; }
-        public virtual QuarryHorizon Horizon { get; protected set; }
+        public virtual QuarryArea Area { get; set; }
+        public virtual QuarryField Field { get; set; }
+        public virtual QuarryPlast Plast { get; set; }
+        public virtual QuarryHorizon Horizon { get; set; }
 
-        public virtual double Picket { get; protected set; } // (d2)
-        
-        
+        public virtual double Picket { get; set; } // (d2)
+
+
         // Group
-        public virtual Group Group { get; protected set; }
-        public virtual int Number { get; protected set; } // 1-999
+        public virtual Group Group { get; set; }
+        public virtual int Number { // 1-999
+            get => Number;
+            set {
+                if (IsValid(value))
+                    Number = value;
+            }
+        }
+
+
 
         // Order
         public virtual double Weight { get; protected set; }
@@ -40,12 +48,29 @@ namespace WebApplication3.Models.Entities {
         public virtual IList<Employee> Crew { get; protected set; } // Max 10
 
         // PZO
-        public virtual bool PZO { get; protected set; }
+        public virtual bool PZO { get; set; }
 
 
-        public MachineryOnShift() { }
+        public MachineryOnShift() {
+
+        }
 
 
+        private bool IsValid(int value)
+            => (value > 0 && value < 1000);
+
+        public virtual MachineryOnShift AddEmployee(Employee empl) {
+            if (Crew.Count < 10) {
+                Crew.Add(empl);
+            }
+
+            return this;
+        }
+
+        public virtual Machinery SetCrew(List<Employee> empls) {
+            Crew = empls;
+            return this;
+        }
 
 
     }

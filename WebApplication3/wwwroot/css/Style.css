@@ -92,40 +92,44 @@ header {
             transform: scale(0.95);
         }
 
-.staff-table table {
+
+.table1 tr td {
     text-align: center;
+    border: 1px solid #49648B;
 }
 
-    .staff-table table td {
-        border: 1px solid black;
-    }
+.table1 tr td h6 {
+    margin: 5px;
+}
 
-        .staff-table table td p {
-            margin: 5px;
-        }
 
-    .staff-table table th {
-        border: 1px solid black;
-    }
-
-        .staff-table table th p {
-            margin: 5px;
-        }
-
-    .staff-table table td a {
-        display: block;
-        background-color: #00ffff;
+.button-on-table {
+    display: block;
+    background-color: #C5D4EB;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    height: 2.5em;
+    width: auto;
+    height: 100%;
+    border-style: none;
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+}
+    .button-on-table:hover {
+        background-color: #ACBED9;
         text-decoration: none;
         color: black;
-        text-align: center;
-        height: 2.5em;
-        width: 5em;
-        border-style: outset;
     }
-
-        .staff-table table td a:active {
-            transform: scale(0.95);
-        }
+    .button-on-table:visited {
+        text-decoration: none;
+        color: black;
+    }
+    .button-on-table:active {
+        background-color: #93A7C5;
+        text-decoration: none;
+    }
 /* Строка поиска */
 .find {
     margin: 10px 0;
@@ -134,3 +138,39 @@ header {
 .find-input {
     width: 20em;
 }
+/* Должности */
+
+/* Наряд */
+
+.order-settings {
+    height: 200px;
+}
+
+.order-main-settings {
+    width: 300px;
+    float: left;
+}
+
+.order-staff {
+    width: 700px;
+    margin-left: 320px;
+    margin-right: 320px;
+}
+
+.order-area-choice {
+    width: 200px;
+    float: left;
+
+}
+.order-area-choice ul {
+    display: inline;
+    list-style: none;
+}
+.order-area-choice ul li {
+    display: block;
+    width: auto;
+
+}
+    .order-area-choice ul li input {
+
+    }

@@ -1,0 +1,99 @@
+﻿
+@{
+
+    ViewData["Title"] = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main">
+    <div class="order-settings">
+        <form id="order-settings-form" method="post">
+            <input type="hidden" name="IsClose" value="false" />
+            <div class="order-main-settings">
+                <div class="arrow left-arrow"><</div>
+                <table>
+                    <tr>
+                        <td>Дата</td>
+                        <td>
+                            Смена
+                            @if (ViewBag.IsClose) {
+                                <p id="isClose">(Смена закрыта)</p>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="date" name="Date" value="@DateTime.Now.Date" required /></td>
+                        <td>
+                            <p><input type="radio" value="1" name="Shift" checked />1</p>
+                            <p><input type="radio" value="2" name="Shift" />2</p>
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+                <div class="arrow right-arrow">></div>
+
+            </div>
+
+            <div class="order-staff">
+                <table>
+                    <tr>
+                        <td>Диспетчер</td>
+                        <td>Начальник</td>
+                        <td>Горный мастер</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select disabled="@ViewBag.IsClose">
+                                @foreach (var disp in ViewBag.Disps) {
+                                    <option value="disp.Id">@disp.GetFIO()</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select disabled="@ViewBag.IsClose">
+                                @foreach (var chief in ViewBag.Chiefs) {
+                                    <option value="chief.Id">@chief.GetFIO()</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select disabled="@ViewBag.IsClose" multiple>
+                                @foreach (var master in ViewBag.Masters) {
+                                    <option value="master.Id">@master.GetFIO()</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <input type="submit" />
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div class="order-area-choice">
+                <ul class="order-area choice">
+                    <li><input type="radio" value="1" name="OrderAreaId" /> Добыча</li>
+                    <li><input type="radio" value="2" name="OrderAreaId" /> Вскрыша</li>
+                    <li><input type="radio" value="2" name="OrderAreaId" /> Автовскрыша</li>
+                </ul>
+                
+                
+                
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+
+
+    <div class="buttons-bar"></div>
+    <div class="machinery-table table"></div>
+</div>

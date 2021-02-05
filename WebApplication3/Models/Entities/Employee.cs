@@ -40,6 +40,12 @@ namespace WebApplication3.Models.Entities {
         public virtual string GetFIO()
             => (Lastname + " " + Name + " " +Fathername);
 
+        public virtual string GetShortFioProf() {
+            string line = Lastname + " " + Name[0] + ". " + Fathername + ". (" + Position.Subname + ")";
+
+            return line;
+        }
+
         public virtual void CopyTo(Employee emp) {
             emp.Name = this.Name;
             emp.Lastname = this.Lastname;

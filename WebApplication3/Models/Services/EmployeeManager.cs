@@ -55,20 +55,8 @@ namespace WebApplication3.Models.Services {
         public IList<Employee> GetEmployeeByPosition(Position position)
             => dbManager.GetAll<Employee>().Where(x => x.Position.Id == position.Id).ToList();
 
-        public IList<Employee> GetEmployeesByStringFind(string find) {
-            IList<Employee> result = new List<Employee>();
-
-            var emps = GetAllEmployee();
-
-            foreach (var emp in emps) {
-                if (emp.ToString().ToUpper().Contains(find.ToUpper())) {
-                    result.Add(emp);
-                }
-            }
-
-
-            return result;
-        }
+        public IList<Employee> GetEmployeesByStringFind(string find)
+            => GetAllEmployee().Where(x => x.ToString().ToUpper().Contains(find.ToUpper())).ToList();
 
 
         public bool IsValid(Employee emp, bool newEmployee) {
@@ -86,9 +74,7 @@ namespace WebApplication3.Models.Services {
             //if (isNullOrEmptyPosition(emp)) {
             //    throw new Exception("Ошибка! Должность не заполнена или не подгружена из базы!");
             //}
-
             return true;
-
         }
 
         private bool IsNullOrEmptyNameLastname(Employee emp)

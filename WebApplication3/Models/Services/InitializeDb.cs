@@ -12,17 +12,16 @@ namespace WebApplication3.Models.Services {
         private EmployeeManager employeeManager;
         private OrderManager orderManager;
 
-        public InitializeDb(IDbManager dbManager) {
-            this.dbManager = dbManager;
+        public InitializeDb() {
+            DbAccess.DbAccess.Rebuild();
+            this.dbManager = new DbManager();
             employeeManager = new EmployeeManager(dbManager);
             orderManager = new OrderManager(dbManager);
-
         }
 
         public void Start() {
-            DbAccess.DbAccess.Rebuild();
             Initialize();
-
+            dbManager.Commit();
         }
 
         private void Initialize() {
@@ -55,7 +54,6 @@ namespace WebApplication3.Models.Services {
             QuarryPlasts.Add(new QuarryPlast("Бородинский-2"));
             QuarryPlasts.Add(new QuarryPlast("Рыбинский-1"));
             QuarryPlasts.Add(new QuarryPlast("Рыбинский-2"));
-
 
             IList<Group> Groups = new List<Group>();
             Groups.Add(new Group(1));
@@ -91,9 +89,6 @@ namespace WebApplication3.Models.Services {
             Machineries.Add(new Machinery("KOMATSU HD 785-7 №4"));
             Machineries.Add(new Machinery("KOMATSU HD 785-7 №5"));
             Machineries.Add(new Machinery("KOMATSU HD 785-7 №54"));
-
-
-
 
             IList<Position> Positions = new List<Position>();
             Positions.Add(new Position("Нет должности"));
@@ -142,11 +137,6 @@ namespace WebApplication3.Models.Services {
                 employeeManager.CreateNewEmployee(emp);
             }
 
-
-
-
-
-
             PullToDb(orderAreas);
             PullToDb(quarryAreas);
             PullToDb(QuarryFields);
@@ -160,12 +150,10 @@ namespace WebApplication3.Models.Services {
             var masters = employeeManager.GetEmployeesByStringFind("горный мастер");
             var orderArea = dbManager.GetAll<OrderArea>().First();
 
-
             Order order = new Order();
             order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
 
             orderManager.SaveOrUpdate(order);
-
         }
 
         public void PullToDb<T>(IList<T> objs) where T : DbEntities {

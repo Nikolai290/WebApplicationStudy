@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
@@ -18,7 +19,7 @@ namespace WebApplication3.Controllers {
         public IActionResult Index() {
 
             ViewBag.Positions = positionManager.GetAllWithEmpls();
-
+            dbManager.Commit();
             return View("Positions");
         }
 
@@ -34,19 +35,34 @@ namespace WebApplication3.Controllers {
 
             ViewBag.Positions = positionManager.GetDistinctNames();
 
+            dbManager.Commit();
             return View("Add", pos);
         }
 
         [HttpPost]
-        public IActionResult Add(Position pos) {
-            bool result = positionManager.Create(pos);
+        public IActionResult Add(Position pos, int id) {
+            bool result;
             string message;
+            pos.Check();
+
+            if (id == 0)
+                result = positionManager.Create(pos);
+            else {
+                var obj = positionManager.GetById(id);
+                pos.CopyTo(obj);
+                result = positionManager.Update(obj);
+
+            }
+
+
+
             if (result) {
             message = "Объект сохранён";
             } else {
                 message = "Не удалось";
             }
 
+            dbManager.Commit();
             return View("Result", message);
         }
 
@@ -60,6 +76,7 @@ namespace WebApplication3.Controllers {
                 message = "Не удалось";
             }
 
+            dbManager.Commit();
             return View("Result", message);
         }
 

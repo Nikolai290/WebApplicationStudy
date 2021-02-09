@@ -32,8 +32,8 @@ namespace WebApplication3.Controllers {
 
 
         public IActionResult Initialize() {
-            new InitializeDb(dbManager).Start();
             dbManager.Commit();
+            new InitializeDb().Start();
             return View("Result", "База успешно инициализрована!");
 
         }

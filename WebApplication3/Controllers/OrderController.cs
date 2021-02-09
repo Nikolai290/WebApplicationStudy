@@ -11,7 +11,7 @@ namespace WebApplication3.Controllers {
     public class OrderController : Controller {
 
 
-        private DbManager dbManager;
+        private IDbManager dbManager;
         private OrderManager orderManager;
         private EmployeeManager employeeManager;
         private OrderAreaManager areaManager;

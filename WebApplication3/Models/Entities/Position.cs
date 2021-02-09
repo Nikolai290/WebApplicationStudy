@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System;
 
 namespace WebApplication3.Models.Entities {
     public class Position : DbEntities {
@@ -18,17 +18,26 @@ namespace WebApplication3.Models.Entities {
         }
 
         public Position(string name, string subname) : this(name) {
-            Subname = subname;
+            if(!String.IsNullOrEmpty(subname))
+                Subname = subname;
         }
 
         public override string ToString() {
-            return (this.Name + " " + this.Subname);
+            return (Name + " " + Subname);
         }
 
         public virtual void CopyTo(Position upd) {
             upd.Name = this.Name;
             upd.Subname = this.Subname;
+            
         }
+
+
+        public virtual void Check() {
+            if (String.IsNullOrEmpty(Subname))
+                Subname = Name;
+        }
+
 
     }
 }

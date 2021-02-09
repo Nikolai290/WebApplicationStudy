@@ -27,22 +27,16 @@ namespace WebApplication3.Models.Services {
         }
 
         public bool DeleteEmployee(Employee emp) {
-            
+            emp.SetNulls();
             return dbManager.Delete(emp);
         }
 
         public bool DeleteEmployee(int id)
             => DeleteEmployee(GetEmployeeById(id));
 
-        public IList<Employee> GetAllEmployee() {
-            var emps = dbManager.GetAll<Employee>();
+        public IList<Employee> GetAllEmployee() 
+            => dbManager.GetAll<Employee>().ToList();
 
-            //foreach (var emp in emps) {
-            //    Compare(emp);
-            //}
-
-            return emps;
-        }
         
         public Employee Compare(Employee emp) {
             if(emp.Position !=null)
@@ -104,12 +98,5 @@ namespace WebApplication3.Models.Services {
             return result;
         }
 
-
-        public Employee GetEmployee(Employee emp) {
-            if (IsValid(Compare(emp), false)) {
-                return dbManager.Get(emp);
-            }
-            return null;
-        }
     }
 }

@@ -9,17 +9,17 @@ namespace WebApplication3.Models.Mapping {
             // Base
             Id(x => x.Id);
             Map(x => x.Name);
-            References(x => x.Order);
+            References(x => x.Order).Cascade.All();
 
             // Lacation
-            References(x => x.Area).Not.LazyLoad();
-            References(x => x.Field).Not.LazyLoad();
-            References(x => x.Plast).Not.LazyLoad();
-            References(x => x.Horizon).Not.LazyLoad();
+            References(x => x.Area).Not.LazyLoad().Cascade.All();
+            References(x => x.Field).Not.LazyLoad().Cascade.All();
+            References(x => x.Plast).Not.LazyLoad().Cascade.All();
+            References(x => x.Horizon).Not.LazyLoad().Cascade.All();
             Map(x => x.Picket);
 
             // Group
-            References(x => x.Group).Not.LazyLoad();
+            References(x => x.Group).Not.LazyLoad().Cascade.All();
             Map(x => x.Number);
 
             // Order
@@ -37,7 +37,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.HolidayTime);
 
             // Crew
-            HasManyToMany(x => x.Crew).Not.LazyLoad();
+            HasManyToMany(x => x.Crew).Not.LazyLoad().Cascade.All();
 
             // PZO
             Map(x => x.PZO);

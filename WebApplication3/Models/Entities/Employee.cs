@@ -7,7 +7,8 @@ namespace WebApplication3.Models.Entities {
         public virtual string Fathername { get; set; }
         public virtual int TableNumber { get; set; }
         public virtual Position Position { get; set; }
-        public virtual IList<Order> Orders { get; set; }
+        public virtual IList<Order> Orders { get; protected set; }
+        public virtual IList<MachineryOnShift> Machinaries { get; protected set; }
 
         public Employee() {
             new Position();
@@ -44,6 +45,12 @@ namespace WebApplication3.Models.Entities {
             string line = Lastname + " " + Name[0] + ". " + Fathername + ". (" + Position.Subname + ")";
 
             return line;
+        }
+        public virtual void SetNulls() {
+            Position.Employees.Remove(this);
+            Position = null;
+            Orders = null;
+            Machinaries = null;
         }
 
         public virtual void CopyTo(Employee emp) {

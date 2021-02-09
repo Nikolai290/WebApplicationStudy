@@ -26,7 +26,7 @@ namespace WebApplication3.Models.Services {
 
 
         // Валидность
-        private bool IsValid (Position pos, bool isNew=true) {
+        private bool IsValid(Position pos, bool isNew = true) {
 
             if (isNew && IsAlreadyExist(pos)) return false;
             if (IsEmptyValue(pos)) return false;
@@ -38,43 +38,48 @@ namespace WebApplication3.Models.Services {
             => (String.IsNullOrEmpty(pos.Name) && String.IsNullOrEmpty(pos.Subname));
 
         private bool IsAlreadyExist(Position pos)
-            => (dbManager.GetAll<Position>().Where(x=> x.Name==pos.Name && x.Subname==pos.Subname).Any());
- 
+            => (dbManager.GetAll<Position>().Where(x => x.Name == pos.Name && x.Subname == pos.Subname).Any());
+
         // Команды
         public bool Update(Position pos) {
-            if (IsValid(pos)) {
-                return dbManager.Update<Position>(pos);
+            if (pos.Id == 1)
+                return false;
+
+            var result = true;
+            if (IsValid(pos, false)) {
+                result = dbManager.Update(pos);
             }
-            return false;
+            return result;
         }
 
         public bool Delete(Position pos) {
+            if (pos.Id == 1)
+                return false;
 
-            //var emps = employeeManager.GetEmployeeByPosition(pos);
-            //foreach (var emp in emps) {
-            //    emp.Position = dbManager.GetById<Position>(1);
-            //    employeeManager.UpdateEmployee(emp, emp.Id);
-            //}
+            foreach (var emp in pos.Employees) {
+                emp.Position = dbManager.GetById<Position>(1);
+            }
+            pos.Employees = null;
 
-            return dbManager.Delete<Position>(pos); 
+            return dbManager.Delete(pos);
         }
 
         public bool Delete(int id)
             => Delete(GetById(id));
 
         // Запросы
-        public IList<Position> GetAll() 
+        public IList<Position> GetAll()
             => dbManager.GetAll<Position>().ToList();
 
         public Position GetById(int id)
             => GetAll().Where(x => x.Id == id).First();
 
-        public IList<Position> Find(string find) 
+        public IList<Position> Find(string find)
             => GetAll().Where(x => x.ToString().ToUpper().Contains(find.ToUpper())).ToList();
-        
+
         public IList<Position> GetAllWithEmpls() {
             var poss = GetAll();
-
+            
             //foreach (var pos in poss)
             //    Compare(pos);
             return poss;
@@ -84,7 +89,7 @@ namespace WebApplication3.Models.Services {
         //    return pos;
         //}
 
-        public IList<string> GetDistinctNames() { 
+        public IList<string> GetDistinctNames() {
 
             var all = GetAll().OrderBy(x => x.Name).Select(x => x.Name).ToArray();
             IList<string> result = new List<string>();
@@ -95,9 +100,9 @@ namespace WebApplication3.Models.Services {
 
             return result;
         }
-        
 
 
-        
+
+
     }
 }

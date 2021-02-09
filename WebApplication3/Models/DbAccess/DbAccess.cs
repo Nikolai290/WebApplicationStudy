@@ -54,11 +54,11 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         private void BuildSchema(Configuration config) {
-            if (!File.Exists(connectionString)) {
-                new SchemaExport(config)
-                    .Create(false, true);
-
-            } else if (rebuild) {
+            //if (!File.Exists(connectionString)) {
+            //    new SchemaExport(config)
+            //        .Create(false, true);
+            //} else 
+            if (rebuild) {
 
                 File.Delete(connectionString);
                 new SchemaExport(config)

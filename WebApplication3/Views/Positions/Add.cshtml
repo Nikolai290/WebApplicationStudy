@@ -13,15 +13,17 @@
 
 <div class="form-div add-position">
     <form class="form-add-position" method="post">
+        <input type="hidden" value="@Model.Id" name="Id" />
+        <input type="hidden" value="@Model.Employees.ToList()" name="Employees" />
         <table class="table add-position-table">
             <tr>
                 <td>
                     <p><label for="Name">Категория</label></p>
-                    <p><input type="text" list="Namelist" name="Name" value="@Model.Name" placeholder="Категория" maxlength="20" required /></p>
+                    <p><input type="text" list="Namelist" name="Name" value="@Model.Name" placeholder="Категория" maxlength="30" required /></p>
                 </td>
                 <td>
                     <p><label for="Subname">Должность</label></p>
-                    <p><input type="text" name="Subname" value="@Model.Subname" placeholder="Должность" maxlength="30" /></p>
+                    <p><input type="text" name="Subname" value="@Model.Subname" placeholder="Должность" maxlength="50" /></p>
                 </td>
             </tr>
             <tr>

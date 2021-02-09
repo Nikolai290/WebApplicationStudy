@@ -8,9 +8,16 @@ using WebApplication3.Models.Entities;
 namespace WebApplication3.Models.Services {
     public class InitializeDb {
 
-        DbManager dbManager = new DbManager();
-        EmployeeManager employeeManager = new EmployeeManager();
-        OrderManager orderManager = new OrderManager();
+        private IDbManager dbManager;
+        private EmployeeManager employeeManager;
+        private OrderManager orderManager;
+
+        public InitializeDb(IDbManager dbManager) {
+            this.dbManager = dbManager;
+            employeeManager = new EmployeeManager(dbManager);
+            orderManager = new OrderManager(dbManager);
+
+        }
 
         public void Start() {
             DbAccess.DbAccess.Rebuild();

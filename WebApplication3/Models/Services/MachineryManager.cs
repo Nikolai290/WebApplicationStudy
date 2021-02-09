@@ -7,8 +7,11 @@ using WebApplication3.Models.Entities;
 
 namespace WebApplication3.Models.Services {
     public class MachineryManager {
+        private IDbManager dbManager;
 
-        DbManager dbManager = new DbManager();
+        public MachineryManager(IDbManager dbManager) {
+            this.dbManager = dbManager;
+        }
 
         public bool Create(Machinery obj) => dbManager.Add<Machinery>(obj);
         public bool Update(Machinery obj) => dbManager.Update<Machinery>(obj);

@@ -8,10 +8,11 @@ namespace WebApplication3.Models.Services {
     public class EmployeeManager {
 
         //PositionManager positionManager;
-        DbManager dbManager = new DbManager();
+        private IDbManager dbManager;
 
-        public EmployeeManager() {
-            //positionManager = new PositionManager();
+        public EmployeeManager(IDbManager dbManager) {
+            this.dbManager = dbManager;
+            //positionManager = new PositionManager(dbManager);
         }
 
         public bool CreateNewEmployee(Employee emp) {
@@ -83,7 +84,7 @@ namespace WebApplication3.Models.Services {
         private bool IsVerylongName(Employee emp)
             => !(emp.Lastname.Length < 20 || emp.Name.Length < 20 || emp.Fathername.Length < 20);
         private bool IsNotTrueTableNumber(Employee emp)
-            => !(emp.TableNumber > 1000 & emp.TableNumber < 1000000 &
+            => !(emp.TableNumber > 1000 && emp.TableNumber < 1000000 &&
             GetAllEmployee().Where(x => x.TableNumber == emp.TableNumber).ToList().Count == 0);
         private bool IsNullOrEmptyPosition(Employee emp)
             => (emp.Position == null ||

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using WebApplication3.Models.Entities;
 
 namespace WebApplication3.Models.DbAccess {
-    interface IDbManager {
+    public interface IDbManager {
         bool Add<T>(T obj) where T : DbEntities;
         bool Update<T>(T obj) where T : DbEntities;
         T GetById<T>(int id) where T : DbEntities;
@@ -13,5 +13,6 @@ namespace WebApplication3.Models.DbAccess {
         T Get<T>(T obj) where T : DbEntities;
         bool DeleteById<T>(int id) where T : DbEntities;
         bool Delete<T>(T obj) where T : DbEntities;
+        void Commit();
     }
 }

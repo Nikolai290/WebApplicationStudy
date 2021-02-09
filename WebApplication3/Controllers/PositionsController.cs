@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
 
 
 namespace WebApplication3.Controllers {
     public class PositionsController : Controller {
+        private IDbManager dbManager;
 
-        PositionManager positionManager = new PositionManager();
+        private PositionManager positionManager;
 
+        public PositionsController() {
+            dbManager = new DbManager();
+            positionManager = new PositionManager(dbManager);
+        }
 
         public IActionResult Index() {
 

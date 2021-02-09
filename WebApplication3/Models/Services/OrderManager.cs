@@ -7,12 +7,17 @@ using WebApplication3.Models.DbAccess;
 
 namespace WebApplication3.Models.Services {
     public class OrderManager {
+        private IDbManager dbManager;
 
-        DbManager dbManager = new DbManager();
-        EmployeeManager employeeManager = new EmployeeManager();
-        MachineryManager machineryManager = new MachineryManager();
+        private EmployeeManager employeeManager;
+        private MachineryManager machineryManager;
 
-        public Order Order { get; set; }
+        public OrderManager(IDbManager dbManager) {
+            this.dbManager = dbManager;
+            employeeManager = new EmployeeManager(dbManager);
+            machineryManager = new MachineryManager(dbManager);
+
+        }
 
         public bool SaveOrUpdate(Order obj) {
 
@@ -61,7 +66,7 @@ namespace WebApplication3.Models.Services {
         public bool Delete(Order obj) => dbManager.Delete<Order>(obj);
         public IList<Order> GetAll() => dbManager.GetAll<Order>();
         public Order Get(DateTime date, int shift, int orderAreaId) {
-            // date format: ("dd.MM.yyyy")
+            // date format: ("yyyy-MM-dd")
             Order result;
             try {
                 result = GetAll().Where(x => x.Date == date && x.Shift == shift && x.Area.Id == orderAreaId).First();

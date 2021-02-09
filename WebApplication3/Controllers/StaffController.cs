@@ -1,30 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
 
 
 namespace WebApplication3.Controllers {
     public class StaffController : Controller {
-        PositionManager positionManager = new PositionManager();
-        EmployeeManager employeeManager = new EmployeeManager();
-        //DbManager dbManager = new DbManager();
 
+        private IDbManager dbManager;
+        private PositionManager positionManager;
+        private EmployeeManager employeeManager;
+
+        public StaffController() {
+            dbManager = new DbManager();
+            employeeManager = new EmployeeManager(dbManager);
+            positionManager = new PositionManager(dbManager);
+        }
 
         [HttpGet]
-        public IActionResult Index(string find="") {
+        public IActionResult Index(string find = "") {
 
 
             if (String.IsNullOrEmpty(find))
                 ViewBag.Employees = employeeManager.GetAllEmployee();
             else
                 ViewBag.Employees = employeeManager.GetEmployeesByStringFind(find);
+            dbManager.Commit();
             return View();
         }
 
 
         public IActionResult Initialize() {
-            new InitializeDb().Start();
+            new InitializeDb(dbManager).Start();
+            dbManager.Commit();
             return View("Result", "База успешно инициализрована!");
 
         }
@@ -39,6 +48,7 @@ namespace WebApplication3.Controllers {
             else
                 emp = new Employee();
 
+            dbManager.Commit();
             return View("Add", emp);
         }
         [HttpPost]
@@ -59,6 +69,7 @@ namespace WebApplication3.Controllers {
             } else {
                 message = "Не удалось";
             }
+            dbManager.Commit();
             return View("Result", message);
         }
 
@@ -77,6 +88,7 @@ namespace WebApplication3.Controllers {
             } else {
                 message = "Не удалось";
             }
+            dbManager.Commit();
             return View("Result", message);
         }
 

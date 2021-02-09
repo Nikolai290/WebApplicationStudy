@@ -6,9 +6,15 @@ using WebApplication3.Models.Entities;
 
 namespace WebApplication3.Models.Services {
     public class PositionManager {
-        EmployeeManager employeeManager = new EmployeeManager();
 
-        DbManager dbManager = new DbManager();
+        private IDbManager dbManager;
+        //private EmployeeManager employeeManager;
+
+        public PositionManager(IDbManager dbManager) {
+            this.dbManager = dbManager;
+            //employeeManager = new EmployeeManager(dbManager);
+        }
+
 
         // Команды
         public bool Create(Position pos) {
@@ -44,11 +50,11 @@ namespace WebApplication3.Models.Services {
 
         public bool Delete(Position pos) {
 
-            var emps = employeeManager.GetEmployeeByPosition(pos);
-            foreach (var emp in emps) {
-                emp.Position = dbManager.GetById<Position>(1);
-                employeeManager.UpdateEmployee(emp, emp.Id);
-            }
+            //var emps = employeeManager.GetEmployeeByPosition(pos);
+            //foreach (var emp in emps) {
+            //    emp.Position = dbManager.GetById<Position>(1);
+            //    employeeManager.UpdateEmployee(emp, emp.Id);
+            //}
 
             return dbManager.Delete<Position>(pos); 
         }
@@ -73,10 +79,10 @@ namespace WebApplication3.Models.Services {
             //    Compare(pos);
             return poss;
         }
-        public Position Compare(Position pos) {
-            pos.Employees = employeeManager.GetEmployeeByPosition(pos);
-            return pos;
-        }
+        //public Position Compare(Position pos) {
+        //    pos.Employees = employeeManager.GetEmployeeByPosition(pos);
+        //    return pos;
+        //}
 
         public IList<string> GetDistinctNames() { 
 

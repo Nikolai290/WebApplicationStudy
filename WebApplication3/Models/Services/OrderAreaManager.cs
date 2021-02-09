@@ -8,8 +8,11 @@ using WebApplication3.Models.DbAccess;
 namespace WebApplication3.Models.Services {
 
     public class OrderAreaManager {
-        DbManager dbManager = new DbManager();
+        private IDbManager dbManager;
 
+        public OrderAreaManager(IDbManager dbManager) {
+            this.dbManager  = dbManager;
+        }
 
         public IList<OrderArea> GetAll()
             => dbManager.GetAll<OrderArea>();

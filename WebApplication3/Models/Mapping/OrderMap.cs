@@ -11,14 +11,14 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.IsClose);
 
             // Employees
-            References(x => x.Dispetcher);
-            References(x => x.Chief);
-            HasManyToMany(x => x.MiningMaster); // max 10
+            References(x => x.Dispetcher).Not.LazyLoad();
+            References(x => x.Chief).Not.LazyLoad();
+            HasManyToMany(x => x.MiningMaster).Not.LazyLoad(); // max 10
 
             // Other
             References(x => x.Area);
 
-            HasMany(x => x.Machineries);
+            HasMany(x => x.Machineries).Not.LazyLoad();
 
 
         }

@@ -10,7 +10,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.Lastname);
             Map(x => x.Fathername);
             Map(x => x.TableNumber);
-            References(x => x.Position);
+            References(x => x.Position).Not.LazyLoad();
             HasManyToMany(x => x.Orders);
         }
     }

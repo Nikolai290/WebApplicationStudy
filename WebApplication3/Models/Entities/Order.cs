@@ -23,6 +23,8 @@ namespace WebApplication3.Models.Entities {
         public virtual OrderArea Area { get; protected set; }
 
         public virtual IList<MachineryOnShift> Machineries { get; protected set; }
+        public virtual IList<int> MachineriesId { get; protected set; } // for exclude repeat machineries
+
         public virtual bool AllPzo { get; protected set; }
 
         public Order() {
@@ -54,15 +56,29 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual Order SetMachineries(IList<MachineryOnShift> machs) {
-            Machineries = machs;
+                Machineries = machs;
+                MachineriesId = machs.Select(x => x.MachineryId).ToList();
             return this;
         }
 
         public virtual Order AddMachines(params MachineryOnShift[] machs) {
-            foreach (var m in machs) {
-                Machineries.Add(m);
+                foreach (var m in machs) {
+                    if (IsNotRepeat(MachineriesId, m.MachineryId)) {
+
+                    Machineries.Add(m);
+                    MachineriesId.Add(m.MachineryId);
+                }
             }
             return this;
+        }
+
+        private bool IsNotRepeat(IList<int> machineriesId, int findId) {
+            foreach (var id in machineriesId) {
+                if (findId == id) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public virtual Order AddMaster (params Employee[] masters) {
@@ -80,6 +96,20 @@ namespace WebApplication3.Models.Entities {
             }
 
             return this;
+        }
+
+        public virtual Order SetNowDate() {
+            Date = DateTime.Now.Date;
+            return this;
+        }
+
+        public virtual Order CopyTo(Order obj) {
+            Order order = new Order()
+                .SetBase(obj.Date, obj.Shift)
+                .SetArea(obj.Area).SetStaff(obj.Dispetcher, obj.Chief, obj.MiningMaster)
+                .SetMachineries(obj.Machineries);
+
+            return order;
         }
 
     }

@@ -113,10 +113,10 @@ namespace WebApplication3.Models.Services {
             Employees.Add(new Employee("Михаил", "Данилов", "Алексеевич", 6345, poss[2]));
             Employees.Add(new Employee("Сергей", "Алексеев", "Петрович", 26576, poss[3]));
             Employees.Add(new Employee("Даниил", "Петров", "Андреевич", 34235, poss[3]));
-            Employees.Add(new Employee("Сергей", "Алексеев", "Петрович", 24923, poss[3]));
+            Employees.Add(new Employee("Алексей", "Сергеев", "Петрович", 24923, poss[3]));
             Employees.Add(new Employee("Алексей", "Васильев", "Сергеевич", 725246, poss[4]));
             Employees.Add(new Employee("Иннокентий", "Иванов", "Афанасьевич", 3634, poss[4]));
-            Employees.Add(new Employee("Алексей", "Васильев", "Сергеевич", 2342, poss[4]));
+            Employees.Add(new Employee("Сергей", "Алексеев", "Васильевич", 2342, poss[4]));
             Employees.Add(new Employee("Максим", "Николаев", "Андреевич", 635418, poss[5]));
             Employees.Add(new Employee("Федор", "Максимов", "Артёмович", 5235, poss[5]));
             Employees.Add(new Employee("Артём", "Малахов", "Максимович", 7567, poss[5]));
@@ -157,7 +157,7 @@ namespace WebApplication3.Models.Services {
             Order order = new Order();
             order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
 
-            orderManager.Create(order);
+            orderManager.SaveOrUpdate(order);
 
         }
 

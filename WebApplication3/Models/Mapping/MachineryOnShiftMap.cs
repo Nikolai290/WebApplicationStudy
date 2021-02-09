@@ -12,14 +12,14 @@ namespace WebApplication3.Models.Mapping {
             References(x => x.Order);
 
             // Lacation
-            References(x => x.Area);
-            References(x => x.Field);
-            References(x => x.Plast);
-            References(x => x.Horizon);
+            References(x => x.Area).Not.LazyLoad();
+            References(x => x.Field).Not.LazyLoad();
+            References(x => x.Plast).Not.LazyLoad();
+            References(x => x.Horizon).Not.LazyLoad();
             Map(x => x.Picket);
 
             // Group
-            References(x => x.Group);
+            References(x => x.Group).Not.LazyLoad();
             Map(x => x.Number);
 
             // Order
@@ -37,7 +37,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.HolidayTime);
 
             // Crew
-            HasManyToMany(x => x.Crew);
+            HasManyToMany(x => x.Crew).Not.LazyLoad();
 
             // PZO
             Map(x => x.PZO);

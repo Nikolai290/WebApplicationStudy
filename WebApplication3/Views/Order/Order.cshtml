@@ -1,4 +1,7 @@
-﻿
+﻿@using WebApplication3.Models.Entities;
+
+@model Order
+
 @{
 
     ViewData["Title"] = "Order";
@@ -17,23 +20,23 @@
                         <td>Дата</td>
                         <td>
                             Смена
-                            @if (ViewBag.IsClose) {
+                            @if (Model.IsClose) {
                                 <p id="isClose">(Смена закрыта)</p>
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td><input type="date" name="Date" value="@DateTime.Now.Date" required /></td>
+                        <td><input type="date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" required /></td>
                         <td>
-                            <p><input type="radio" value="1" name="Shift" checked />1</p>
-                            <p><input type="radio" value="2" name="Shift" />2</p>
+                            <p><input type="radio" value="1" name="Shift" checked="@(Model.Shift==1)" />1</p>
+                            <p><input type="radio" value="2" name="Shift" checked="@(Model.Shift==2)" />2</p>
                         </td>
                     </tr>
                     <tr>
                     </tr>
                 </table>
                 <div class="arrow right-arrow">></div>
-
+                <div><button type="submit" formmethod="get">Найти</button></div>
             </div>
 
             <div class="order-staff">
@@ -45,30 +48,36 @@
                     </tr>
                     <tr>
                         <td>
-                            <select disabled="@ViewBag.IsClose">
+                            <select disabled="@Model.IsClose" name="Dispetcher" required>
+                                @if (Model.Dispetcher == null) {
+                                    <option  selected disabled></option>
+                                }
                                 @foreach (var disp in ViewBag.Disps) {
-                                    <option value="disp.Id">@disp.GetFIO()</option>
+                                        <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
                                 }
                             </select>
                         </td>
                         <td>
-                            <select disabled="@ViewBag.IsClose">
+                            <select disabled="@Model.IsClose" name="Chief" required>
+                                @if (Model.Chief == null) {
+                                    <option selected disabled></option>
+                                }
                                 @foreach (var chief in ViewBag.Chiefs) {
-                                    <option value="chief.Id">@chief.GetFIO()</option>
+                                        <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
                                 }
                             </select>
                         </td>
                         <td>
-                            <select disabled="@ViewBag.IsClose" multiple>
+                            <select disabled="@Model.IsClose" name="Masters" multiple required>
                                 @foreach (var master in ViewBag.Masters) {
-                                    <option value="master.Id">@master.GetFIO()</option>
+                                        <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
                                 }
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="submit" />
+                            <button type="submit">Сохранить</button>
                         </td>
                     </tr>
                 </table>
@@ -77,13 +86,13 @@
             </div>
             <div class="order-area-choice">
                 <ul class="order-area choice">
-                    <li><input type="radio" value="1" name="OrderAreaId" /> Добыча</li>
-                    <li><input type="radio" value="2" name="OrderAreaId" /> Вскрыша</li>
-                    <li><input type="radio" value="2" name="OrderAreaId" /> Автовскрыша</li>
+                    @foreach (var area in ViewBag.Areas) {
+                        <li><input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Area.Id==area.Id)" /> @area.Name </li>
+                    }
                 </ul>
-                
-                
-                
+
+
+
             </div>
         </form>
     </div>

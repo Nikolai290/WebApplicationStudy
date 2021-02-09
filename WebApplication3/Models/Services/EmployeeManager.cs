@@ -36,9 +36,9 @@ namespace WebApplication3.Models.Services {
         public IList<Employee> GetAllEmployee() {
             var emps = dbManager.GetAll<Employee>();
 
-            foreach (var emp in emps) {
-                Compare(emp);
-            }
+            //foreach (var emp in emps) {
+            //    Compare(emp);
+            //}
 
             return emps;
         }
@@ -50,7 +50,7 @@ namespace WebApplication3.Models.Services {
         }
 
         public Employee GetEmployeeById(int id)
-            => Compare(dbManager.GetById<Employee>(id));
+            => (dbManager.GetById<Employee>(id));
 
         public IList<Employee> GetEmployeeByPosition(Position position)
             => dbManager.GetAll<Employee>().Where(x => x.Position.Id == position.Id).ToList();

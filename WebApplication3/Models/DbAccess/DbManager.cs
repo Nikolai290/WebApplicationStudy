@@ -25,11 +25,11 @@ namespace WebApplication3.Models.DbAccess {
 
         public bool DeleteById<T>(int id) where T : DbEntities {
             bool result = true;
+            T obj = GetById<T>(id);
 
             using var session = sessionFactory.OpenSession();
             using var tx = session.BeginTransaction();
 
-            T obj = GetById<T>(id);
 
             if (obj != null)
                 Delete(obj);
@@ -66,11 +66,12 @@ namespace WebApplication3.Models.DbAccess {
             return result;
         }
 
+
         public T GetById<T>(int id) where T : DbEntities {
             T result = null;
 
             using var session = sessionFactory.OpenSession();
-            result = session.QueryOver<T>().List().Where(x => x.Id == id).First();
+            result = session.QueryOver<T>()?.List()?.Where(x => x.Id == id)?.First();
 
             return result;
         }
@@ -80,7 +81,7 @@ namespace WebApplication3.Models.DbAccess {
             using var session = sessionFactory.OpenSession();
             using var tx = session.BeginTransaction();
             try {
-                session.Update(obj);
+                session.Save(obj);
             } catch {
                 result = false;
             }
@@ -91,6 +92,25 @@ namespace WebApplication3.Models.DbAccess {
         public T Get<T>(T obj) where T : DbEntities {
             using var session = sessionFactory.OpenSession();
             return session.Get<T>(obj);
+        }
+
+        public Order GetOrderById(int id) {
+            //Employee disp;
+            //Employee chief;
+            //IList<Employee> masters;
+            //IList<MachineryOnShift> machs;
+            using var session = sessionFactory.OpenSession();
+            //using var tx = session.BeginTransaction();
+            Order result = session.Get<Order>(id);
+            //disp = result.Dispetcher;
+            //chief = result.Chief;
+            //masters = result.MiningMaster;
+            //machs = result.Machineries;
+         
+            //tx.Commit();
+            //session.Load("Order", id);
+            //session.Load<Order>(id);
+            return result;
         }
     }
 }

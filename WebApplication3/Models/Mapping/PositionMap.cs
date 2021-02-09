@@ -10,7 +10,8 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.Subname);
             HasMany(x => x.Employees)
                 .Inverse()
-                .Cascade.All();
+                .Cascade.All()
+                .Not.LazyLoad();
         }
     }
 }

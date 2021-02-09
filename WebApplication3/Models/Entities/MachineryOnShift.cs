@@ -7,6 +7,7 @@ namespace WebApplication3.Models.Entities {
     public class MachineryOnShift : Machinery {
         // DbEntities.Id
         // Machinerty.Name
+        public virtual int MachineryId { get; protected set; } // for exclude repeat machinery
         public virtual Order Order { get; protected set; } // link
 
         // Location

@@ -33,7 +33,7 @@ namespace WebApplication3.Models.Services {
 
         private bool IsAlreadyExist(Position pos)
             => (dbManager.GetAll<Position>().Where(x=> x.Name==pos.Name && x.Subname==pos.Subname).Any());
-        //
+ 
         // Команды
         public bool Update(Position pos) {
             if (IsValid(pos)) {
@@ -69,8 +69,8 @@ namespace WebApplication3.Models.Services {
         public IList<Position> GetAllWithEmpls() {
             var poss = GetAll();
 
-            foreach (var pos in poss)
-                Compare(pos);
+            //foreach (var pos in poss)
+            //    Compare(pos);
             return poss;
         }
         public Position Compare(Position pos) {

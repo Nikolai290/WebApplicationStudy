@@ -14,7 +14,9 @@
 <div class="form-div add-position">
     <form class="form-add-position" method="post">
         <input type="hidden" value="@Model.Id" name="Id" />
-        <input type="hidden" value="@Model.Employees.ToList()" name="Employees" />
+        @foreach(var emp in Model.Employees) {
+            <input type="hidden" value="@emp" name="Employees" />
+        }
         <table class="table add-position-table">
             <tr>
                 <td>

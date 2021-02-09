@@ -36,7 +36,9 @@
                     </tr>
                 </table>
                 <div class="arrow right-arrow">></div>
-                <div><button type="submit" formmethod="get">Найти</button></div>
+                <div>
+                    <button type="submit" formmethod="get">Find</button>
+                </div>
             </div>
 
             <div class="order-staff">
@@ -48,36 +50,36 @@
                     </tr>
                     <tr>
                         <td>
-                            <select disabled="@Model.IsClose" name="Dispetcher" required>
+                            <select disabled="@Model.IsClose" name="Dispetcher">
                                 @if (Model.Dispetcher == null) {
-                                    <option  selected disabled></option>
+                                    <option selected disabled></option>
                                 }
                                 @foreach (var disp in ViewBag.Disps) {
-                                        <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
+                                    <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
                                 }
                             </select>
                         </td>
                         <td>
-                            <select disabled="@Model.IsClose" name="Chief" required>
+                            <select disabled="@Model.IsClose" name="Chief">
                                 @if (Model.Chief == null) {
                                     <option selected disabled></option>
                                 }
                                 @foreach (var chief in ViewBag.Chiefs) {
-                                        <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
+                                    <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
                                 }
                             </select>
                         </td>
                         <td>
-                            <select disabled="@Model.IsClose" name="Masters" multiple required>
+                            <select disabled="@Model.IsClose" name="Masters" multiple>
                                 @foreach (var master in ViewBag.Masters) {
-                                        <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
+                                    <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
                                 }
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <button type="submit">Сохранить</button>
+                            <button type="submit">Save</button>
                         </td>
                     </tr>
                 </table>

@@ -29,7 +29,6 @@ namespace WebApplication3.Controllers {
                 Date = DateTime.Now.Date;
             Order order = orderManager.Get(Date, Shift, OrderAreaId);
 
-
             ViewBag.Areas = areaManager.GetAll();
             ViewBag.Disps = employeeManager.GetEmployeesByStringFind("Диспетчер");
             ViewBag.Chiefs = employeeManager.GetEmployeesByStringFind("Начальник");

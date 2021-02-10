@@ -52,6 +52,17 @@ namespace WebApplication3.Models.Services {
             x.Shift == obj.Shift &&
             x.Area.Id == obj.Area.Id)).First();
 
+        public IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
+            var result = dbManager.GetAll<Machinery>().ToList();
+            foreach (var m in order?.Machineries?.Select(x => x.Name)) {
+                result.Remove(result.Where(z => z.Name == m).First());
+            }
+            return result;
+        }
+
+        public Order GetById(int id)
+            => dbManager.GetById<Order>(id);
+
         private bool CheckId(Order obj)
             => GetAll().Where(x => x.Id == obj.Id).Any();
 
@@ -70,13 +81,7 @@ namespace WebApplication3.Models.Services {
             Order result;
             try {
                 result = GetAll().Where(x => x.Date == date && x.Shift == shift && x.Area.Id == orderAreaId).First();
-                //Employee disp;
-                //Employee chief;
-                //IList<Employee> masters;
-                //IList<MachineryOnShift> machs;
-                //result = dbManager.GetOrderById(result.Id);
-                //result.SetStaff(disp, chief, masters);
-                //Compare(result);
+
 
             } catch {
                 result = new Order().SetBase(date, shift).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
@@ -86,23 +91,6 @@ namespace WebApplication3.Models.Services {
             return result;
         }
 
-        private Order Compare(Order order) {
-
-
-            var disp = employeeManager.GetEmployeeById(order.Dispetcher.Id);
-            var chief = employeeManager.GetEmployeeById(order.Chief.Id);
-            IList<Employee> masters = new List<Employee>();
-            foreach (var master in order.MiningMaster) {
-                masters.Add(employeeManager.GetEmployeeById(master.Id));
-            }
-
-            order = order.SetStaff(disp, chief, masters);
-            //IList<MachineryOnShift> machs = new List<MachineryOnShift>();
-            //foreach (var m in order.Machineries) {
-            //}
-
-            return order;
-        }
 
         public Order SetArea(Order order, int areaId) {
             order.SetArea(dbManager.GetById<OrderArea>(areaId));

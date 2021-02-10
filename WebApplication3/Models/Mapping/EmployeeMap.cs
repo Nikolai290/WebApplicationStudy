@@ -12,6 +12,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.TableNumber);
             References(x => x.Position).Not.LazyLoad();
             HasManyToMany(x => x.Orders);
+            HasManyToMany(x => x.Machinaries);
         }
     }
 }

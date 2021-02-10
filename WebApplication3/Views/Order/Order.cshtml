@@ -10,94 +10,121 @@
 
 
 <div class="main">
-    <div class="order-settings">
-        <form id="order-settings-form" method="post">
-            <input type="hidden" name="IsClose" value="false" />
-            <div class="order-main-settings">
-                <div class="arrow left-arrow"><</div>
-                <table>
-                    <tr>
-                        <td>Дата</td>
-                        <td>
-                            Смена
-                            @if (Model.IsClose) {
-                                <p id="isClose">(Смена закрыта)</p>
+    <form id="order-settings-form" method="post">
+        <input type="hidden" name="IsClose" value="false" />
+
+        <table id="main-table">
+            <tr id="main-properties">
+                <td>
+                    <div class="order-main-settings">
+                        <table>
+                            <tr>
+                                <td>Дата</td>
+                                <td>
+                                    Смена
+                                    @if (Model.IsClose) {
+                                        <p id="isClose">(Смена закрыта)</p>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" required /></td>
+                                <td>
+                                    <p>
+                                        <input type="radio" value="1" name="Shift" checked="@(Model.Shift==1)" id="shift1" />
+                                        <label class="button-on-table label-radio" for="shift1">
+                                            Смена 1
+                                        </label>
+
+                                    </p>
+                                    <p>
+                                        <input type="radio" value="2" name="Shift" checked="@(Model.Shift==2)" id="shift2" />
+                                        <label class="button-on-table label-radio" for="shift2">
+                                            Смена 2
+                                        </label>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                        <div>
+                            <button type="submit" formmethod="get">Find</button>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="order-staff">
+                        <table>
+                            <tr>
+                                <td>Диспетчер</td>
+                                <td>Начальник</td>
+                                <td>Горный мастер</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select disabled="@Model.IsClose" name="Dispetcher">
+                                        @if (Model.Dispetcher == null) {
+                                            <option selected disabled></option>
+                                        }
+                                        @foreach (var disp in ViewBag.Disps) {
+                                            <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select disabled="@Model.IsClose" name="Chief">
+                                        @if (Model.Chief == null) {
+                                            <option selected disabled></option>
+                                        }
+                                        @foreach (var chief in ViewBag.Chiefs) {
+                                            <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select disabled="@Model.IsClose" name="Masters" multiple>
+                                        @foreach (var master in ViewBag.Masters) {
+                                            <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <button type="submit">Save</button>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="order-area-choice">
+                        <ul class="order-area choice">
+                            @foreach (var area in ViewBag.Areas) {
+                                <li>
+                                    <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Area.Id==area.Id)" id="area+@area.Id" />
+                                    <label class="button-on-table label-radio" for="area+@area.Id">
+                                        @area.Name
+                                    </label>
+                                </li>
                             }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" required /></td>
-                        <td>
-                            <p><input type="radio" value="1" name="Shift" checked="@(Model.Shift==1)" />1</p>
-                            <p><input type="radio" value="2" name="Shift" checked="@(Model.Shift==2)" />2</p>
-                        </td>
-                    </tr>
-                    <tr>
-                    </tr>
-                </table>
-                <div class="arrow right-arrow">></div>
-                <div>
-                    <button type="submit" formmethod="get">Find</button>
-                </div>
-            </div>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
 
-            <div class="order-staff">
-                <table>
-                    <tr>
-                        <td>Диспетчер</td>
-                        <td>Начальник</td>
-                        <td>Горный мастер</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select disabled="@Model.IsClose" name="Dispetcher">
-                                @if (Model.Dispetcher == null) {
-                                    <option selected disabled></option>
-                                }
-                                @foreach (var disp in ViewBag.Disps) {
-                                    <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
-                                }
-                            </select>
-                        </td>
-                        <td>
-                            <select disabled="@Model.IsClose" name="Chief">
-                                @if (Model.Chief == null) {
-                                    <option selected disabled></option>
-                                }
-                                @foreach (var chief in ViewBag.Chiefs) {
-                                    <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
-                                }
-                            </select>
-                        </td>
-                        <td>
-                            <select disabled="@Model.IsClose" name="Masters" multiple>
-                                @foreach (var master in ViewBag.Masters) {
-                                    <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <button type="submit">Save</button>
-                        </td>
-                    </tr>
-                </table>
+        </table>
 
 
-            </div>
-            <div class="order-area-choice">
-                <ul class="order-area choice">
-                    @foreach (var area in ViewBag.Areas) {
-                        <li><input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Area.Id==area.Id)" /> @area.Name </li>
-                    }
-                </ul>
+    </form>
 
-
-
-            </div>
-        </form>
-    </div>
+</div>
 
 
 
@@ -105,6 +132,41 @@
 
 
 
-    <div class="buttons-bar"></div>
-    <div class="machinery-table table"></div>
+<div class="buttons-bar">
+    <form action="/Order/AddMachineToOrder" method="get">
+        <input type="hidden" name="Order" value="@Model.Id" />
+        <select name="Machine">
+            <option selected disabled>Добавить оборудование</option>
+            @foreach (var m in ViewBag?.Machines) {
+                @if (!Model.Machineries.Where(x => x.Name == m.Name).Any()) {
+                    <option value="@m.Name">@m.Name</option>
+                }
+            }
+        </select>
+
+        <button type="submit">Add machine</button>
+    </form>
+</div>
+<div class="machinery-table table">
+
+    <table>
+        @foreach (var m in ViewBag.MachOnShift) {
+            <tr>
+                <td>@m.Group.Number</td>
+                <td>@m.Number</td>
+                <td>@m.Name</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        }
+    </table>
 </div>

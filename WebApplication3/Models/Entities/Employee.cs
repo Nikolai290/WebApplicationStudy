@@ -42,7 +42,7 @@ namespace WebApplication3.Models.Entities {
             => (Lastname + " " + Name + " " +Fathername);
 
         public virtual string GetShortFioProf() {
-            string line = Lastname + " " + Name[0] + ". " + Fathername + ". (" + Position.Subname + ")";
+            string line = Lastname + " " + Name[0] + ". " + Fathername?[0] + ". (" + Position.Subname + ")";
 
             return line;
         }

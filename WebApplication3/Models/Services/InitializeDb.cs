@@ -13,13 +13,13 @@ namespace WebApplication3.Models.Services {
         private OrderManager orderManager;
 
         public InitializeDb() {
-            DbAccess.DbAccess.Rebuild();
             this.dbManager = new DbManager();
             employeeManager = new EmployeeManager(dbManager);
             orderManager = new OrderManager(dbManager);
         }
 
         public void Start() {
+            DbAccess.DbAccess.Rebuild();
             Initialize();
             dbManager.Commit();
         }
@@ -122,7 +122,7 @@ namespace WebApplication3.Models.Services {
             Employees.Add(new Employee("Максим", "Николаев", "Андреевич", 635418, poss[5]));
             Employees.Add(new Employee("Федор", "Максимов", "Артёмович", 5235, poss[5]));
             Employees.Add(new Employee("Артём", "Малахов", "Максимович", 7567, poss[5]));
-            Employees.Add(new Employee("Андрей", "Макаревич", "", 78861, poss[6]));
+            Employees.Add(new Employee("Андрей", "Макаревич", "Вадимович", 78861, poss[6]));
             Employees.Add(new Employee("Николай", "Максимов", "Николаевич", 87654, poss[7]));
             Employees.Add(new Employee("Геннадий", "Малахов", "Андреевич", 45368, poss[8]));
             Employees.Add(new Employee("Алексей", "Иванов", "Васильевич", 72378, poss[8]));

@@ -14,7 +14,6 @@ namespace WebApplication3.Models.Mapping {
             // Lacation
             References(x => x.Area).Not.LazyLoad().Cascade.All();
             References(x => x.Field).Not.LazyLoad().Cascade.All();
-            References(x => x.Plast).Not.LazyLoad().Cascade.All();
             References(x => x.Horizon).Not.LazyLoad().Cascade.All();
             Map(x => x.Picket);
 
@@ -33,7 +32,7 @@ namespace WebApplication3.Models.Mapping {
 
             // Downtime
             Map(x => x.TransportingTime);
-            Map(x => x.ReapairingTime);
+            Map(x => x.RepairingTime);
             Map(x => x.HolidayTime);
 
             // Crew

@@ -49,7 +49,7 @@ namespace WebApplication3.Models.DbAccess {
             return Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.UsingFile(connectionString))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Program>())
-                .ExposeConfiguration(BuildSchema)
+                //.ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
@@ -58,13 +58,12 @@ namespace WebApplication3.Models.DbAccess {
             //    new SchemaExport(config)
             //        .Create(false, true);
             //} else 
-            if (rebuild) {
-
+            if (rebuild && File.Exists(connectionString)) {
                 File.Delete(connectionString);
+            }
+            if (!File.Exists(connectionString)) {
                 new SchemaExport(config)
                     .Create(false, true);
-                rebuild = false;
-
             }
         }
 

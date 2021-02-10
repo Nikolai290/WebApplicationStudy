@@ -63,7 +63,7 @@ namespace WebApplication3.Models.Entities {
 
         public virtual Order AddMachines(params MachineryOnShift[] machs) {
                 foreach (var m in machs) {
-                    if (IsNotRepeat(MachineriesId, m.MachineryId)) {
+                    if (IsNotRepeat(m.Name)) {
 
                     Machineries.Add(m);
                     MachineriesId.Add(m.MachineryId);
@@ -72,14 +72,8 @@ namespace WebApplication3.Models.Entities {
             return this;
         }
 
-        private bool IsNotRepeat(IList<int> machineriesId, int findId) {
-            foreach (var id in machineriesId) {
-                if (findId == id) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        private bool IsNotRepeat(string name)
+            => Machineries.Where(x => x.Name == name).Any();
 
         public virtual Order AddMaster (params Employee[] masters) {
             foreach (var master in masters) {
@@ -92,7 +86,7 @@ namespace WebApplication3.Models.Entities {
             AllPzo = !AllPzo;
 
             foreach (var m in Machineries) {
-                m.PZO = AllPzo;
+                m.SetPZO(AllPzo);
             }
 
             return this;
@@ -111,6 +105,8 @@ namespace WebApplication3.Models.Entities {
 
             return order;
         }
+
+
 
     }
 }

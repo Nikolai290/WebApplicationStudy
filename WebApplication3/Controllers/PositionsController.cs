@@ -51,10 +51,7 @@ namespace WebApplication3.Controllers {
                 var obj = positionManager.GetById(id);
                 pos.CopyTo(obj);
                 result = positionManager.Update(obj);
-
             }
-
-
 
             if (result) {
             message = "Объект сохранён";

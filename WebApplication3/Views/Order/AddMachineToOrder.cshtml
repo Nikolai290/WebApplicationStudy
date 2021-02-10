@@ -1,0 +1,220 @@
+﻿@using WebApplication3.Models.Entities;
+
+@model Order
+
+@{
+
+    ViewData["Title"] = ViewBag.Machine;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form method="post">
+    <input type="hidden" name="Name" value="@ViewBag.Machine" />
+    <input type="hidden" name="OrderId" value="@ViewBag.OrderId" />
+    <input type="hidden" name="machId" value="@ViewBag?.machId" />
+    <table class="machinery-property">
+        <tr>
+            <td>
+                <div class="subblock location">
+                    <fieldset>
+                        <legend>Местонахождение</legend>
+                        <p><label for="Area">Крыло</label></p>
+                        <p>
+                            <select name="Area" id="Area">
+                                @foreach (var area in ViewBag.Areas) {
+                                    <option value="@area.Id">@area.Name</option>
+                                }
+                            </select>
+                        </p>
+                        <p><label for="Field">Участок</label></p>
+                        <p>
+                            <select name="Field" id="Field">
+                                @foreach (var field in ViewBag.Fields) {
+                                    <option value="@field.Id">@field.Name</option>
+                                }
+                            </select>
+                        </p>
+                        <p><label for="Plast">Пласт</label></p>
+                        <p>
+                            <select name="Plast" id="Plast">
+                                @foreach (var plast in ViewBag.Plasts) {
+                                    <option value="@plast.Id">@plast.Name</option>
+                                }
+                            </select>
+                        </p>
+                        <p><label for="Horizon">Горизонт</label></p>
+                        <p>
+                            <select name="Horizon" id="Horizon">
+                                @foreach (var hor in ViewBag.Horizons) {
+                                    <option value="@hor.Id">@hor.Name</option>
+                                }
+                            </select>
+                        </p>
+                        <p><label for="Picket">Пикет</label></p>
+                        <p>
+                            <input type="number" name="Picket" id="Picket" min="0" />
+                        </p>
+
+
+                    </fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="subblock order-machinery">
+                    <fieldset>
+                        <legend>Наряд</legend>
+                        <table>
+                            <tr>
+                                <td colspan="3">
+                                    <p><label for="Weight">Вес</label></p>
+                                    <p>
+                                        <input type="number" name="Weight" id="Weight" min="0" />
+                                    </p>
+                                </td>
+                                <td colspan="3">
+                                    <p><label for="Volume">Объём</label></p>
+                                    <p>
+                                        <input type="number" name="Volume" id="Volume" min="0" />
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <p><label for="Overex">Переэкскавация</label></p>
+                                    <p>
+                                        <input type="number" name="Overex" id="Overex" min="0" />
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p><label for="Ash">Зола</label></p>
+                                    <p>
+                                        <input type="number" name="Ash" id="Ash" min="0" />
+                                    </p>
+                                </td>
+                                <td colspan="2">
+                                    <p><label for="Heat">Теплота</label></p>
+                                    <p>
+                                        <input type="number" name="Heat" id="Heat" min="0" />
+                                    </p>
+                                </td>
+                                <td colspan="2">
+                                    <p><label for="Wet">Влага</label></p>
+                                    <p>
+                                        <input type="number" name="Wet" id="Wet" min="0" />
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <p>
+                                        <input type="checkbox" name="HighAsh" id="HighAsh"/>
+                                        <label for="HighAsh">Высокозольный</label>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="subblock crew">
+                    <fieldset>
+                        <legend>Экипаж (не более 10)</legend>
+                        <p>
+                            <select name="Crew" id="Crew" multiple>
+                                @foreach (var emp in ViewBag.Crew) {
+                                    <option value="@emp.Id">@emp.GetShortFioProf()</option>
+                                }
+                            </select>
+                        </p>
+                    </fieldset>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="subblock pos-on-groupe">
+                    <fieldset>
+                        <legend>Положение в графике</legend>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p><label for="Group">Группа</label></p>
+                                    <p>
+                                        <select name="Group" id="Group">
+                                            @foreach (var g in ViewBag.Groups) {
+                                                <option value="@g.Id">@g.Number</option>
+                                            }
+                                        </select>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p><label for="Number">№ п/п в группе</label></p>
+                                    <p>
+                                        <input type="number" name="Number" id="Number" min="0" />
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="subblock downtime">
+                    <fieldset>
+                        <legend>Плановые простои</legend>
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="subblock3in1">
+                                        <p><label for="Transport">Время перегона</label></p>
+                                        <p>
+                                            <input type="number" name="Transport" id="Transport" min="0" max="24" />
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="subblock3in1">
+                                        <p><label for="Repair">Время ремонта</label></p>
+                                        <p>
+                                            <input type="number" name="Repair" id="Repair" min="0" max="24" />
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="subblock3in1">
+                                        <p><label for="Holidays">Выходные/ Праздничные</label></p>
+                                        <p>
+                                            <input type="number" name="Holidays" id="Holidays" min="0" max="24" />
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="subblock PZO">
+                    <fieldset>
+                        <legend>ПЗО</legend>
+                        <p>
+                            <input type="checkbox" name="PZO" id="PZO" min="0" />
+                            <label for="PZO">Подготовительно-заключительные операции</label>
+                        </p>
+                    </fieldset>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="savebuttons">
+        <button type="submit">Сохранить</button>
+        <button type="reset" action="/order">Отмена</button>
+    </div>
+</form>

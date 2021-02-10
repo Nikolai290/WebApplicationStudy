@@ -152,25 +152,57 @@ header {
 }
 
 .order-staff {
-    width: 700px;
-    margin-left: 320px;
-    margin-right: 320px;
+    width: 800px;
+    margin:auto;
+    /*margin-left: 320px;*/
+    /*margin-right: 320px;*/
 }
 
 .order-area-choice {
-    width: 200px;
-    float: left;
+    margin-top: 30px;
+    clear:both;
+    width: 100%;
+    border: 1px solid black;
 
 }
 .order-area-choice ul {
-    display: inline;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
-.order-area-choice ul li {
-    display: block;
-    width: auto;
-
-}
-    .order-area-choice ul li input {
-
+    .order-area-choice ul li {
+        display: inline-block;
+        width: auto;
     }
+    .order-area-choice ul li input {
+    }
+        .label-radio {
+    display: inline-block;
+    border: 1px solid black;
+    width: 7em;
+}
+
+/* AddMachineToOrder */
+.machinery-property {
+    width: 90%;
+    margin: auto;
+    border: 5px solid #8098CD;
+}
+
+.machinery-property tr td {
+    margin: 10px;
+}
+.machinery-property fieldset {
+    padding: 5px;
+    border: 2px solid #8098CD;
+}
+
+.savebuttons {
+    text-align: center;
+}
+.subblock {
+    
+}
+#Crew {
+    height:20em;
+}

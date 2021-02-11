@@ -13,5 +13,6 @@ namespace WebApplication3.Models.DbAccess {
         bool DeleteById<T>(int id) where T : DbEntities;
         bool Delete<T>(T obj) where T : DbEntities;
         void Commit();
+        IList<T> GetAllByString<T>(string entityName) where T : DbEntities;
     }
 }

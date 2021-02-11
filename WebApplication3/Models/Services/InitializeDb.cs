@@ -104,34 +104,70 @@ namespace WebApplication3.Models.Services {
             Positions.Add(new Position("Машинист", "Помошник машинста экскаватора 4 разряда"));
             Positions.Add(new Position("Машинист", "Выгрузчик на отвалах"));
             PullToDb(Positions);
-
+            int pos = Positions.Count;
+            
             var poss = dbManager.GetAll<Position>();
+            var names = new List<string>();
+            names.Add("Василий");
+            names.Add("Иннокентий");
+            names.Add("Афанасий");
+            names.Add("Петр");
+            names.Add("Алексей");
+            names.Add("Михаил");
+            names.Add("Сергей");
+            names.Add("Даниил");
+            names.Add("Максим");
+            names.Add("Артём");
+            names.Add("Андрей");
+            names.Add("Павел");
+            names.Add("Геннадий");
+            names.Add("Иван");
+            names.Add("Фёдор");
+            names.Add("Альфред");
+            names.Add("Дмитрий");
+            names.Add("Никита");
+
+            var lastnames = new List<string>();
+            lastnames.Add("Петров");
+            lastnames.Add("Афанасьев");
+            lastnames.Add("Иннокеньтев");
+            lastnames.Add("Сергеев");
+            lastnames.Add("Данилов");
+            lastnames.Add("Алексеев");
+            lastnames.Add("Алексеев");
+            lastnames.Add("Иванов");
+            lastnames.Add("Николаев");
+            lastnames.Add("Павлов");
+            lastnames.Add("Максимов");
+            lastnames.Add("Малахов");
+            lastnames.Add("Макаревич");
+            lastnames.Add("Александров");
+            lastnames.Add("Собакин");
+            lastnames.Add("Кошкни");
+            lastnames.Add("Синицин");
+
+            var fathernames = new List<string>();
+            fathernames.Add("Геннадьевич");
+            fathernames.Add("Михайлович");
+            fathernames.Add("Петрович");
+            fathernames.Add("Васильевич");
+            fathernames.Add("Сергеевич");
+            fathernames.Add("Алексеевич");
+            fathernames.Add("Петрович");
+            fathernames.Add("Афанасьевич");
+            fathernames.Add("Андреевич");
+            fathernames.Add("Артёмович");
+            fathernames.Add("Максимович");
+            fathernames.Add("Вадимович");
+            fathernames.Add("Николаевич");
+            fathernames.Add("Павлович");
+            fathernames.Add("Фёдорович");
+
             IList<Employee> Employees = new List<Employee>();
-            Employees.Add(new Employee("Василий", "Петров", "Геннадьевич", 1234, poss[1]));
-            Employees.Add(new Employee("Иннокентий", "Афанасьев", "Михайлович", 34532, poss[1]));
-            Employees.Add(new Employee("Афанасий", "Иннокеньтев", "Петрович", 45345, poss[1]));
-            Employees.Add(new Employee("Петр", "Сергеев", "Васильевич", 4523, poss[2]));
-            Employees.Add(new Employee("Алексей", "Иванов", "Сергеевич", 3454, poss[2]));
-            Employees.Add(new Employee("Михаил", "Данилов", "Алексеевич", 6345, poss[2]));
-            Employees.Add(new Employee("Сергей", "Алексеев", "Петрович", 26576, poss[3]));
-            Employees.Add(new Employee("Даниил", "Петров", "Андреевич", 34235, poss[3]));
-            Employees.Add(new Employee("Алексей", "Сергеев", "Петрович", 24923, poss[3]));
-            Employees.Add(new Employee("Алексей", "Васильев", "Сергеевич", 725246, poss[4]));
-            Employees.Add(new Employee("Иннокентий", "Иванов", "Афанасьевич", 3634, poss[4]));
-            Employees.Add(new Employee("Сергей", "Алексеев", "Васильевич", 2342, poss[4]));
-            Employees.Add(new Employee("Максим", "Николаев", "Андреевич", 635418, poss[5]));
-            Employees.Add(new Employee("Федор", "Максимов", "Артёмович", 5235, poss[5]));
-            Employees.Add(new Employee("Артём", "Малахов", "Максимович", 7567, poss[5]));
-            Employees.Add(new Employee("Андрей", "Макаревич", "Вадимович", 78861, poss[6]));
-            Employees.Add(new Employee("Николай", "Максимов", "Николаевич", 87654, poss[7]));
-            Employees.Add(new Employee("Геннадий", "Малахов", "Андреевич", 45368, poss[8]));
-            Employees.Add(new Employee("Алексей", "Иванов", "Васильевич", 72378, poss[8]));
-            Employees.Add(new Employee("Андрей", "Николаев", "Геннадьевич", 56721, poss[9]));
-            Employees.Add(new Employee("Николай", "Александров", "Михайлович", 6453, poss[9]));
-            Employees.Add(new Employee("Федор", "Иванов", "Михайлович", 56782, poss[10]));
-            Employees.Add(new Employee("Иван", "Петров", "Сергеевич", 56894, poss[10]));
-            Employees.Add(new Employee("Александр", "Иванов", "Васильевич", 42348, poss[11]));
-            Employees.Add(new Employee("Андрей", "Собакин", "Александрович", 1523, poss[6]));
+
+            while (Employees.Count < 50)
+                Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), poss[Rnd(pos)]));
+
             //PullToDb(Employees);
             foreach (var emp in Employees) {
                 employeeManager.CreateNewEmployee(emp);
@@ -154,6 +190,13 @@ namespace WebApplication3.Models.Services {
             order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
 
             orderManager.SaveOrUpdate(order);
+        }
+
+        private int Rnd(int max) => Rnd(0, max);
+
+        private int Rnd(int min = 1000, int max = 1000000) {
+            Random rnd = new Random();
+            return rnd.Next(min, max);
         }
 
         public void PullToDb<T>(IList<T> objs) where T : DbEntities {

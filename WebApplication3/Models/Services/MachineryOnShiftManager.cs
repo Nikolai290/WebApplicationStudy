@@ -15,9 +15,15 @@ namespace WebApplication3.Models.Services {
 
         public bool Create(MachineryOnShift obj) => dbManager.Add<MachineryOnShift>(obj);
         public bool Update(MachineryOnShift obj) => dbManager.Update<MachineryOnShift>(obj);
-        public bool Delete(MachineryOnShift obj) => dbManager.Delete<MachineryOnShift>(obj);
+        public bool Delete(MachineryOnShift obj) {
+            obj.SetNulls();
+            return dbManager.Delete(obj);
+        }
+        public bool DeleteById(int id) => Delete(GetById(id));
+
         public IList<MachineryOnShift> GetAll() => dbManager.GetAll<MachineryOnShift>();
         public MachineryOnShift GetById(int id) => dbManager.GetById<MachineryOnShift>(id);
+        public Machinery GetMachineryById(int id) => dbManager.GetById<Machinery>(id);
         public IList<MachineryOnShift> GetByOrder(int orderId)
             => GetAll().Where(x => x.Order.Id == orderId).ToList();
 

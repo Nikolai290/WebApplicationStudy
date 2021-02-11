@@ -17,7 +17,8 @@ namespace WebApplication3.Models.Services {
         public bool Update(Machinery obj) => dbManager.Update<Machinery>(obj);
         public bool Delete(Machinery obj) => dbManager.Delete<Machinery>(obj);
         public IList<Machinery> GetAll() => dbManager.GetAll<Machinery>();
-        public Machinery GetAll(int id) => dbManager.GetById<Machinery>(id);
+        public IList<Machinery> GetAllMachinery() => dbManager.GetAllByString<Machinery>("Machinery");
+        public Machinery GetById(int id) => dbManager.GetById<Machinery>(id);
 
 
     }

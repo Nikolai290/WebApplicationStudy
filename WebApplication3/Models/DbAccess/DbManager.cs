@@ -53,7 +53,12 @@ namespace WebApplication3.Models.DbAccess {
             }
             return result;
         }
+        public IList<T> GetAllByString<T>(string entityName) where T : DbEntities {
+            IList<T> result;
+            result = session.QueryOver<T>(entityName).List();
 
+            return result;
+        }
 
         public IList<T> GetAll<T>() where T : DbEntities {
             IList<T> result;

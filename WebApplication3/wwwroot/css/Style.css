@@ -162,7 +162,6 @@ header {
     margin-top: 30px;
     clear:both;
     width: 100%;
-    border: 1px solid black;
 
 }
 .order-area-choice ul {
@@ -178,7 +177,6 @@ header {
     }
         .label-radio {
     display: inline-block;
-    border: 1px solid black;
     width: 7em;
 }
 
@@ -205,4 +203,59 @@ header {
 }
 #Crew {
     height:20em;
+}
+
+/* Machinery table */
+.machinery-table table {
+    width: 95%;
+}
+
+.machinery-table table tr td:first-child {
+    border-left: 2px solid #1C3260;
+}
+.machinery-table table tr td:last-child {
+    border-right: 2px solid #1C3260;
+}
+
+.machinery-table table tr:first-child td {
+    border-bottom: 2px solid #1C3260;
+    border-top: 2px solid #1C3260;
+}
+
+.machinery-table table tr:last-child td {
+    border-bottom: 2px solid #1C3260;
+}
+
+.machinery-table td {
+    border: 2px solid #51A6A9;
+    padding: 0;
+    text-align: center;
+}
+    
+    .machinery-table td p {
+    margin: 5px;
+}
+    .table-header dt {
+    padding: 5px;
+}
+.table-content a {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+}
+.table-content a img{
+    height: 2em;
+    width: auto;
+}
+.table-content a:hover { 
+    transform: scale(1.1);
+}
+.table-content a:active {
+    transform: scale(0.9);
+}
+.active-cell:hover {
+    background-color: #4ECDE4;
+}
+.active-cell:active {
+    background-color: #3EB0C4;
 }

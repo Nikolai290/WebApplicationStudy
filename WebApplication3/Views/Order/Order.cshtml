@@ -85,7 +85,7 @@
                                 <td>
                                     <select disabled="@Model.IsClose" name="Masters" multiple>
                                         @foreach (var master in ViewBag.Masters) {
-                                            <option value="@master.Id" selected="@(Model?.MiningMaster.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
+                                            <option value="@master.Id" selected="@(Model?.MiningMaster?.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
                                         }
                                     </select>
                                 </td>
@@ -131,40 +131,71 @@
 
 
 
-
+<hr />
 <div class="buttons-bar">
     <form action="/Order/AddMachineToOrder" method="get">
-        <input type="hidden" name="Order" value="@Model.Id" />
-        <select name="Machine">
-            <option selected disabled>Добавить оборудование</option>
+        <input type="hidden" name="Order" value="@Model.Id" @if (Model.Id == 0) { @: disabled
+        }/>
+        <select name="Machine" required>
+            <option selected disabled></option>
             @foreach (var m in ViewBag?.Machines) {
-                @if (!Model.Machineries.Where(x => x.Name == m.Name).Any()) {
-                    <option value="@m.Name">@m.Name</option>
-                }
+                    <option value="@m.Id">@m.Name</option>
             }
         </select>
 
-        <button type="submit">Add machine</button>
+        <button type="submit"  @if (Model.Id == 0) { @: disabled
+        }>
+        Add machine</button>
     </form>
 </div>
+<hr />
 <div class="machinery-table table">
 
-    <table>
-        @foreach (var m in ViewBag.MachOnShift) {
-            <tr>
-                <td>@m.Group.Number</td>
-                <td>@m.Number</td>
-                <td>@m.Name</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+    <table id="machinery-table">
+        
+        <tr class="table-header">
+            <td><a></a><h6>Группа</h6></td>
+            <td><h6>№ п/п</h6></td>
+            <td><h6>Экскаватор</h6></td>
+            <td><h6>Пикет</h6></td>
+            <td><h6>Крыло</h6></td>
+            <td><h6>Участок</h6></td>
+            <td><h6>Пласт</h6></td>
+            <td><h6>Горизонт</h6></td>
+            <td><h6>Вес</h6></td>
+            <td><h6>Объём</h6></td>
+            <td><h6>Зола</h6></td>
+            <td><h6>Теплота</h6></td>
+            <td><h6>Влага</h6></td>
+            <td><h6>Перегон</h6></td>
+            <td><h6>Ремонт</h6></td>
+            <td><h6>Выходные</h6></td>
+            <td><h6>ПЗО</h6></td>
+            <td><h6>Изменить</h6></td>
+            <td><h6>Удалить</h6></td>
+
+        </tr>
+        @foreach (var m in ViewBag?.MachOnShift) {
+            <tr class="table-content">
+                <td><p>@m.Group.Number</p></td>
+                <td><p>@m.Number</p></td>
+                <td><p>@m.Name</p></td>
+                <td><p>@m.Picket</p></td>
+                <td><p>@m.Area.Name</p></td>
+                <td><p>@m.Field.Name</p></td>
+                <td><p>@m.Plast.Name</p></td>
+                <td><p>@m.Horizon.Name</p></td>
+                <td><p>@m.Weight</p></td>
+                <td><p>@m.Volume</p></td>
+                <td><p>@m.Overexcavation</p></td>
+                <td><p>@m.Ash</p></td>
+                <td><p>@m.Heat</p></td>
+                <td><p>@m.Wet</p></td>
+                <td><p>@m.TransportingTime</p></td>
+                <td><p>>@m.RepairingTime</p></td>
+                <td><p>>@m.HolidayTime</p></td>
+                <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id"><img src="~/source/Image/change.png" alt="change"/></a></p></td>
+                <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id"><img src="~/source/Image/delete.png" alt="delete"/></a></p></td>
             </tr>
 
         }

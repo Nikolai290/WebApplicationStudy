@@ -53,12 +53,13 @@ namespace WebApplication3.Models.Services {
             x.Area.Id == obj.Area.Id)).First();
 
         public IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
-            var result = dbManager.GetAll<Machinery>().ToList();
-            foreach (var m in order?.Machineries?.Select(x => x.Name)) {
-                result.Remove(result.Where(z => z.Name == m).First());
-            }
-            return result;
+            var machs = new List<Machinery>();
+            GetAll().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList().ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x)));
+
+
+            return dbManager.GetAll<Machinery>().Where(x => !machs.Where(z => z.Name == x.Name).Any()).ToList();
         }
+
 
         public Order GetById(int id)
             => dbManager.GetById<Order>(id);

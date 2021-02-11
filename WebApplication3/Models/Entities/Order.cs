@@ -8,7 +8,7 @@ namespace WebApplication3.Models.Entities {
     public class Order : DbEntities {
 
         // Compare of Date, Shift and Area has been unique
-        
+
         // Общие
         public virtual DateTime Date { get; protected set; }
         public virtual int Shift { get; protected set; }
@@ -23,12 +23,10 @@ namespace WebApplication3.Models.Entities {
         public virtual OrderArea Area { get; protected set; }
 
         public virtual IList<MachineryOnShift> Machineries { get; protected set; }
-        public virtual IList<int> MachineriesId { get; protected set; } // for exclude repeat machineries
 
         public virtual bool AllPzo { get; protected set; }
 
         public Order() {
-            MiningMaster = new List<Employee>();
             Machineries = new List<MachineryOnShift>();
         }
 
@@ -56,17 +54,15 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual Order SetMachineries(IList<MachineryOnShift> machs) {
-                Machineries = machs;
-                MachineriesId = machs.Select(x => x.MachineryId).ToList();
+            Machineries = machs;
             return this;
         }
 
         public virtual Order AddMachines(params MachineryOnShift[] machs) {
-                foreach (var m in machs) {
-                    if (IsNotRepeat(m.Name)) {
+            foreach (var m in machs) {
+                if (IsNotRepeat(m.Name)) {
 
                     Machineries.Add(m);
-                    MachineriesId.Add(m.MachineryId);
                 }
             }
             return this;
@@ -75,7 +71,7 @@ namespace WebApplication3.Models.Entities {
         private bool IsNotRepeat(string name)
             => Machineries.Where(x => x.Name == name).Any();
 
-        public virtual Order AddMaster (params Employee[] masters) {
+        public virtual Order AddMaster(params Employee[] masters) {
             foreach (var master in masters) {
                 MiningMaster.Add(master);
             }

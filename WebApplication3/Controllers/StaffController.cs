@@ -63,12 +63,8 @@ namespace WebApplication3.Controllers {
             else
                 result = employeeManager.UpdateEmployee(emp, id);
 
-            string message;
-            if (result) {
-                message = "Объект сохранён";
-            } else {
-                message = "Не удалось";
-            }
+            string message = result ? "Объект сохранён" : "Не удалось";
+
             dbManager.Commit();
             return View("Result", message);
         }
@@ -82,12 +78,8 @@ namespace WebApplication3.Controllers {
         [HttpGet]
         public IActionResult Delete(int id) {
             bool result = employeeManager.DeleteEmployee(id);
-            string message;
-            if (result) {
-                message = "Объект удалён";
-            } else {
-                message = "Не удалось";
-            }
+            string message = result ? "Объект удалён" : "Не удалось";
+
             dbManager.Commit();
             return View("Result", message);
         }

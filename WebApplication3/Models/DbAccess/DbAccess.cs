@@ -11,13 +11,10 @@ namespace WebApplication3.Models.DbAccess {
 
         private static string connectionString;
         private ISessionFactory sessionFactory;
-        private static bool rebuild = false;
+        private static bool rebuild = true;
 
         private static DbAccess instance;
         private static readonly object block = new object();
-
-
-
         private DbAccess() { }
 
         public static DbAccess GetInstance() {
@@ -59,6 +56,7 @@ namespace WebApplication3.Models.DbAccess {
             //        .Create(false, true);
             //} else 
             if (rebuild && File.Exists(connectionString)) {
+                sessionFactory?.Close();
                 File.Delete(connectionString);
             }
             if (!File.Exists(connectionString)) {
@@ -70,6 +68,7 @@ namespace WebApplication3.Models.DbAccess {
         public static void Rebuild() {
             rebuild = true;
             instance.CreateSessionFactory();
+            rebuild = false;
 
         }
     }

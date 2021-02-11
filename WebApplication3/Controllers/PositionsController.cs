@@ -42,7 +42,6 @@ namespace WebApplication3.Controllers {
         [HttpPost]
         public IActionResult Add(Position pos, int id) {
             bool result;
-            string message;
             pos.Check();
 
             if (id == 0)
@@ -53,11 +52,8 @@ namespace WebApplication3.Controllers {
                 result = positionManager.Update(obj);
             }
 
-            if (result) {
-            message = "Объект сохранён";
-            } else {
-                message = "Не удалось";
-            }
+            string message = result ? "Объект сохранён" : "Не удалось";
+
 
             dbManager.Commit();
             return View("Result", message);

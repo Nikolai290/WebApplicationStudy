@@ -16,6 +16,8 @@ namespace WebApplication3.Models.Entities {
         public virtual QuarryPlast Plast { get; protected set; }
         public virtual QuarryHorizon Horizon { get; protected set; }
 
+
+
         public virtual double Picket { get; protected set; } // (d2)
 
 
@@ -47,11 +49,39 @@ namespace WebApplication3.Models.Entities {
 
 
         public MachineryOnShift() {
+            Order = new Order();
+            Area = new QuarryArea();
+            Field = new QuarryField();
+            Plast = new QuarryPlast();
+            Horizon = new QuarryHorizon();
+            Group = new Group();
+            Crew = new List<Employee>();
+        }
+        public MachineryOnShift(Machinery m) {
+            MachineryId = m.Id;
+            Name = m.Name;
+        }
+        public virtual void SetNulls() {
+            Order.Machineries.Remove(this);
+            Area.MachineryOnShift.Remove(this);
+            Field.MachineryOnShift.Remove(this);
+            Plast.MachineryOnShift.Remove(this);
+            Horizon.MachineryOnShift.Remove(this);
+            Group.MachineryOnShift.Remove(this);
 
+            foreach (var emp in Crew)
+                emp.Machinaries.Remove(this);
+
+            Order = null;
+            Area = null;
+            Field = null;
+            Plast = null;
+            Horizon = null;
+            Group = null;
+            Crew = null;
         }
 
-        public MachineryOnShift(string name)
-            => Name = name;
+
 
 
         private bool IsValidNumberGroupe(int value)

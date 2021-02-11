@@ -9,11 +9,14 @@ namespace WebApplication3.Models.Mapping {
             // Base
             Id(x => x.Id);
             Map(x => x.Name);
+            Map(x => x.MachineryId);
             References(x => x.Order).Cascade.All();
+
 
             // Lacation
             References(x => x.Area).Not.LazyLoad().Cascade.All();
             References(x => x.Field).Not.LazyLoad().Cascade.All();
+            References(x => x.Plast).Not.LazyLoad().Cascade.All();
             References(x => x.Horizon).Not.LazyLoad().Cascade.All();
             Map(x => x.Picket);
 

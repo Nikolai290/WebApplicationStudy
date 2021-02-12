@@ -133,7 +133,7 @@
 
 <hr />
 <div class="buttons-bar">
-    <form action="/Order/AddMachineToOrder" method="get">
+    <form action="/Order/AddMachineToOrder" method="get" style="display: inline-block">
         <input type="hidden" name="Order" value="@Model.Id" @if (Model.Id == 0) { @: disabled
         }/>
         <select name="Machine" required>
@@ -146,6 +146,10 @@
         <button type="submit" class="button-on-table" @if (Model.Id == 0) { @: disabled
         }>
         Add machine</button>
+    </form>
+    <form style="display: inline-block">
+        <input type="hidden" name="allPZO" value="true"/>
+        <input type="submit" value="ПЗО всем(Ещё не сделал)" class="button-on-table"/>
     </form>
 </div>
 <hr />
@@ -164,6 +168,7 @@
             <td><h6>Горизонт</h6></td>
             <td><h6>Вес</h6></td>
             <td><h6>Объём</h6></td>
+            <td><h6>Переэкс.</h6></td>
             <td><h6>Зола</h6></td>
             <td><h6>Теплота</h6></td>
             <td><h6>Влага</h6></td>
@@ -192,8 +197,9 @@
                 <td><p>@m.Heat</p></td>
                 <td><p>@m.Wet</p></td>
                 <td><p>@m.TransportingTime</p></td>
-                <td><p>>@m.RepairingTime</p></td>
-                <td><p>>@m.HolidayTime</p></td>
+                <td><p>@m.RepairingTime</p></td>
+                <td><p>@m.HolidayTime</p></td>
+                <td><p><input type="checkbox" disabled checked="@m.PZO"/></p></td>
                 <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id"><img src="~/source/Image/change.png" alt="change"/></a></p></td>
                 <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&IdOrder=@Model.Id"><img src="~/source/Image/delete.png" alt="delete"/></a></p></td>
             </tr>

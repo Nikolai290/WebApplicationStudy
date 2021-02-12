@@ -42,6 +42,8 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual Order SetStaff(Employee disp, Employee chief, IList<Employee> masters) {
+            MiningMaster?.ToList().ForEach(x => x.Orders?.Remove(this));
+            MiningMaster = null;
             Dispetcher = disp;
             Chief = chief;
             MiningMaster = masters;

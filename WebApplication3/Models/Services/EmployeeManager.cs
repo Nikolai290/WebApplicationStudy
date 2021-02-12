@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
+using WebApplication3.Models;
 
 namespace WebApplication3.Models.Services {
     public class EmployeeManager {
 
         //PositionManager positionManager;
         private IDbManager dbManager;
+        OrderManager orderManager;
 
         public EmployeeManager(IDbManager dbManager) {
             this.dbManager = dbManager;
             //positionManager = new PositionManager(dbManager);
+            orderManager = new OrderManager(dbManager);
         }
 
         public bool CreateNewEmployee(Employee emp) {
@@ -37,12 +40,59 @@ namespace WebApplication3.Models.Services {
         public IList<Employee> GetAllEmployee() 
             => dbManager.GetAll<Employee>().ToList();
 
-        
-        public Employee Compare(Employee emp) {
+        public IList<Employee> GetFreeDispetchers(Order order) {
+            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var busyEmpls = new List<Employee>();
+            orders.ForEach(x => busyEmpls.Add(x.Dispetcher));
+            if (busyEmpls.Count == 0)
+                busyEmpls.Add(new Employee());
+            var freeEmpls = GetEmployeesByStringFind("Диспетчер").Difference(busyEmpls);
+
+            return freeEmpls;
+        }
+
+        public IList<Employee> GetFreeChiefs(Order order) {
+            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var busyEmpls = new List<Employee>();
+            orders.ForEach(x => busyEmpls.Add(x.Chief));
+            if (busyEmpls.Count == 0)
+                busyEmpls.Add(new Employee());
+            var freeEmpls = GetEmployeesByStringFind("Начальник").Difference(busyEmpls);
+
+            return freeEmpls;
+        }
+        public IList<Employee> GetFreeMasters(Order order) {
+            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var busyEmpls = new List<Employee>();
+            orders.ForEach(x => busyEmpls.AddRange(x.MiningMaster));
+            if (busyEmpls.Count == 0)
+                busyEmpls.Add(new Employee());
+            var freeEmpls = GetEmployeesByStringFind("Горный мастер").Difference(busyEmpls);
+
+            return freeEmpls;
+        }
+        public IList<Employee> GetFreeDrivers(Order order, int machId) { 
+            var machs = orderManager.GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
+
+            var busyEmpls = new List<Employee>();
+            machs.ForEach(x => busyEmpls.AddRange(x.Crew));
+            if (busyEmpls.Count == 0)
+                busyEmpls.Add(new Employee());
+            var freeEmpls = GetEmployeesByStringFind("Машинист").Difference(busyEmpls);
+
+            return freeEmpls;
+        }
+        public IList<Employee> GetFreeDrivers(int orderId, int machId)
+            => GetFreeDrivers(orderManager.GetById(orderId), machId);
+
+
+            public Employee Compare(Employee emp) {
             if(emp.Position !=null)
                 emp.Position = dbManager.GetById<Position>(emp.Position.Id);
             return emp;
         }
+
+        
 
         public Employee GetEmployeeById(int id)
             => (dbManager.GetById<Employee>(id));

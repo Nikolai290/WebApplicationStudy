@@ -9,27 +9,17 @@ namespace WebApplication3.Models.Services {
     public class OrderManager {
         private IDbManager dbManager;
 
-        private EmployeeManager employeeManager;
         private MachineryManager machineryManager;
 
         public OrderManager(IDbManager dbManager) {
             this.dbManager = dbManager;
-            employeeManager = new EmployeeManager(dbManager);
             machineryManager = new MachineryManager(dbManager);
 
         }
 
-        public bool SaveOrUpdate(Order obj) {
+        public bool Create(Order obj) => dbManager.Add(obj);
 
-            var result = false;
-
-            if (AlreadyExist(obj))
-                result = Update(obj);
-            else
-                result = dbManager.Add<Order>(obj);
-
-            return result;
-        }
+  
 
         private bool AlreadyExist(Order obj) {
             var result = false;
@@ -53,11 +43,18 @@ namespace WebApplication3.Models.Services {
             x.Area.Id == obj.Area.Id)).First();
 
         public IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
-            var machs = new List<Machinery>();
-            GetAll().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList().ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x)));
+            var machUnique = machineryManager.GetAll();
+            var busyMachs = GetAllBusyMachinesOnThisDateAndShift(order);
+            return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId).Any()).ToList();
+        }
 
+        public List<Order> GetAllOrderOnThisDateAndShift(Order order)
+            => GetAll().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList();
 
-            return dbManager.GetAll<Machinery>().Where(x => !machs.Where(z => z.Name == x.Name).Any()).ToList();
+        public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
+            var machs = new List<MachineryOnShift>();
+            GetAllOrderOnThisDateAndShift(order).ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x))); 
+            return machs;
         }
 
 

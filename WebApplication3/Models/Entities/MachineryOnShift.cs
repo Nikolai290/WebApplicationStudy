@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApplication3.Models.Entities {
-    public class MachineryOnShift : Machinery {
+    public class MachineryOnShift : DbEntities {
         // DbEntities.Id
-        // Machinerty.Name
+        public virtual string Name { get; protected set; }
+
         public virtual int MachineryId { get; protected set; } // for exclude repeat machinery
         public virtual Order Order { get; protected set; } // link
 

@@ -53,7 +53,7 @@ namespace WebApplication3.Models.Services {
         }
 
         public bool Delete(Position pos) {
-            if (pos.Id == 1)
+            if (pos.Id == 1 || pos.Id == 2 || pos.Id == 3 || pos.Id == 4)
                 return false;
 
             foreach (var emp in pos.Employees) {

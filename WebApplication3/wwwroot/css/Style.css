@@ -104,7 +104,7 @@ header {
 
 
 .button-on-table {
-    display: block;
+    display: inline-block;
     background-color: #C5D4EB;
     text-decoration: none;
     color: black;
@@ -116,6 +116,7 @@ header {
     text-decoration: none;
     color: black;
     padding: 5px;
+    max-width: 10em;
 }
     .button-on-table:hover {
         background-color: #ACBED9;

@@ -16,7 +16,7 @@ namespace WebApplication3.Controllers {
         private OrderAreaManager areaManager;
         private MachineryOnShiftManager machOnShiftManager;
         private MachineryManager machMan;
-        
+
 
         public OrderController() {
             dbManager = new DbManager();
@@ -25,23 +25,25 @@ namespace WebApplication3.Controllers {
             areaManager = new OrderAreaManager(dbManager);
             machOnShiftManager = new MachineryOnShiftManager(dbManager);
             machMan = new MachineryManager(dbManager);
-            
+
         }
 
         private void FillViewBagForIndex(Order order) {
             ViewBag.Areas = areaManager.GetAll();
-            ViewBag.Disps = employeeManager.GetEmployeesByStringFind("Диспетчер");
-            ViewBag.Chiefs = employeeManager.GetEmployeesByStringFind("Начальник");
-            ViewBag.Masters = employeeManager.GetEmployeesByStringFind("Горный мастер");
+            ViewBag.Disps = employeeManager.GetFreeDispetchers(order);
+            ViewBag.Chiefs = employeeManager.GetFreeChiefs(order);
+            ViewBag.Masters = employeeManager.GetFreeMasters(order);
             ViewBag.Machines = orderManager.GetAddingListMachinesExcludeRepeats(order);
             ViewBag.MachOnShift = order?.Machineries;
         }
 
         [HttpGet]
-        public IActionResult Index(DateTime Date, int Shift = 1, int OrderAreaId = 1) {
-            if (Date.Year < 2000)
+        public IActionResult Index(DateTime Date, int Shift = 1, int OrderAreaId = 1, int IdOrder = 0) {
+            if (Date.Year < 1950)
                 Date = DateTime.Now.Date;
-            Order order = orderManager.Get(Date, Shift, OrderAreaId);
+
+            Order order = IdOrder > 0 ? orderManager.GetById(IdOrder) : orderManager.Get(Date, Shift, OrderAreaId);
+
             FillViewBagForIndex(order);
 
             dbManager.Commit();
@@ -49,24 +51,29 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Index(DateTime date, int shift, int orderAreaId, int Dispetcher, int Chief, int[] Masters) {
-            var areas = areaManager.GetAll();
+        public IActionResult Index(DateTime date, int shift, int orderAreaId, int Dispetcher, int Chief, int[] Masters, int orderId) {
+            var area = areaManager.GetAll().Where(x => x.Id == orderAreaId).First();
 
             var disp = employeeManager.GetEmployeeById(Dispetcher);
             var chief = employeeManager.GetEmployeeById(Chief);
             var masters = new List<Employee>();
             foreach (var id in Masters)
                 masters.Add(employeeManager.GetEmployeeById(id));
+            Order order = orderId > 0 ? orderManager.GetById(orderId) : new Order().SetBase(date, shift);
 
-            Order order = new Order()
-                .SetBase(date, shift)
+
+            order
                 .SetStaff(disp, chief, masters)
-                .SetArea(areas.Where(x => x.Id == orderAreaId).First());
+                .SetArea(area);
 
-            orderManager.SaveOrUpdate(order);
+            if (orderId == 0)
+                orderManager.Create(order);
+            // И так сохраняет
+
+
             FillViewBagForIndex(order);
-
             dbManager.Commit();
+
             return View("Order", order);
         }
 
@@ -74,13 +81,13 @@ namespace WebApplication3.Controllers {
         private void FillViewBagForAdding(int order, int machine) {
             ViewBag.OrderId = order;
             ViewBag.Machine = machine;
-            ViewBag.Title = machOnShiftManager.GetMachineryById(machine);
+            ViewBag.Title = machMan.GetById(machine).Name;
             ViewBag.Areas = machOnShiftManager.GetAreas();
             ViewBag.Fields = machOnShiftManager.GetFields();
             ViewBag.Horizons = machOnShiftManager.GetHorizons();
             ViewBag.Groups = machOnShiftManager.GetGroups();
             ViewBag.Plasts = machOnShiftManager.GetPlasts();
-            ViewBag.Crew = employeeManager.GetEmployeesByStringFind("Машинист");
+            ViewBag.Crew = employeeManager.GetFreeDrivers(order, machine);
 
         }
 
@@ -91,7 +98,7 @@ namespace WebApplication3.Controllers {
             if (mosId > 0) {
                 mach = machOnShiftManager.GetById(mosId);
                 order = mach.Order.Id;
-                machine = mach.Id;
+                machine = mach.MachineryId;
             } else {
                 mach = new MachineryOnShift();
             }
@@ -148,7 +155,7 @@ namespace WebApplication3.Controllers {
                 Machine = machOnShiftManager.GetById(machId);
                 machine = Machine.Id;
             } else {
-                var mach = machOnShiftManager.GetMachineryById(machine);
+                var mach = machMan.GetById(machine);
                 Machine = new MachineryOnShift(mach);
                 order.AddMachines(Machine);
                 Machine.SetOrder(order);
@@ -164,14 +171,18 @@ namespace WebApplication3.Controllers {
 
             string message = result ? $"Объект {Machine.Name} сохранён" : "Не удалось";
 
+            ViewBag.Link = $"/order?IdOrder={order.Id}";
+            ViewBag.Button = "Назад";
             return View("Result", message);
         }
 
         [HttpGet]
-        public IActionResult Delete(int mosId) {
+        public IActionResult Delete(int mosId, int IdOrder) {
             var result = machOnShiftManager.DeleteById(mosId);
             dbManager.Commit();
             string message = result ? "Объект удалён" : "Не удалось";
+            ViewBag.Link = $"/order?IdOrder={IdOrder}";
+            ViewBag.Button = "Назад";
             return View("Result", message);
         }
 

@@ -12,7 +12,7 @@
 <div class="main">
     <form id="order-settings-form" method="post">
         <input type="hidden" name="IsClose" value="false" />
-
+        <input type="hidden" name="orderId" value="@Model.Id"/>
         <table id="main-table">
             <tr id="main-properties">
                 <td>
@@ -49,7 +49,7 @@
                             </tr>
                         </table>
                         <div>
-                            <button type="submit" formmethod="get">Find</button>
+                            <button type="submit" formmethod="get" class="button-on-table">Find</button>
                         </div>
                     </div>
                 </td>
@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <button type="submit">Save</button>
+                                    <button type="submit" class="button-on-table">Save</button>
                                 </td>
                             </tr>
                         </table>
@@ -143,7 +143,7 @@
             }
         </select>
 
-        <button type="submit"  @if (Model.Id == 0) { @: disabled
+        <button type="submit" class="button-on-table" @if (Model.Id == 0) { @: disabled
         }>
         Add machine</button>
     </form>
@@ -195,7 +195,7 @@
                 <td><p>>@m.RepairingTime</p></td>
                 <td><p>>@m.HolidayTime</p></td>
                 <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id"><img src="~/source/Image/change.png" alt="change"/></a></p></td>
-                <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id"><img src="~/source/Image/delete.png" alt="delete"/></a></p></td>
+                <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&IdOrder=@Model.Id"><img src="~/source/Image/delete.png" alt="delete"/></a></p></td>
             </tr>
 
         }

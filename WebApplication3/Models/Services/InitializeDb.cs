@@ -105,7 +105,7 @@ namespace WebApplication3.Models.Services {
             Positions.Add(new Position("Машинист", "Выгрузчик на отвалах"));
             PullToDb(Positions);
             int pos = Positions.Count;
-            
+
             var poss = dbManager.GetAll<Position>();
             var names = new List<string>();
             names.Add("Василий");
@@ -126,6 +126,13 @@ namespace WebApplication3.Models.Services {
             names.Add("Альфред");
             names.Add("Дмитрий");
             names.Add("Никита");
+            names.Add("Владимир");
+            names.Add("Вячеслав");
+            names.Add("Владислав");
+            names.Add("Валентин");
+            names.Add("Олег");
+            names.Add("Илья");
+            names.Add("Роберт");
 
             var lastnames = new List<string>();
             lastnames.Add("Петров");
@@ -143,8 +150,10 @@ namespace WebApplication3.Models.Services {
             lastnames.Add("Макаревич");
             lastnames.Add("Александров");
             lastnames.Add("Собакин");
-            lastnames.Add("Кошкни");
+            lastnames.Add("Кошкин");
             lastnames.Add("Синицин");
+            lastnames.Add("Пупкин");
+            lastnames.Add("Усик");
 
             var fathernames = new List<string>();
             fathernames.Add("Геннадьевич");
@@ -162,6 +171,12 @@ namespace WebApplication3.Models.Services {
             fathernames.Add("Николаевич");
             fathernames.Add("Павлович");
             fathernames.Add("Фёдорович");
+            fathernames.Add("Владимирович");
+            fathernames.Add("Вячеславович");
+            fathernames.Add("Валентинович");
+            fathernames.Add("Владиславович");
+            fathernames.Add("Олегович");
+            fathernames.Add("Ильич");
 
             IList<Employee> Employees = new List<Employee>();
 
@@ -186,10 +201,13 @@ namespace WebApplication3.Models.Services {
             var masters = employeeManager.GetEmployeesByStringFind("горный мастер");
             var orderArea = dbManager.GetAll<OrderArea>().First();
 
+            while (masters.Count > 2)
+                masters.RemoveAt(Rnd(masters.Count));
+
             Order order = new Order();
             order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
 
-            orderManager.SaveOrUpdate(order);
+            orderManager.Create(order);
         }
 
         private int Rnd(int max) => Rnd(0, max);

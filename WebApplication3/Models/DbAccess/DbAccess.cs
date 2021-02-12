@@ -11,7 +11,7 @@ namespace WebApplication3.Models.DbAccess {
 
         private static string connectionString;
         private ISessionFactory sessionFactory;
-        private static bool rebuild = true;
+        //private static bool rebuild = true;
 
         private static DbAccess instance;
         private static readonly object block = new object();
@@ -46,7 +46,7 @@ namespace WebApplication3.Models.DbAccess {
             return Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard.UsingFile(connectionString))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Program>())
-                //.ExposeConfiguration(BuildSchema)
+                .ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
@@ -55,10 +55,12 @@ namespace WebApplication3.Models.DbAccess {
             //    new SchemaExport(config)
             //        .Create(false, true);
             //} else 
-            if (rebuild && File.Exists(connectionString)) {
-                sessionFactory?.Close();
-                File.Delete(connectionString);
-            }
+            //if(rebuild)
+            //    connectionString = "C:\\Users\\Zoom\\source\\repos\\WebApplication3\\WebApplication3\\App_data\\Mainbase1234.db";
+            //if (rebuild && File.Exists(connectionString)) {
+            //    sessionFactory?.Close();
+            //    File.Delete(connectionString);
+            //}
             if (!File.Exists(connectionString)) {
                 new SchemaExport(config)
                     .Create(false, true);
@@ -66,9 +68,7 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         public static void Rebuild() {
-            rebuild = true;
             instance.CreateSessionFactory();
-            rebuild = false;
 
         }
     }

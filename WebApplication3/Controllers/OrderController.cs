@@ -78,16 +78,15 @@ namespace WebApplication3.Controllers {
         }
 
 
-        private void FillViewBagForAdding(int order, int machine) {
+        private void FillViewBagForAdding(int order, MachineryOnShift mach) {
             ViewBag.OrderId = order;
-            ViewBag.Machine = machine;
-            ViewBag.Title = machMan.GetById(machine).Name;
+            ViewBag.Title = mach.Name;
             ViewBag.Areas = machOnShiftManager.GetAreas();
             ViewBag.Fields = machOnShiftManager.GetFields();
             ViewBag.Horizons = machOnShiftManager.GetHorizons();
             ViewBag.Groups = machOnShiftManager.GetGroups();
             ViewBag.Plasts = machOnShiftManager.GetPlasts();
-            ViewBag.Crew = employeeManager.GetFreeDrivers(order, machine);
+            ViewBag.Crew = employeeManager.GetFreeDrivers(order, mach.Id);
 
         }
 
@@ -98,13 +97,12 @@ namespace WebApplication3.Controllers {
             if (mosId > 0) {
                 mach = machOnShiftManager.GetById(mosId);
                 order = mach.Order.Id;
-                machine = mach.MachineryId;
             } else {
-                mach = new MachineryOnShift();
+                mach = new MachineryOnShift(machMan.GetById(machine));
             }
 
 
-            FillViewBagForAdding(order, machine);
+            FillViewBagForAdding(order, mach);
 
             dbManager.Commit();
             return View("AddMachineToOrder", mach);

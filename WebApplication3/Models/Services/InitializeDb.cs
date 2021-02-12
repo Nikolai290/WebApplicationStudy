@@ -180,7 +180,7 @@ namespace WebApplication3.Models.Services {
 
             IList<Employee> Employees = new List<Employee>();
 
-            while (Employees.Count < 50)
+            while (Employees.Count < 100)
                 Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), poss[Rnd(pos)]));
 
             //PullToDb(Employees);

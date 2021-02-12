@@ -75,7 +75,7 @@ namespace WebApplication3.Models.Services {
             var machs = orderManager.GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
 
             var busyEmpls = new List<Employee>();
-            machs.ForEach(x => busyEmpls.AddRange(x.Crew));
+            machs?.ForEach(x => busyEmpls.AddRange(x.Crew));
             if (busyEmpls.Count == 0)
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Машинист").Difference(busyEmpls);

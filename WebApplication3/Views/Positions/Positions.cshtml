@@ -8,8 +8,8 @@
     <div class="submenu">
         <a href="positions/add" class="button-on-table">Добавить</a>
     </div>
-    <table class="table1">
-        <tr>
+    <table class="machinery-table">
+        <tr class="table-header">
             <td><h6>Id</h6></td>
             <td><h6>Категория</h6></td>
             <td><h6>Должность</h6></td>
@@ -17,7 +17,7 @@
             <td colspan="2"></td>
         </tr>
         @foreach (var pos in ViewBag.Positions) {
-            <tr>
+            <tr class="table-content">
                 <td><p>@pos.Id</p></td>
                 <td><p>@pos.Name</p></td>
                 <td><p>@pos.Subname</p></td>

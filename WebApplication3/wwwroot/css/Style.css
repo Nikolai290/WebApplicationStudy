@@ -211,32 +211,36 @@ header {
     width: 95%;
 }
 
-.machinery-table table tr td:first-child {
+.machinery-table  tr td:first-child {
     border-left: 2px solid #1C3260;
 }
-.machinery-table table tr td:last-child {
+.machinery-table  tr td:last-child {
     border-right: 2px solid #1C3260;
 }
-
-.machinery-table table tr:first-child td {
-    border-bottom: 2px solid #1C3260;
-    border-top: 2px solid #1C3260;
+.machinery-table tr:nth-child(even) {
+    background-color: #C5DFEB;
 }
 
-.machinery-table table tr:last-child td {
+.machinery-table  tr:first-child td {
+    border: 2px solid #1C3260;
+}
+
+.machinery-table  tr:last-child td {
     border-bottom: 2px solid #1C3260;
 }
+
 
 .machinery-table td {
     border: 2px solid #51A6A9;
     padding: 0;
     text-align: center;
+    min-width: 4em;
 }
     
     .machinery-table td p {
     margin: 5px;
 }
-    .table-header dt {
+.table-header dt {
     padding: 5px;
 }
 .table-content a {

@@ -7,7 +7,7 @@
 
 <div class="staff-table">
     <div class="submenu">
-        <a href="staff/add?0" class="button add-employye staffbutton submenu-button">Добавить</a>
+        <a href="staff/add?0" class="button-on-table">Добавить</a>
     </div>
     <div class="find">
         <form class="find-form" method="get">
@@ -15,8 +15,8 @@
             <input type="submit" class="button-on-table" value="Найти"/>
         </form>
     </div>
-    <table class="table1">
-        <tr>
+    <table class="machinery-table">
+        <tr class="table-header">
             <td><h6>Id</h6></td>
             <td><h6>Фамилия</h6></td>
             <td><h6>Имя</h6></td>
@@ -26,7 +26,7 @@
             <td colspan="2"></td>
         </tr>
         @foreach (var emp in ViewBag.Employees) {
-            <tr>
+            <tr class="table-content">
                 <td><p>@emp.Id</p></td>
                 <td><p>@emp.Lastname</p></td>
                 <td><p>@emp.Name</p></td>

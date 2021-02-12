@@ -144,6 +144,8 @@ namespace WebApplication3.Controllers {
             IList<Employee> Crew = new List<Employee>();
             foreach (var id in crew) {
                 Crew.Add(empls.Where(x => x.Id == id).First());
+                if (Crew.Count >= 10)
+                    break;
             }
 
             var order = orderManager.GetById(OrderId);

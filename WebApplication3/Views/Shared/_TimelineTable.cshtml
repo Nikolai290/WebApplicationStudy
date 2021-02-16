@@ -1,0 +1,50 @@
+﻿@using WebApplication3.Models.Entities;
+@model Order;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+  ViewBag.Hours
+
+*@
+@{
+
+}
+<div>
+  <table class="timeline-table">
+
+    <thead class="timeline-headtable">
+      <tr>
+        <td></td>
+        @for (int i = 0; i < 12; i++) {
+          <td class="timeline-cells">
+            <span class="timeline-hourmark">
+            <span class="timeline-hourmark">
+              @ViewBag.Hours[i]
+            </span>
+          </td>
+          @for (int j = 0; j < 5; j++) {
+            <td class="timeline-cells"></td>
+          }
+        }
+      </tr>
+    </thead>
+
+    <tbody class="timeline-content-table">
+      @foreach (var m in Model?.Machineries) {
+      <tr>
+        <td>
+          @m?.Name
+        </td>
+        <td class="timeline-cells">
+          <div class="work-for-timeline trapeze"></div>
+        </td>
+        @for (int i = 0; i < 71; i++) {
+            <td class="timeline-cells"></td>
+        }
+      </tr>
+      }
+    </tbody>
+
+  </table>
+
+
+</div>

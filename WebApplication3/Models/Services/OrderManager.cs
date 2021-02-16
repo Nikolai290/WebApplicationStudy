@@ -58,8 +58,15 @@ namespace WebApplication3.Models.Services {
         }
 
 
-        public Order GetById(int id)
-            => dbManager.GetById<Order>(id);
+        public Order GetById(int id) {
+            Order result;
+            try {
+                result = dbManager.GetById<Order>(id);
+            } catch {
+                result = new Order().SetBase(DateTime.Now.Date, 1).SetArea(dbManager.GetById<OrderArea>(1));
+            }
+            return result;
+        }
 
         private bool CheckId(Order obj)
             => GetAll().Where(x => x.Id == obj.Id).Any();
@@ -79,7 +86,6 @@ namespace WebApplication3.Models.Services {
             Order result;
             try {
                 result = GetAll().Where(x => x.Date == date && x.Shift == shift && x.Area.Id == orderAreaId).First();
-
 
             } catch {
                 result = new Order().SetBase(date, shift).SetArea(dbManager.GetById<OrderArea>(orderAreaId));

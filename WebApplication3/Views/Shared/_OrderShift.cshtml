@@ -1,0 +1,42 @@
+﻿@*
+  For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+  Model Order
+*@
+@{
+}
+<div class="order-main-settings">
+  <table>
+    <tr>
+      <td>Дата</td>
+      <td>
+        Смена
+        @if (Model.IsClose) {
+          <p id="isClose">(Смена закрыта)</p>
+        }
+      </td>
+    </tr>
+    <tr>
+      <td><input type="date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" required /></td>
+      <td>
+        <p>
+          <input type="radio" value="1" name="Shift" checked="@(Model.Shift==1)" id="shift1" />
+          <label class="button-on-table label-radio" for="shift1">
+            Смена 1
+          </label>
+
+        </p>
+        <p>
+          <input type="radio" value="2" name="Shift" checked="@(Model.Shift==2)" id="shift2" />
+          <label class="button-on-table label-radio" for="shift2">
+            Смена 2
+          </label>
+        </p>
+      </td>
+    </tr>
+    <tr>
+    </tr>
+  </table>
+  <div>
+    <button type="submit" formmethod="get" class="button-on-table">Find</button>
+  </div>
+</div>

@@ -41,8 +41,8 @@ namespace WebApplication3.Controllers {
         public IActionResult Index(DateTime Date, int Shift = 1, int OrderAreaId = 1, int IdOrder = 0) {
             if (Date.Year < 1950)
                 Date = DateTime.Now.Date;
-
-            Order order = IdOrder > 0 ? orderManager.GetById(IdOrder) : orderManager.Get(Date, Shift, OrderAreaId);
+            var order = new Order();
+            order = IdOrder > 0 ? orderManager.GetById(IdOrder) : orderManager.Get(Date, Shift, OrderAreaId);
 
             FillViewBagForIndex(order);
 
@@ -52,6 +52,8 @@ namespace WebApplication3.Controllers {
 
         [HttpPost]
         public IActionResult Index(DateTime date, int shift, int orderAreaId, int Dispetcher, int Chief, int[] Masters, int orderId) {
+            //bool AllPZO = allPzo == "on";
+
             var area = areaManager.GetAll().Where(x => x.Id == orderAreaId).First();
 
             var disp = employeeManager.GetEmployeeById(Dispetcher);
@@ -61,15 +63,12 @@ namespace WebApplication3.Controllers {
                 masters.Add(employeeManager.GetEmployeeById(id));
             Order order = orderId > 0 ? orderManager.GetById(orderId) : new Order().SetBase(date, shift);
 
-
             order
                 .SetStaff(disp, chief, masters)
                 .SetArea(area);
 
             if (orderId == 0)
                 orderManager.Create(order);
-            // И так сохраняет
-
 
             FillViewBagForIndex(order);
             dbManager.Commit();
@@ -119,22 +118,21 @@ namespace WebApplication3.Controllers {
             int horizon,
             int group,
             int[] crew,
-            bool HighAsh,
-            bool PZO,
-            int number = 0,
-            double picket = 0,
-            double weight = 0,
-            double volume = 0,
-            double overex = 0,
-            double ash = 0,
-            double heat = 0,
-            double wet = 0,
-            int transport = 0,
-            int repair = 0,
-            int holidays = 0,
-            int machId = 0
+            string highAsh,
+            string pzo,
+            int number,
+            double picket,
+            double weight,
+            double volume,
+            double overex,
+            double ash,
+            double heat,
+            double wet,
+            int transport,
+            int repair,
+            int holidays,
+            int machId
             ) {
-
             var Area = machOnShiftManager.GetAreas().Where(x => x.Id == area).First();
             var Field = machOnShiftManager.GetFields().Where(x => x.Id == field).First();
             var Horizon = machOnShiftManager.GetHorizons().Where(x => x.Id == horizon).First();
@@ -147,7 +145,8 @@ namespace WebApplication3.Controllers {
                 if (Crew.Count >= 10)
                     break;
             }
-
+            bool PZO = pzo == "on";
+            bool HighAsh = highAsh == "on";
             var order = orderManager.GetById(OrderId);
             MachineryOnShift Machine;
 

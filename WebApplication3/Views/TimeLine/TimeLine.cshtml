@@ -1,0 +1,34 @@
+﻿@using WebApplication3.Models.Entities;
+@model Order
+
+@{
+  ViewData["Title"] = "Time line";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form>
+  <div class="top-menu">
+    <div>@await Html.PartialAsync("_OrderShift")</div>
+    <div class="timeline-staff">
+      <table class="timeline-staff-table">
+        <tr>
+          <td>Диспетчер:</td>
+          <td> @Model?.Dispetcher.GetFIO()</td>
+          <td>Начальник:</td>
+          <td>@Model?.Chief.GetFIO()</td>
+          <td>Горный мастер:</td>
+          <td>
+            @foreach (var m in Model?.MiningMaster) {
+              @m.GetFIO()<br>
+            }
+          </td>
+        </tr>
+      </table>
+
+    </div>
+    <div>@await Html.PartialAsync("_OrderAreaChoice")</div>
+</form>
+</div>
+<hr />
+<div class="timeline-main">
+  @await Html.PartialAsync("_TimelineTable")
+</div>

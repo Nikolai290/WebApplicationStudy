@@ -44,6 +44,9 @@ namespace WebApplication3.Models.Mapping {
             // PZO
             Map(x => x.PZO);
 
+            // Works
+            HasMany(x => x.Works).Cascade.All().Not.LazyLoad();
+
         }
     }
 }

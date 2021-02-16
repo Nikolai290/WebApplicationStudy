@@ -48,6 +48,9 @@ namespace WebApplication3.Models.Entities {
         // PZO
         public virtual bool PZO { get; protected set; }
 
+        // Works
+        public virtual IList<Work> Works { get; protected set; }
+
 
         public MachineryOnShift() {
             Order = new Order();
@@ -159,6 +162,19 @@ namespace WebApplication3.Models.Entities {
         }
         public virtual MachineryOnShift SetOrder(Order order) {
             Order = order;
+            return this;
+        }
+
+        public virtual MachineryOnShift AddWork (Work work) {
+
+            Works.Add(work);
+            work.SetParent(this);
+            return this;
+        }
+
+        public virtual MachineryOnShift SetWorks (IList<Work> works) {
+            Works = works;
+            works.ToList().ForEach(x => x.SetParent(this));
             return this;
         }
 

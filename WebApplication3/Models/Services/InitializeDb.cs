@@ -13,14 +13,16 @@ namespace WebApplication3.Models.Services {
         private OrderManager orderManager;
 
         public InitializeDb() {
-            this.dbManager = new DbManager();
+            dbManager = new DbManager();
             employeeManager = new EmployeeManager(dbManager);
             orderManager = new OrderManager(dbManager);
         }
 
         public void Start() {
             DbAccess.DbAccess.Rebuild();
-            Initialize();
+            dbManager.GetAll<OrderArea>();
+            if(DbManager.IsEmpty)
+                Initialize();
             dbManager.Commit();
         }
 
@@ -90,6 +92,27 @@ namespace WebApplication3.Models.Services {
             Machineries.Add(new Machinery("KOMATSU HD 785-7 №5"));
             Machineries.Add(new Machinery("KOMATSU HD 785-7 №54"));
 
+            var CoalSorts = new List<CoalSort>();
+            CoalSorts.Add(new CoalSort("2 БР"));
+            CoalSorts.Add(new CoalSort("2 БПКО"));
+            CoalSorts.Add(new CoalSort("Сорт технология"));
+            CoalSorts.Add(new CoalSort("Сорт МСГ-2000"));
+            CoalSorts.Add(new CoalSort("Сорт МСУ"));
+            CoalSorts.Add(new CoalSort("2 БР (отсев)"));
+            CoalSorts.Add(new CoalSort("2Б (технология)"));
+            CoalSorts.Add(new CoalSort("2Б (МСГ-2000)"));
+            CoalSorts.Add(new CoalSort("2Б (МСУ)"));
+
+            var figures = new List<Figure>();
+            figures.Add(new Figure("rectangle"));
+            figures.Add(new Figure("trapeze"));
+
+            var TypeWorks = new List<WorkTypes>();
+            TypeWorks.Add(new WorkTypes("Технологические операции", "orange", "black", figures[0]));
+            TypeWorks.Add(new WorkTypes("Дробление горельника", "green", "white", figures[0]));
+            TypeWorks.Add(new WorkTypes("Погрузка угля в автотранспорт", "rebeccapurple", "white", figures[1]));
+            TypeWorks.Add(new WorkTypes("Обогащение угля", "royalblue", "white", figures[0]));
+
             IList<Position> Positions = new List<Position>();
             Positions.Add(new Position("Нет должности"));
             Positions.Add(new Position("Главный диспетчер"));
@@ -106,7 +129,6 @@ namespace WebApplication3.Models.Services {
             PullToDb(Positions);
             int pos = Positions.Count;
 
-            var poss = dbManager.GetAll<Position>();
             var names = new List<string>();
             names.Add("Василий");
             names.Add("Иннокентий");
@@ -181,7 +203,7 @@ namespace WebApplication3.Models.Services {
             IList<Employee> Employees = new List<Employee>();
 
             while (Employees.Count < 100)
-                Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), poss[Rnd(pos)]));
+                Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), Positions[Rnd(pos)]));
 
             //PullToDb(Employees);
             foreach (var emp in Employees) {
@@ -195,17 +217,21 @@ namespace WebApplication3.Models.Services {
             PullToDb(QuarryPlasts);
             PullToDb(Groups);
             PullToDb(Machineries);
+            PullToDb(figures);
+            PullToDb(CoalSorts);
+            PullToDb(TypeWorks);
 
-            var disps = employeeManager.GetEmployeesByStringFind("диспетчер");
-            var chiefs = employeeManager.GetEmployeesByStringFind("начальник");
-            var masters = employeeManager.GetEmployeesByStringFind("горный мастер");
-            var orderArea = dbManager.GetAll<OrderArea>().First();
+
+            var disps = Employees.Where(x => x.Position.Id==2);
+            var chiefs = Employees.Where(x => x.Position.Id == 3);
+            var masters = Employees.Where(x => x.Position.Id == 4).ToList();
+
 
             while (masters.Count > 2)
                 masters.RemoveAt(Rnd(masters.Count));
 
             Order order = new Order();
-            order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderArea);
+            order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderAreas.First());
 
             orderManager.Create(order);
         }

@@ -158,6 +158,9 @@ header {
     /*margin-left: 320px;*/
     /*margin-right: 320px;*/
 }
+.order-staff td {
+
+}
 
 .order-area-choice {
     margin-top: 30px;
@@ -263,4 +266,47 @@ header {
 }
 .active-cell:active {
     background-color: #3EB0C4;
+}
+/* TimeLine page */
+.timeline-staff-table td:nth-child(odd){
+    padding-left: 30px;
+}
+
+/* TimeLine table */
+.timeline-table {
+    width: 100%;
+}
+.timeline-content-table td{
+    border: 1px solid black;
+}
+
+.timeline-table tr td:first-child {
+    width: 200px;
+}
+
+.timeline-cells {
+    width: 20px;
+    height: 2em;
+}
+
+.rectangle{
+
+
+}
+
+.timeline-headtable span {
+    left: -10px;
+    position: relative;
+    width: 40px;
+    text-align: center;
+}
+
+.trapeze {
+    width: 20px;
+    height: 1.5em;
+    background: rebeccapurple;
+    color: white;
+    transform: perspective(100px) rotate(0);
+    margin: 5px;
+    text-align:center;
 }

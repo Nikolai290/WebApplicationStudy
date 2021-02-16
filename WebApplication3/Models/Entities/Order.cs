@@ -28,6 +28,10 @@ namespace WebApplication3.Models.Entities {
 
         public Order() {
             Machineries = new List<MachineryOnShift>();
+            Dispetcher = new Employee();
+            Chief = new Employee();
+            MiningMaster = new List<Employee>() { new Employee() };
+
         }
 
         public virtual Order CloseInverse() {

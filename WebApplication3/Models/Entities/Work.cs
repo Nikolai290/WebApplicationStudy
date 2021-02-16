@@ -28,6 +28,7 @@ namespace WebApplication3.Models.Entities {
         }
         public virtual Work SetNote(string note) {
             Note = note;
+            return this;
         }
 
         public virtual Work SetParent(MachineryOnShift parent) {

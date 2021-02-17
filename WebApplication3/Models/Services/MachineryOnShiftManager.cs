@@ -19,25 +19,25 @@ namespace WebApplication3.Models.Services {
         }
         public bool DeleteById(int id) => Delete(GetById(id));
 
-        public IList<MachineryOnShift> GetAll() => dbManager.GetAll<MachineryOnShift>();
+        public IQueryable<MachineryOnShift> GetAll() => dbManager.GetAll<MachineryOnShift>();
         public MachineryOnShift GetById(int id) => dbManager.GetById<MachineryOnShift>(id);
         public Machinery GetMachineryById(int id) => dbManager.GetById<Machinery>(id);
         public IList<MachineryOnShift> GetByOrder(int orderId)
             => GetAll().Where(x => x.Order.Id == orderId).ToList();
 
 
-        public IList<QuarryArea> GetAreas()
+        public IQueryable<QuarryArea> GetAreas()
             => dbManager.GetAll<QuarryArea>();
-        public IList<QuarryField> GetFields()
+        public IQueryable<QuarryField> GetFields()
              => dbManager.GetAll<QuarryField>();
 
-        public IList<QuarryHorizon> GetHorizons()
+        public IQueryable<QuarryHorizon> GetHorizons()
              => dbManager.GetAll<QuarryHorizon>();
 
-        public IList<QuarryPlast> GetPlasts()
+        public IQueryable<QuarryPlast> GetPlasts()
              => dbManager.GetAll<QuarryPlast>();
 
-        public IList<Group> GetGroups()
+        public IQueryable<Group> GetGroups()
             => dbManager.GetAll<Group>();
     }
 }

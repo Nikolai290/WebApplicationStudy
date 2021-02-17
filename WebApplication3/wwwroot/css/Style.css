@@ -72,26 +72,6 @@ header {
     margin-bottom: 10px;
 }
 
-    .submenu a {
-        display: inline-block;
-        border-style: outset;
-        height: 2em;
-        background-color: #DDD;
-        text-decoration: none;
-        color: black;
-        padding: 0px;
-        text-align: center;
-        width: 10em;
-    }
-
-        .submenu a:hover {
-            background-color: #ccc;
-        }
-
-        .submenu a:active {
-            transform: scale(0.95);
-        }
-
 
 .table1 tr td {
     text-align: center;
@@ -120,6 +100,7 @@ header {
     text-decoration: none;
     text-align: center;
     padding: 5px;
+    border: none;
 }
 
 .button-simple {
@@ -127,6 +108,7 @@ header {
     height: 2em;
     max-width: 10em;
     background-color: #C5D4EB;
+    border: none;
 }
     .button-on-table:hover {
         background-color: #ACBED9;
@@ -145,14 +127,17 @@ header {
     background-color: #ACBED9;
     text-decoration: none;
     color: black;
+    border: none;
 }
 .button-simple:visited {
     text-decoration: none;
     color: black;
+    border: none;
 }
 .button-simple:active {
     background-color: #93A7C5;
     text-decoration: none;
+    border: none;
 }
 
 
@@ -280,12 +265,7 @@ header {
     height: 2em;
     width: auto;
 }
-.table-content a:hover { 
-    transform: scale(1.1);
-}
-.table-content a:active {
-    transform: scale(0.9);
-}
+
 .active-cell:hover {
     background-color: #4ECDE4;
 }
@@ -349,8 +329,6 @@ header {
 .trapeze {
     height: 1.5em;
     width: 200px;
-    left: 500px;
-    position: relative;
     border: 2px solid;
     text-align: center;
     transform: perspective(100px) scaleX(0.98) rotateX(15deg);
@@ -358,8 +336,6 @@ header {
 .rectangle {
     
     height: 1.5em;
-    width: 200px;
-    position: relative;
     border: 2px solid;
     text-align: center;
 }

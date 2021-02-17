@@ -16,17 +16,9 @@ namespace WebApplication3.Models.Services {
         public bool Create(Machinery obj) => dbManager.Add<Machinery>(obj);
         public bool Update(Machinery obj) => dbManager.Update<Machinery>(obj);
         public bool Delete(Machinery obj) => dbManager.Delete<Machinery>(obj);
-        public IList<Machinery> GetAll() { 
+        public IQueryable<Machinery> GetAll()
+            => dbManager.GetAll<Machinery>();
 
-            var machs = dbManager.GetAllByString<Machinery>("Machinery");
-            //for (int i = 0; i < machs.Count;) {
-            //    if (machs[i] is MachineryOnShift)
-            //        machs.Remove(machs[i]);
-            //    else
-            //        i++;
-            //}
-            return machs;
-        }
             
             
             

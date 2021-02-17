@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
+using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Entities {
     public class Employee : DbEntities {
-        public virtual string Name { get; set; }
-        public virtual string Lastname { get; set; }
-        public virtual string Fathername { get; set; }
-        public virtual int TableNumber { get; set; }
+        public virtual string Name { get; protected set; }
+        public virtual string Lastname { get; protected set; }
+        public virtual string Fathername { get; protected set; }
+        public virtual int TableNumber { get; protected set; }
         public virtual Position Position { get; set; }
         public virtual IList<Order> Orders { get; protected set; }
         public virtual IList<MachineryOnShift> Machinaries { get; protected set; }
 
-        public Employee() {
-            new Position();
-        }
+        public Employee() { }
 
         public Employee(string name, string lastname, string fathername) {
             Name = name;
@@ -61,5 +60,14 @@ namespace WebApplication3.Models.Entities {
             emp.Position = this.Position;
         }
 
+        public virtual Employee Create(StaffAddDTO model) {
+            Name = model.Name;
+            Lastname = model.Lastname;
+            Fathername = model.Fathername;
+            TableNumber = model.TableNumber;
+            Position = model.Position;
+
+            return this;
+        }
     }
 }

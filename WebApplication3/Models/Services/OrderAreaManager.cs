@@ -14,7 +14,7 @@ namespace WebApplication3.Models.Services {
             this.dbManager  = dbManager;
         }
 
-        public IList<OrderArea> GetAll()
+        public IQueryable<OrderArea> GetAll()
             => dbManager.GetAll<OrderArea>();
     }
 }

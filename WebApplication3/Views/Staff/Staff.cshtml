@@ -1,4 +1,5 @@
-﻿
+﻿@using WebApplication3.Models.Entities;
+@model IList<Employee>
 @{
     
     ViewData["Title"] = "Employees";
@@ -7,12 +8,13 @@
 
 <div class="staff-table">
     <div class="submenu">
-        <a href="staff/add?0" class="button-on-table">Добавить</a>
+        <a href="staff/add?0" class="button button-simple">Добавить</a>
     </div>
     <div class="find">
         <form class="find-form" method="get">
-            <input type="search" name="find" class="find-input" placeholder="Введите строку для поиска" maxlength="50" />
-            <input type="submit" class="button-on-table" value="Найти"/>
+            <input type="search" name="find" class="find-input"
+                   placeholder="Введите строку для поиска" maxlength="50" />
+            <input type="submit" class="button button-simple" value="Найти"/>
         </form>
     </div>
     <table class="machinery-table">
@@ -25,7 +27,7 @@
             <td><h6>Должность</h6></td>
             <td colspan="2"></td>
         </tr>
-        @foreach (var emp in ViewBag.Employees) {
+        @foreach (var emp in Model) {
             <tr class="table-content">
                 <td><p>@emp.Id</p></td>
                 <td><p>@emp.Lastname</p></td>

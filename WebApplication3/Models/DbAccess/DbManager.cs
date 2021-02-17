@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using NHibernate;
 using WebApplication3.Models.Entities;
 
@@ -53,27 +51,17 @@ namespace WebApplication3.Models.DbAccess {
             }
             return result;
         }
-        public IList<T> GetAllByString<T>(string entityName) where T : DbEntities {
-            IList<T> result;
-            result = session.QueryOver<T>(entityName).List();
 
-            return result;
-        }
+        public IQueryable<T> GetAll<T>() where T : DbEntities 
+            => session.Query<T>();
 
-        public IList<T> GetAll<T>() where T : DbEntities {
-            IList<T> result;
 
-            result = session.QueryOver<T>().List();
-            if (result.Count == 0)
-                IsEmpty = true;
-            return result;
-        }
 
 
         public T GetById<T>(int id) where T : DbEntities {
             T result = null;
             try {
-                result = session.QueryOver<T>()?.List()?.Where(x => x.Id == id)?.First();
+                result = GetAll<T>().Single(x => x.Id == id);
 
             } catch {
             }

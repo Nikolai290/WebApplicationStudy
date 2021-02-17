@@ -80,7 +80,7 @@ namespace WebApplication3.Models.Services {
         }
 
         public bool Delete(Order obj) => dbManager.Delete<Order>(obj);
-        public IList<Order> GetAll() => dbManager.GetAll<Order>();
+        public IQueryable<Order> GetAll() => dbManager.GetAll<Order>();
         public Order Get(DateTime date, int shift, int orderAreaId) {
             // date format: ("yyyy-MM-dd")
             Order result;

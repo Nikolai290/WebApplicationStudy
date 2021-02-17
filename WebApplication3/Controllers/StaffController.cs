@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
+using WebApplication3.Models.ViewModels;
 
 
 namespace WebApplication3.Controllers {
@@ -19,60 +21,39 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Index(string find = "") {
+        public IActionResult Index(string find) {
 
+            var empls = String.IsNullOrEmpty(find) ? 
+                employeeManager.GetAllEmployee().ToList() :
+                employeeManager.GetEmployeesByStringFind(find);
 
-            if (String.IsNullOrEmpty(find))
-                ViewBag.Employees = employeeManager.GetAllEmployee();
-            else
-                ViewBag.Employees = employeeManager.GetEmployeesByStringFind(find);
             dbManager.Commit();
-            return View();
-        }
-
-
-        public IActionResult Initialize() {
-            dbManager.Commit();
-            new InitializeDb().Start();
-            return View("Result", "База успешно инициализрована!");
-
+            return View("Staff", empls);
         }
 
 
         [HttpGet]
         public IActionResult Add(int id) {
             ViewBag.Positions = positionManager.GetAll();
-            Employee emp;
-            if (id != 0)
-                emp = employeeManager.GetEmployeeById(id);
-            else
-                emp = new Employee();
+            Employee emp = id > 0 ?
+                employeeManager.GetEmployeeById(id) :
+                new Employee();
 
             dbManager.Commit();
             return View("Add", emp);
         }
+
+
         [HttpPost]
-        public IActionResult Add(Employee emp, int PosId, int id) {
-            emp.Position = positionManager.GetById(PosId);
-            //employeeManager.Compare(emp);
+        public IActionResult Add(StaffAddDTO emp) {
 
-            bool result = true; ;
 
-            if (id == 0)
-                result = employeeManager.CreateNewEmployee(emp);
-            else
-                result = employeeManager.UpdateEmployee(emp, id);
+            var result = employeeManager.CreateNewEmployee(emp);
 
             string message = result ? "Объект сохранён" : "Не удалось";
 
             dbManager.Commit();
             return View("Result", message);
-        }
-
-        [HttpGet]
-        public IActionResult Find() {
-
-            return View();
         }
 
         [HttpGet]

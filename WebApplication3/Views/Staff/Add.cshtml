@@ -2,56 +2,53 @@
 @model Employee
 
 @{
-    if (String.IsNullOrEmpty(Model.Name)) {
-        ViewData["Title"] = "Adding";
-    } else {
-        ViewData["Title"] = "Change";
-    }
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  if (String.IsNullOrEmpty(Model.Name)) {
+    ViewData["Title"] = "Adding";
+  } else {
+    ViewData["Title"] = "Change";
+  }
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="form-div add-employee">
-    <form class="form-add-employee" method="post">
-        <input type="hidden" name="Id" value="@Model.Id" />
+  <form class="form-add-employee" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
 
-        <table class="table add-employee-table">
-            <tr>
-                <td><label for="Lastname">Фамилия:</label></td>
-                <td><input class="input-data-employye" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Lastname" maxlength="20" required /></td>
-            </tr>
-            <tr>
-                <td><label for="Name">Имя:</label></td>
-                <td><input class="input-data-employye" type="text" name="Name" placeholder="Введите имя" value="@Model.Name" maxlength="20" required /></td>
-            </tr>
-            <tr>
-                <td><label for="Fathername">Отчество:</label></td>
-                <td><input class="input-data-employye" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Fathername" maxlength="20" /></td>
-            </tr>
-            <tr>
-                <td><label for="TableNumber">Табельный номер:</label></td>
-                <td><input class="input-data-employye" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.TableNumber" min="1000" max="999999" /></td>
-            </tr>
-            <tr>
-                <td><label for="Position">Должность:</label></td>
-                <td>
-                    <select id="position" name="PosId">
-                        @if (Model.Position != null) {
-                            <option value="@Model.Position.Id" selected>@Model.Position.Subname</option>
-                        }
+    <table class="table add-employee-table">
+      <tr>
+        <td><label for="Lastname">Фамилия:</label></td>
+        <td><input class="input-data-employye" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Lastname" maxlength="20" required /></td>
+      </tr>
+      <tr>
+        <td><label for="Name">Имя:</label></td>
+        <td><input class="input-data-employye" type="text" name="Name" placeholder="Введите имя" value="@Model.Name" maxlength="20" required /></td>
+      </tr>
+      <tr>
+        <td><label for="Fathername">Отчество:</label></td>
+        <td><input class="input-data-employye" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Fathername" maxlength="20" /></td>
+      </tr>
+      <tr>
+        <td><label for="TableNumber">Табельный номер:</label></td>
+        <td><input class="input-data-employye" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.TableNumber" min="1000" max="999999" /></td>
+      </tr>
+      <tr>
+        <td><label for="Position">Должность:</label></td>
+        <td>
+          <select id="position" name="PosId">
+            @foreach (var pos in ViewBag.Positions) {
+              <option value="@pos.Id" selected="@(pos.Id == Model?.Position?.Id)">
+                @pos.Subname
+              </option>
+            }
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><button type="submit" href="~staff/add?@Model.Id" class="button button-simple">Отправить</button></td>
+        <td><button type="reset" class="button button-simple">Сбросить</button></td>
+      </tr>
 
-
-                        @foreach (var pos in ViewBag.Positions) {
-                            <option value="@pos.Id">@pos.Subname</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><button type="submit" href="~staff/add?@Model.Id" class="button-on-table">Отправить</button></td>
-                <td><button type="reset" class="button-on-table">Сбросить</button></td>
-            </tr>
-
-        </table>
-    </form>
+    </table>
+  </form>
 
 </div>

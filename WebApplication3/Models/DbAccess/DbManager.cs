@@ -72,8 +72,12 @@ namespace WebApplication3.Models.DbAccess {
 
         public T GetById<T>(int id) where T : DbEntities {
             T result = null;
+            try {
+                result = session.QueryOver<T>()?.List()?.Where(x => x.Id == id)?.First();
 
-            result = session.QueryOver<T>()?.List()?.Where(x => x.Id == id)?.First();
+            } catch {
+            }
+                
 
             return result;
         }

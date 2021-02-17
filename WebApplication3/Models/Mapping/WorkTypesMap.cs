@@ -8,7 +8,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.Name);
             Map(x => x.BackgroundColor);
             Map(x => x.TextColor);
-            References(x => x.Figure).Cascade.All();
+            References(x => x.Figure).Cascade.All().Not.LazyLoad();
             HasMany(x => x.Works).Inverse().Cascade.All();
 
         }

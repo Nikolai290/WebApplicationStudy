@@ -5,30 +5,52 @@
   ViewData["Title"] = "Time line";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form>
-  <div class="top-menu">
-    <div>@await Html.PartialAsync("_OrderShift")</div>
-    <div class="timeline-staff">
-      <table class="timeline-staff-table">
-        <tr>
-          <td>Диспетчер:</td>
-          <td> @Model?.Dispetcher.GetFIO()</td>
-          <td>Начальник:</td>
-          <td>@Model?.Chief.GetFIO()</td>
-          <td>Горный мастер:</td>
-          <td>
-            @foreach (var m in Model?.MiningMaster) {
-              @m.GetFIO()<br>
-            }
-          </td>
-        </tr>
-      </table>
 
-    </div>
-    <div>@await Html.PartialAsync("_OrderAreaChoice")</div>
-</form>
-</div>
-<hr />
-<div class="timeline-main">
-  @await Html.PartialAsync("_TimelineTable")
-</div>
+<table>
+  <tr>
+    <td class="top-menu">
+      <form>
+        <div >
+          <div>@await Html.PartialAsync("_OrderShift")</div>
+          <div class="timeline-staff">
+            <table class="timeline-staff-table">
+              <tr>
+                <td>Диспетчер:</td>
+                <td> @Model?.Dispetcher.GetFIO()</td>
+                <td>Начальник:</td>
+                <td>@Model?.Chief.GetFIO()</td>
+                <td>Горный мастер:</td>
+                <td>
+                  @foreach (var m in Model?.MiningMaster) {
+                    @m.GetFIO()<br>
+                  }
+                </td>
+              </tr>
+            </table>
+
+          </div>
+          <div>@await Html.PartialAsync("_OrderAreaChoice")</div>
+        </div>
+      </form>
+    </td>
+    <td rowspan="2"  class="timeline-addwork-panel">
+      <div @if (String.IsNullOrEmpty(ViewBag.MachName)) { @: hidden
+                   }>
+        @await Html.PartialAsync("_AddWorkPanel")
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td  class="timeline-main">
+
+      <div>
+        @await Html.PartialAsync("_TimelineTable")
+      </div>
+    </td>
+  </tr>
+
+</table>
+
+
+
+

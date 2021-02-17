@@ -1,0 +1,111 @@
+﻿@using WebApplication3.Models.Entities;
+@using System.Collections.Generic;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+  ViewBag.WorkTypes
+  ViewBag.SortCoal
+  ViewBag.AddWork
+  ViewBag.MachName
+  ViewBag.Work
+*@
+@{
+}
+<div>
+  <h5>@ViewBag.MachName</h5>
+  <p>добавление работы</p>
+</div>
+
+<div>
+  <form method="post">
+    <input hidden value="@ViewBag.Work?.Id" name="workId" />
+
+    <table>
+      <tr>
+        <td>
+          <label for="starttime">Начало</label> <br />
+          <input type="time" name="starttime" id="starttime" required value="@ViewBag?.Work?.StartTime.ToString("HH:mm")"
+                 min="@ViewBag.Hours[0]" max="@ViewBag.Hours[12]"  />
+        </td>
+        <td>
+          <label for="endtime">Окончание</label> <br />
+          <input type="time" name="endtime" id="endtime" required value="@ViewBag?.Work?.EndTime.ToString("HH:mm")"
+                 min="@ViewBag.Hours[0]" max="@ViewBag.Hours[12]"   />
+        </td>
+      </tr>
+    </table>
+
+
+
+    <div>
+      <label for="typework">Тип работы</label> <br />
+      <select name="typework" id="typework" required>
+        <option selected disabled></option>
+        @foreach (var t in ViewBag.WorkTypes) {
+          <option value="@t.Id" selected="@(ViewBag.Work?.Type?.Id == t.Id)">@t.Name</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="note">Описание</label> <br />
+      <input type="text" name="note" id="note" value="@ViewBag.Work?.Note" />
+    </div>
+
+    <div>
+      <label for="sort">Сорт</label> <br />
+      <select name="sort" id="sort">
+        <option selected disabled></option>
+        @foreach (var s in ViewBag.SortCoal) {
+          <option value="@s.Id" selected="@(ViewBag.Work?.Sort?.Id == s.Id)">@s.Name</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="volume">Объём</label> <br />
+      <input type="text" name="volume" id="volume" value="@ViewBag.Work?.Volume" />
+    </div>
+
+    <div>
+      <label for="wiegth">Вес</label> <br />
+      <input type="text" name="wiegth" id="wiegth" value="@ViewBag.Work?.Weight" />
+    </div>
+    <div>
+      <label for="ash">Зола</label> <br />
+      <input type="text" name="ash" id="ash" value="@ViewBag.Work?.Ash" />
+    </div>
+    <div>
+      <label for="heat">Теплота</label> <br />
+      <input type="text" name="heat" id="heat" value="@ViewBag.Work?.Heat" />
+    </div>
+    <div>
+      <label for="wet">Влага</label> <br />
+      <input type="text" name="wet" id="wet" value="@ViewBag.Work?.Wet" />
+    </div>
+    <div>
+      <label for="wagons">Число вагонов</label> <br />
+      <input type="number" name="wagons" id="wagons" value="@ViewBag.Work?.Wagons" />
+    </div>
+
+    <div>
+
+      <table>
+        <tr>
+          <td>
+            <input class="button-on-table" type="submit" value="Сохранить"
+                   @if (String.IsNullOrEmpty(ViewBag.MachName)) { @: disabled
+                   } />
+          </td>
+          <td>
+            <a class="button-on-table"
+               href="/timeline/delete?orderId=@Model.Id&workId=@ViewBag.Work?.Id"
+               @if (ViewBag.Work == null) { @: hidden
+               }>Удалить</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </form>
+</div>

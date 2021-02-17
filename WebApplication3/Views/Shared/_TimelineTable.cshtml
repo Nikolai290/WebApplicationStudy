@@ -17,7 +17,6 @@
         @for (int i = 0; i < 12; i++) {
           <td class="timeline-cells">
             <span class="timeline-hourmark">
-            <span class="timeline-hourmark">
               @ViewBag.Hours[i]
             </span>
           </td>
@@ -30,17 +29,27 @@
 
     <tbody class="timeline-content-table">
       @foreach (var m in Model?.Machineries) {
-      <tr>
-        <td>
-          @m?.Name
-        </td>
-        <td class="timeline-cells">
-          <div class="work-for-timeline trapeze"></div>
-        </td>
-        @for (int i = 0; i < 71; i++) {
+        <tr>
+          <td>
+            <a class="button-on-table" href="/timeline?IdOrder=@Model.Id&machId=@m?.Id">
+              @m?.Name
+            </a>
+          </td>
+          <td class="timeline-cells">
+            @foreach (var w in m.Works) {
+              <a href="/timeline?IdOrder=@Model.Id&machId=@m?.Id&workId=@w.Id" class="button-fill work-for-timeline @w.Type.Figure.Name"
+                 style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;">
+                @w.Note
+
+              </a>
+            }
+
+
+          </td>
+          @for (int i = 0; i < 71; i++) {
             <td class="timeline-cells"></td>
-        }
-      </tr>
+          }
+        </tr>
       }
     </tbody>
 

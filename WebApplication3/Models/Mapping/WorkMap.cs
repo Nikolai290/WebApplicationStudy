@@ -9,6 +9,7 @@ namespace WebApplication3.Models.Mapping {
             References(x => x.Type).Not.LazyLoad();
             Map(x => x.StartTime);
             Map(x => x.EndTime);
+            Map(x => x.TotalMinutes);
             Map(x => x.Note);
 
             //
@@ -21,3 +22,4 @@ namespace WebApplication3.Models.Mapping {
         }
     }
 }
+ 

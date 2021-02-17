@@ -10,6 +10,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.StartTime);
             Map(x => x.EndTime);
             Map(x => x.TotalMinutes);
+            Map(x => x.StartPosition);
             Map(x => x.Note);
 
             //

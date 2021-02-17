@@ -10,6 +10,7 @@ namespace WebApplication3.Models.Entities {
         public virtual DateTime StartTime { get; protected set; }
         public virtual DateTime EndTime { get; protected set; }
         public virtual int TotalMinutes { get; protected set; }
+        public virtual int StartPosition { get; protected set; }
         public virtual string Note { get; protected set; }
         //
         public virtual double Volume { get; protected set; }
@@ -44,6 +45,9 @@ namespace WebApplication3.Models.Entities {
                 EndTime = end;
                 TimeSpan delta = (end - start);
                 TotalMinutes = Convert.ToInt32(delta.TotalMinutes);
+                DateTime morning = new DateTime().AddHours(8);
+                 var startPosition = Convert.ToInt32((start.TimeOfDay - morning.TimeOfDay).TotalMinutes);
+                StartPosition = startPosition%720;
             }
 
             

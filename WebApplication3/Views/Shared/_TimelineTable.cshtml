@@ -38,7 +38,8 @@
           <td class="timeline-cells">
             @foreach (var w in m.Works) {
               <a href="/timeline?IdOrder=@Model.Id&machId=@m?.Id&workId=@w.Id" class="button-fill work-for-timeline @w.Type.Figure.Name"
-                 style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;">
+                 style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
+                 width: @(w.TotalMinutes*2)px; position:relative; left: @(w.StartPosition *2)px;">
                 @w.Note
 
               </a>

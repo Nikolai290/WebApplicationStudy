@@ -313,11 +313,19 @@ header {
     table-layout: fixed;
 }
     .timeline-table td {
-        border: 1px solid black;
     }
+.timeline-content-table tr {
+    vertical-align: top;
+    border: 2px solid gray;
+}
 .timeline-content-table td {
     vertical-align: top;
+    border-left: 1px dashed black;
 }
+
+    .timeline-content-table td:nth-child(6n+2) {
+        border-left: 2px solid gray;
+    }
 
 .timeline-table tr td:first-child {
     width: 180px;
@@ -327,8 +335,9 @@ header {
     width: 20px;
     height: 2em;
 }
-
-
+.timeline-headtable td{
+    vertical-align: bottom;
+}
 
 .timeline-headtable span {
     left: -20px;

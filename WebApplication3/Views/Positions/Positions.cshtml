@@ -1,4 +1,5 @@
-﻿
+﻿@using WebApplication3.Models.Entities;
+@model IList<Position>
 @{
     ViewData["Title"] = "Positions";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +7,7 @@
 
 <div class="position-table">
     <div class="submenu">
-        <a href="positions/add" class="button-on-table">Добавить</a>
+        <a href="positions/add" class="button button-simple">Добавить</a>
     </div>
     <table class="machinery-table">
         <tr class="table-header">
@@ -16,7 +17,7 @@
             <td><h6>Сотрудники</h6></td>
             <td colspan="2"></td>
         </tr>
-        @foreach (var pos in ViewBag.Positions) {
+        @foreach (var pos in Model) {
             <tr class="table-content">
                 <td><p>@pos.Id</p></td>
                 <td><p>@pos.Name</p></td>

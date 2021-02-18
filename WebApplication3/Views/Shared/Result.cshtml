@@ -1,8 +1,9 @@
-﻿@model string
+﻿@using WebApplication3.Models.ViewModels;
+@model ResultViewModel
 @{
-    ViewData["Title"] = @Model;
+    ViewData["Title"] = @Model?.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="message">@Model</h3>
-<a href="@ViewBag?.Link" class="button-on-table">@ViewBag?.Button</a>
+<h3 class="message">@Model?.Message</h3>
+<a href="@Model.Link" class="button button-simple">@Model.ButtonText</a>

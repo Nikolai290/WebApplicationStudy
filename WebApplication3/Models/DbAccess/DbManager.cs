@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NHibernate;
 using WebApplication3.Models.Entities;
 
@@ -58,17 +59,9 @@ namespace WebApplication3.Models.DbAccess {
 
 
 
-        public T GetById<T>(int id) where T : DbEntities {
-            T result = null;
-            try {
-                result = GetAll<T>().Single(x => x.Id == id);
+        public T GetById<T>(int id) where T : DbEntities 
+            => GetAll<T>().Single(x => x.Id == id);
 
-            } catch {
-            }
-                
-
-            return result;
-        }
 
         public bool Update<T>(T obj) where T : DbEntities {
             bool result = true;
@@ -78,6 +71,10 @@ namespace WebApplication3.Models.DbAccess {
                 result = false;
             }
             return result;
+        }
+
+        public IList<T> GetByListId<T>(IList<int> ids) where T : DbEntities {
+            return GetAll<T>().Where(x => ids.Contains(x.Id)).ToList();
         }
     }
 }

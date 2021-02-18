@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
-using WebApplication3.Models;
 using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Services {
     public class EmployeeManager {
 
-        //PositionManager positionManager;
         private IDbManager dbManager;
-        OrderManager orderManager;
 
         public EmployeeManager(IDbManager dbManager) {
             this.dbManager = dbManager;
-            //positionManager = new PositionManager(dbManager);
-            orderManager = new OrderManager(dbManager);
         }
 
         public bool CreateNewEmployee(Employee emp) {
@@ -63,9 +58,11 @@ namespace WebApplication3.Models.Services {
 
         public IQueryable<Employee> GetAllEmployee()
             => dbManager.GetAll<Employee>();
+        public List<Order> GetAllOrderOnThisDateAndShift(Order order)
+            => dbManager.GetAll<Order>().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList();
 
         public IList<Employee> GetFreeDispetchers(Order order) {
-            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var orders = GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
             var busyEmpls = new List<Employee>();
             orders.ForEach(x => busyEmpls.Add(x.Dispetcher));
             if (busyEmpls.Count == 0)
@@ -76,7 +73,7 @@ namespace WebApplication3.Models.Services {
         }
 
         public IList<Employee> GetFreeChiefs(Order order) {
-            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var orders = GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
             var busyEmpls = new List<Employee>();
             orders.ForEach(x => busyEmpls.Add(x.Chief));
             if (busyEmpls.Count == 0)
@@ -86,7 +83,7 @@ namespace WebApplication3.Models.Services {
             return freeEmpls;
         }
         public IList<Employee> GetFreeMasters(Order order) {
-            var orders = orderManager.GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
+            var orders = GetAllOrderOnThisDateAndShift(order).Where(x => x.Id != order.Id).ToList();
             var busyEmpls = new List<Employee>();
             orders.ForEach(x => busyEmpls.AddRange(x.MiningMaster));
             if (busyEmpls.Count == 0)
@@ -96,7 +93,7 @@ namespace WebApplication3.Models.Services {
             return freeEmpls;
         }
         public IList<Employee> GetFreeDrivers(Order order, int machId) {
-            var machs = orderManager.GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
+            var machs = GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
 
             var busyEmpls = new List<Employee>();
             machs?.ForEach(x => busyEmpls.AddRange(x.Crew));
@@ -107,12 +104,18 @@ namespace WebApplication3.Models.Services {
             return freeEmpls;
         }
         public IList<Employee> GetFreeDrivers(int orderId, int machId)
-            => GetFreeDrivers(orderManager.GetById(orderId), machId);
+            => GetFreeDrivers(dbManager.GetById<Order>(orderId), machId);
+
+        public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
+            var machs = new List<MachineryOnShift>();
+            GetAllOrderOnThisDateAndShift(order).ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x)));
+            return machs;
+        }
 
 
 
         public Employee GetEmployeeById(int id)
-            => (dbManager.GetById<Employee>(id));
+            => dbManager.GetById<Employee>(id);
 
         public IList<Employee> GetEmployeeByPosition(Position position)
             => dbManager.GetAll<Employee>().Where(x => x.Position.Id == position.Id).ToList();

@@ -34,7 +34,7 @@ namespace WebApplication3.Controllers {
 
         [HttpGet]
         public IActionResult Add(int id) {
-            ViewBag.Positions = positionManager.GetAll();
+            ViewBag.Positions = positionManager.GetAll().ToList();
             Employee emp = id > 0 ?
                 employeeManager.GetEmployeeById(id) :
                 new Employee();

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Linq;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
+using WebApplication3.Models.ViewModels;
 
 
 namespace WebApplication3.Controllers {
@@ -18,20 +19,16 @@ namespace WebApplication3.Controllers {
 
         public IActionResult Index() {
 
-            ViewBag.Positions = positionManager.GetAllWithEmpls();
+            var positions = positionManager.GetAll().ToList();
             dbManager.Commit();
-            return View("Positions");
+            return View("Positions", positions);
         }
 
         [HttpGet]
         public IActionResult Add(int id) {
-            Position pos;
-            if (id == 0) {
-                pos = new Position();
-            }
-            else {
-                pos = positionManager.GetById(id);
-            }
+            var pos = id > 0 ? 
+                positionManager.GetById(id) :
+                new Position();
 
             ViewBag.Positions = positionManager.GetDistinctNames();
 
@@ -40,21 +37,9 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Add(Position pos, int id) {
-            bool result;
-            pos.Check();
-
-            if (id == 0)
-                result = positionManager.Create(pos);
-            else {
-                var obj = positionManager.GetById(id);
-                pos.CopyTo(obj);
-                result = positionManager.Update(obj);
-            }
-
+        public IActionResult Add(PositionsAddDTO pos) {
+            var result = positionManager.CreateNewPosition(pos);
             string message = result ? "Объект сохранён" : "Не удалось";
-
-
             dbManager.Commit();
             return View("Result", message);
         }
@@ -62,13 +47,7 @@ namespace WebApplication3.Controllers {
         [HttpGet]
         public IActionResult Delete(int id) {
             bool result = positionManager.Delete(id);
-            string message;
-            if (result) {
-                message = "Объект удалён";
-            } else {
-                message = "Не удалось";
-            }
-
+            string message = result ? "Объект удалён" : "Не удалось";
             dbManager.Commit();
             return View("Result", message);
         }

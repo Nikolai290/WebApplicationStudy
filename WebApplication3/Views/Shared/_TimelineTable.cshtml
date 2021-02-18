@@ -1,5 +1,6 @@
-﻿@using WebApplication3.Models.Entities;
-@model Order;
+﻿@using WebApplication3.Models.ViewModels;
+@model TimeLineViewModel
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
   ViewBag.Hours
@@ -17,7 +18,7 @@
         @for (int i = 0; i < 12; i++) {
           <td class="timeline-cells">
             <span class="timeline-hourmark">
-              @ViewBag.Hours[i]
+              @Model.Hours[i]
             </span>
           </td>
           @for (int j = 0; j < 5; j++) {
@@ -28,22 +29,22 @@
     </thead>
 
     <tbody class="timeline-content-table">
-      @foreach (var m in Model?.Machineries) {
+      @foreach (var m in Model.Order?.Machineries) {
         <tr>
           <td>
-            <a class="button-on-table" href="/timeline?IdOrder=@Model.Id&machId=@m?.Id">
+            <a class="button-on-table" href="/timeline?OrderId=@Model.Order.Id&MoSId=@m?.Id">
               @m?.Name
             </a>
           </td>
           <td class="timeline-cells">
             @foreach (var w in m.Works) {
-            <div class="work-for-timeline @w.Type.Figure.Name" style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
+              <div class="work-for-timeline @w.Type.Figure.Name" style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
                  width: @(w.TotalMinutes*2)px; position:relative; left: @(w.StartPosition *2-2)px;">
-              <a href="/timeline?IdOrder=@Model.Id&machId=@m?.Id&workId=@w.Id" class="button-fill">
-                @w.Note
+                <a href="/timeline?OrderId=@Model.Order.Id&MoSId=@m?.Id&workId=@w.Id" class="button-fill">
+                  @w.Type.Name
 
-              </a>
-            </div>
+                </a>
+              </div>
 
             }
 

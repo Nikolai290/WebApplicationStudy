@@ -1,6 +1,5 @@
-﻿@using WebApplication3.Models.Entities;
-@using System.Collections.Generic;
-
+﻿@using WebApplication3.Models.ViewModels;
+@model TimeLineViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
   ViewBag.WorkTypes
@@ -12,25 +11,26 @@
 @{
 }
 <div>
-  <h5>@ViewBag.MachName</h5>
+  <h5>@Model.MachineName</h5>
   <p>добавление работы</p>
 </div>
 
 <div>
   <form method="post">
-    <input hidden value="@ViewBag.Work?.Id" name="workId" />
+    <input hidden value="@Model.Work?.Id" name="workId" />
+    <input hidden value="@Model.Order?.Id" name="OrderId" />
 
     <table>
       <tr>
         <td>
           <label for="starttime">Начало</label> <br />
-          <input type="time" name="starttime" id="starttime" required value="@ViewBag?.Work?.StartTime.ToString("HH:mm")"
-                 min="@ViewBag.Hours[0]" max="@ViewBag.Hours[12]"  />
+          <input type="time" name="starttime" id="starttime" required value="@Model?.Work?.StartTime.ToString("HH:mm")"
+                 min="@Model.Hours[0]" max="@Model.Hours[12]" />
         </td>
         <td>
           <label for="endtime">Окончание</label> <br />
-          <input type="time" name="endtime" id="endtime" required value="@ViewBag?.Work?.EndTime.ToString("HH:mm")"
-                 min="@ViewBag.Hours[0]" max="@ViewBag.Hours[12]"   />
+          <input type="time" name="endtime" id="endtime" required value="@Model?.Work?.EndTime.ToString("HH:mm")"
+                 min="@Model.Hours[0]" max="@Model.Hours[12]" />
         </td>
       </tr>
     </table>
@@ -39,53 +39,53 @@
 
     <div>
       <label for="typework">Тип работы</label> <br />
-      <select name="typework" id="typework" required>
+      <select name="typeworkId" id="typework" required>
         <option selected disabled></option>
-        @foreach (var t in ViewBag.WorkTypes) {
-          <option value="@t.Id" selected="@(ViewBag.Work?.Type?.Id == t.Id)">@t.Name</option>
+        @foreach (var t in Model.WorkTypes) {
+          <option value="@t.Id" selected="@(Model.Work?.Type?.Id == t.Id)">@t.Name</option>
         }
       </select>
     </div>
 
     <div>
       <label for="note">Описание</label> <br />
-      <input type="text" name="note" id="note" value="@ViewBag.Work?.Note" />
+      <input type="text" name="note" id="note" value="@Model.Work?.Note" />
     </div>
 
     <div>
       <label for="sort">Сорт</label> <br />
-      <select name="sort" id="sort">
+      <select name="sortId" id="sort">
         <option selected disabled></option>
-        @foreach (var s in ViewBag.SortCoal) {
-          <option value="@s.Id" selected="@(ViewBag.Work?.Sort?.Id == s.Id)">@s.Name</option>
+        @foreach (var s in Model.CoalSorts) {
+          <option value="@s.Id" selected="@(Model.Work?.Sort?.Id == s.Id)">@s.Name</option>
         }
       </select>
     </div>
 
     <div>
       <label for="volume">Объём</label> <br />
-      <input type="text" name="volume" id="volume" value="@ViewBag.Work?.Volume" />
+      <input type="text" name="volume" id="volume" value="@Model.Work?.Volume" />
     </div>
 
     <div>
       <label for="wiegth">Вес</label> <br />
-      <input type="text" name="wiegth" id="wiegth" value="@ViewBag.Work?.Weight" />
+      <input type="text" name="wiegth" id="wiegth" value="@Model.Work?.Weight" />
     </div>
     <div>
       <label for="ash">Зола</label> <br />
-      <input type="text" name="ash" id="ash" value="@ViewBag.Work?.Ash" />
+      <input type="text" name="ash" id="ash" value="@Model.Work?.Ash" />
     </div>
     <div>
       <label for="heat">Теплота</label> <br />
-      <input type="text" name="heat" id="heat" value="@ViewBag.Work?.Heat" />
+      <input type="text" name="heat" id="heat" value="@Model.Work?.Heat" />
     </div>
     <div>
       <label for="wet">Влага</label> <br />
-      <input type="text" name="wet" id="wet" value="@ViewBag.Work?.Wet" />
+      <input type="text" name="wet" id="wet" value="@Model.Work?.Wet" />
     </div>
     <div>
       <label for="wagons">Число вагонов</label> <br />
-      <input type="number" name="wagons" id="wagons" value="@ViewBag.Work?.Wagons" />
+      <input type="number" name="wagons" id="wagons" value="@Model.Work?.Wagons" />
     </div>
 
     <div>
@@ -93,14 +93,14 @@
       <table>
         <tr>
           <td>
-            <input class="button-on-table" type="submit" value="Сохранить"
-                   @if (String.IsNullOrEmpty(ViewBag.MachName)) { @: disabled
+            <input class="button button-simple" type="submit" value="Сохранить"
+                   @if (String.IsNullOrEmpty(Model.MachineName)) { @: disabled
                    } />
           </td>
           <td>
-            <a class="button-on-table"
-               href="/timeline/delete?orderId=@Model.Id&workId=@ViewBag.Work?.Id"
-               @if (ViewBag.Work == null) { @: hidden
+            <a class="button button-simple"
+               href="/timeline/delete?orderId=@Model?.Order.Id&workId=@Model?.Work?.Id"
+               @if (Model?.Work == null) { @: hidden
                }>Удалить</a>
           </td>
         </tr>

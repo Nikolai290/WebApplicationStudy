@@ -1,15 +1,15 @@
-﻿@using WebApplication3.Models.Entities;
+﻿@using WebApplication3.Models.ViewModels;
 
-@model MachineryOnShift
+@model AddingMachineViewModel
 
 @{
 
-    ViewData["Title"] = ViewBag.Title;
+    ViewData["Title"] = Model.MachineryOnShift.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form method="post">
-    <input type="hidden" name="OrderId" value="@ViewBag.OrderId" />
-    <input type="hidden" name="machId" value="@Model.Id" />
+    <input type="hidden" name="OrderId" value="@Model.OrderId" />
+    <input type="hidden" name="MoSId" value="@Model.MachineryOnShift.Id" />
     <table class="machinery-property">
         <tr>
             <td>
@@ -18,39 +18,39 @@
                         <legend>Местонахождение</legend>
                         <p><label for="Area">Крыло</label></p>
                         <p>
-                            <select name="Area" id="Area">
-                                @foreach (var area in ViewBag.Areas) {
-                                    <option value="@area.Id" selected="@(Model.Area?.Id==area.Id)">@area.Name</option>
+                            <select name="AreaId" id="Area">
+                                @foreach (var area in Model.Areas) {
+                                    <option value="@area.Id" selected="@(Model.MachineryOnShift?.Area?.Id==area.Id)">@area.Name</option>
                                 }
                             </select>
                         </p>
-                        <p><label for="Field">Участок</label></p>
+                        <p><label for="FieldId">Участок</label></p>
                         <p>
-                            <select name="Field" id="Field">
-                                @foreach (var field in ViewBag.Fields) {
-                                    <option value="@field.Id" selected="@(Model.Field?.Id==field.Id)">@field.Name</option>
+                            <select name="FieldId" id="Field">
+                                @foreach (var field in Model.Fields) {
+                                    <option value="@field.Id" selected="@(Model.MachineryOnShift?.Field?.Id==field.Id)">@field.Name</option>
                                 }
                             </select>
                         </p>
-                        <p><label for="Plast">Пласт</label></p>
+                        <p><label for="PlastId">Пласт</label></p>
                         <p>
-                            <select name="Plast" id="Plast">
-                                @foreach (var plast in ViewBag.Plasts) {
-                                    <option value="@plast.Id" selected="@(Model.Plast?.Id==plast.Id)">@plast.Name</option>
+                            <select name="PlastId" id="Plast">
+                                @foreach (var plast in Model.Plasts) {
+                                    <option value="@plast.Id" selected="@(Model.MachineryOnShift?.Plast?.Id==plast.Id)">@plast.Name</option>
                                 }
                             </select>
                         </p>
-                        <p><label for="Horizon">Горизонт</label></p>
+                        <p><label for="HorizonId">Горизонт</label></p>
                         <p>
-                            <select name="Horizon" id="Horizon">
-                                @foreach (var hor in ViewBag.Horizons) {
-                                    <option value="@hor.Id" selected="@(Model.Horizon?.Id==hor.Id)">@hor.Name</option>
+                            <select name="HorizonId" id="Horizon">
+                                @foreach (var hor in Model.Horizons) {
+                                    <option value="@hor.Id" selected="@(Model.MachineryOnShift?.Horizon?.Id==hor.Id)">@hor.Name</option>
                                 }
                             </select>
                         </p>
                         <p><label for="Picket">Пикет</label></p>
                         <p>
-                            <input type="number" name="Picket" id="Picket" min="0"  value="@Model.Picket"/>
+                            <input type="number" name="Picket" id="Picket" min="0"  value="@Model.MachineryOnShift.Picket"/>
                         </p>
 
 
@@ -66,13 +66,13 @@
                                 <td colspan="3">
                                     <p><label for="Weight">Вес</label></p>
                                     <p>
-                                        <input type="number" name="Weight" id="Weight" min="0" value="@Model.Weight" />
+                                        <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight" />
                                     </p>
                                 </td>
                                 <td colspan="3">
                                     <p><label for="Volume">Объём</label></p>
                                     <p>
-                                        <input type="number" name="Volume" id="Volume" min="0"  value="@Model.Volume" />
+                                        <input type="number" name="Volume" id="Volume" min="0"  value="@Model.MachineryOnShift.Volume" />
                                     </p>
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@
                                 <td colspan="6">
                                     <p><label for="Overex">Переэкскавация</label></p>
                                     <p>
-                                        <input type="number" name="Overex" id="Overex" min="0"  value="@Model.Overexcavation" />
+                                        <input type="number" name="Overex" id="Overex" min="0"  value="@Model.MachineryOnShift.Overexcavation" />
                                     </p>
                                 </td>
                             </tr>
@@ -88,26 +88,26 @@
                                 <td colspan="2">
                                     <p><label for="Ash">Зола</label></p>
                                     <p>
-                                        <input type="number" name="Ash" id="Ash" min="0"  value="@Model.Ash" />
+                                        <input type="number" name="Ash" id="Ash" min="0"  value="@Model.MachineryOnShift.Ash" />
                                     </p>
                                 </td>
                                 <td colspan="2">
                                     <p><label for="Heat">Теплота</label></p>
                                     <p>
-                                        <input type="number" name="Heat" id="Heat" min="0"  value="@Model.Heat" />
+                                        <input type="number" name="Heat" id="Heat" min="0"  value="@Model.MachineryOnShift.Heat" />
                                     </p>
                                 </td>
                                 <td colspan="2">
                                     <p><label for="Wet">Влага</label></p>
                                     <p>
-                                        <input type="number" name="Wet" id="Wet" min="0"  value="@Model.Wet" />
+                                        <input type="number" name="Wet" id="Wet" min="0"  value="@Model.MachineryOnShift.Wet" />
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="6">
                                     <p>
-                                        <input type="checkbox" name="HighAsh" id="HighAsh" checked="@Model.HighAsh"/>
+                                        <input type="checkbox" name="HighAsh" id="HighAsh" checked="@Model.MachineryOnShift.HighAsh"/>
                                         <label for="HighAsh">Высокозольный</label>
                                     </p>
                                 </td>
@@ -124,8 +124,8 @@
                         <legend>Экипаж (не более 10)</legend>
                         <p>
                             <select name="Crew" id="Crew" multiple>
-                                @foreach (var emp in ViewBag.Crew) {
-                                    <option value="@emp.Id" selected="@Model?.Crew?.Where(x => x.Id==emp.Id).Any()">@emp.GetShortFioProf()</option>
+                                @foreach (var emp in Model?.FreeDrivers) {
+                                    <option value="@emp.Id" selected="@Model.MachineryOnShift?.Crew?.Any(x => x.Id==emp.Id)">@emp.GetShortFioProf()</option>
                                 }
                             </select>
                         </p>
@@ -143,9 +143,9 @@
                                 <td>
                                     <p><label for="Group">Группа</label></p>
                                     <p>
-                                        <select name="Group" id="Group">
-                                            @foreach (var g in ViewBag.Groups) {
-                                                <option value="@g.Id" selected="@(Model?.Group?.Id==g.Id)">@g.Number</option>
+                                        <select name="GroupId" id="Group">
+                                            @foreach (var g in Model.Groups) {
+                                                <option value="@g.Id" selected="@(Model.MachineryOnShift?.Group?.Id==g.Id)">@g.Number</option>
                                             }
                                         </select>
                                     </p>
@@ -153,7 +153,7 @@
                                 <td>
                                     <p><label for="Number">№ п/п в группе</label></p>
                                     <p>
-                                        <input type="number" name="Number" id="Number" min="0" value="@Model.Number"/>
+                                        <input type="number" name="Number" id="Number" min="0" value="@Model.MachineryOnShift.Number"/>
                                     </p>
                                 </td>
                             </tr>
@@ -172,7 +172,7 @@
                                     <div class="subblock3in1">
                                         <p><label for="Transport">Время перегона</label></p>
                                         <p>
-                                            <input type="number" name="Transport" id="Transport" min="0" max="24"  value="@Model.TransportingTime"/>
+                                            <input type="number" name="Transport" id="Transport" min="0" max="24"  value="@Model.MachineryOnShift.TransportingTime"/>
                                         </p>
                                     </div>
                                 </td>
@@ -180,7 +180,7 @@
                                     <div class="subblock3in1">
                                         <p><label for="Repair">Время ремонта</label></p>
                                         <p>
-                                            <input type="number" name="Repair" id="Repair" min="0" max="24"  value="@Model.RepairingTime"/>
+                                            <input type="number" name="Repair" id="Repair" min="0" max="24"  value="@Model.MachineryOnShift.RepairingTime"/>
                                         </p>
                                     </div>
                                 </td>
@@ -188,7 +188,7 @@
                                     <div class="subblock3in1">
                                         <p><label for="Holidays">Выходные/ Праздничные</label></p>
                                         <p>
-                                            <input type="number" name="Holidays" id="Holidays" min="0" max="24"  value="@Model.HolidayTime"/>
+                                            <input type="number" name="Holidays" id="Holidays" min="0" max="24"  value="@Model.MachineryOnShift.HolidayTime"/>
                                         </p>
                                     </div>
                                 </td>
@@ -203,7 +203,7 @@
                     <fieldset>
                         <legend>ПЗО</legend>
                         <p>
-                            <input type="checkbox" name="PZO" id="PZO" checked="@Model.PZO"/>
+                            <input type="checkbox" name="PZO" id="PZO" checked="@Model.MachineryOnShift.PZO"/>
                             <label for="PZO">Подготовительно-заключительные операции</label>
                         </p>
                     </fieldset>
@@ -213,7 +213,7 @@
     </table>
 
     <div class="savebuttons">
-        <button type="submit"  class="button-on-table">Сохранить</button>
-        <a href="/order?IdOrder=@ViewBag.OrderId" class="button-on-table">Назад</a>
+        <button type="submit"  class="button button-simple">Сохранить</button>
+        <a href="/order?IdOrder=@ViewBag.OrderId" class="button button-simple">Назад</a>
     </div>
 </form>

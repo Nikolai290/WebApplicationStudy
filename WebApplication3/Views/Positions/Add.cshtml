@@ -1,45 +1,46 @@
 ﻿@using WebApplication3.Models.Entities;
 @model Position;
 
-
 @{
-    if (String.IsNullOrEmpty(Model.Name)) {
-        ViewData["Title"] = "Adding";
-    } else {
-        ViewData["Title"] = "Change";
-    }
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  if (String.IsNullOrEmpty(Model.Name)) {
+    ViewData["Title"] = "Adding";
+  } else {
+    ViewData["Title"] = "Change";
+  }
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="form-div add-position">
-    <form class="form-add-position" method="post">
-        <input type="hidden" value="@Model.Id" name="Id" />
-        @foreach(var emp in Model.Employees) {
-            <input type="hidden" value="@emp" name="Employees" />
-        }
-        <table class="table add-position-table">
-            <tr>
-                <td>
-                    <p><label for="Name">Категория</label></p>
-                    <p><input type="text" list="Namelist" name="Name" value="@Model.Name" placeholder="Категория" maxlength="30" required /></p>
-                </td>
-                <td>
-                    <p><label for="Subname">Должность</label></p>
-                    <p><input type="text" name="Subname" value="@Model.Subname" placeholder="Должность" maxlength="50" /></p>
-                </td>
-            </tr>
-            <tr>
-                <td><button type="submit" class="button-on-table">Отправить</button></td>
-                <td><button type="reset" class="button-on-table">Сбросить</button></td>
-            </tr>
-        </table>
+  <form class="form-add-position" method="post">
+    <input type="hidden" value="@Model.Id" name="Id" />
+    @foreach (var emp in Model.Employees) {
+      <input type="hidden" value="@emp" name="Employees" />
+    }
+    <div>
+      <p><label for="Name">Категория</label></p>
+      <p>
+        <input size="40" type="text" list="Namelist" name="Name" id="Name"
+               value="@Model.Name" placeholder="Категория" maxlength="30" required />
+      </p>
+    </div>
+    <div>
+      <p><label for="Subname">Должность</label></p>
+      <p>
+        <input size="40" type="text" name="Subname" id="Subname"
+               value="@Model.Subname" placeholder="Должность" maxlength="50" />
+      </p>
+    </div>
+    <div>
+      <span><button type="submit" class="button button-simple">Отправить</button></span>
+      <span><button type="reset" class="button button-simple">Сбросить</button></span>
+    </div>
 
-        <datalist id="Namelist">
-            @foreach (var pos in ViewBag.Positions) {
-                <option value="@pos"></option>
-            }
-        </datalist>
+    <datalist id="Namelist">
+      @foreach (var pos in ViewBag.Positions) {
+        <option value="@pos"></option>
+      }
+    </datalist>
 
-    </form>
+  </form>
 
 </div>

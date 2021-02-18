@@ -1,5 +1,5 @@
-﻿@using WebApplication3.Models.Entities;
-@model Order
+﻿@using WebApplication3.Models.ViewModels;
+@model TimeLineViewModel
 
 @{
   ViewData["Title"] = "Time line";
@@ -16,12 +16,12 @@
             <table class="timeline-staff-table">
               <tr>
                 <td>Диспетчер:</td>
-                <td> @Model?.Dispetcher.GetFIO()</td>
+                <td> @Model.Order?.Dispetcher.GetFIO()</td>
                 <td>Начальник:</td>
-                <td>@Model?.Chief.GetFIO()</td>
+                <td>@Model.Order?.Chief.GetFIO()</td>
                 <td>Горный мастер:</td>
                 <td>
-                  @foreach (var m in Model?.MiningMaster) {
+                  @foreach (var m in Model.Order?.MiningMaster) {
                     @m.GetFIO()<br>
                   }
                 </td>
@@ -34,7 +34,7 @@
       </form>
     </td>
     <td rowspan="2"  class="timeline-addwork-panel">
-      <div @if (String.IsNullOrEmpty(ViewBag.MachName)) { @: hidden
+      <div @if (String.IsNullOrEmpty(Model.MachineName)) { @: hidden
                    }>
         @await Html.PartialAsync("_AddWorkPanel")
       </div>

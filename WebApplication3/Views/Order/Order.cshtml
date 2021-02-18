@@ -1,6 +1,6 @@
-﻿@using WebApplication3.Models.Entities;
+﻿@using WebApplication3.Models.ViewModels;
 
-@model Order
+@model OrderIndexViewModel
 
 @{
 
@@ -12,7 +12,7 @@
 <div class="main">
   <form id="order-settings-form" method="post">
     <input type="hidden" name="IsClose" value="false" />
-    <input type="hidden" name="orderId" value="@Model.Id" />
+    <input type="hidden" name="OrderId" value="@Model.Order.Id" />
     <table id="main-table">
       <tr id="main-properties">
         <td>
@@ -31,36 +31,36 @@
               </tr>
               <tr>
                 <td>
-                  <select disabled="@Model.IsClose" name="Dispetcher">
-                    @if (Model.Dispetcher == null) {
+                  <select disabled="@Model.Order.IsClose" name="DispetcherId">
+                    @if (Model.Order.Dispetcher == null) {
                       <option selected disabled></option>
                     }
-                    @foreach (var disp in ViewBag.Disps) {
-                      <option value="@disp.Id" selected="@(disp.Id==Model?.Dispetcher?.Id)">@disp.GetFIO()</option>
+                    @foreach (var disp in Model.Dispetchers) {
+                      <option value="@disp.Id" selected="@(disp.Id==Model.Order?.Dispetcher?.Id)">@disp.GetFIO()</option>
                     }
                   </select>
                 </td>
                 <td>
-                  <select disabled="@Model.IsClose" name="Chief">
-                    @if (Model.Chief == null) {
+                  <select disabled="@Model.Order.IsClose" name="ChiefId">
+                    @if (Model.Order.Chief == null) {
                       <option selected disabled></option>
                     }
-                    @foreach (var chief in ViewBag.Chiefs) {
-                      <option value="@chief.Id" selected="@(chief.Id==Model?.Chief?.Id)">@chief.GetFIO()</option>
+                    @foreach (var chief in Model.Chiefs) {
+                      <option value="@chief.Id" selected="@(chief.Id==Model.Order?.Chief?.Id)">@chief.GetFIO()</option>
                     }
                   </select>
                 </td>
                 <td rowspan="2">
-                  <select disabled="@Model.IsClose" name="Masters" multiple>
-                    @foreach (var master in ViewBag.Masters) {
-                      <option value="@master.Id" selected="@(Model?.MiningMaster?.Where(x => x.Id == master.Id).Any())">@master.GetFIO()</option>
+                  <select disabled="@Model.Order.IsClose" name="MastersId" multiple>
+                    @foreach (var master in Model.MiningMasters) {
+                      <option value="@master.Id" selected="@(Model.Order?.MiningMaster?.Any(x => x.Id == master.Id))">@master.GetFIO()</option>
                     }
                   </select>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <button type="submit" class="button-on-table">Save</button>
+                  <button type="submit" action="~/Order/post" class="button button-simple">Сохранить</button>
                 </td>
               </tr>
             </table>
@@ -94,23 +94,23 @@
 <hr />
 <div class="buttons-bar">
   <form action="/Order/AddMachineToOrder" method="get" style="display: inline-block">
-    <input type="hidden" name="Order" value="@Model.Id" @if (Model.Id == 0) { @: disabled
+    <input type="hidden" name="OrderId" value="@Model.Order.Id" @if (Model.Order.Id == 0) { @: disabled
            } />
-    <select name="Machine" required>
+    <select name="MachineId" required>
       <option selected disabled></option>
-      @foreach (var m in ViewBag?.Machines) {
+      @foreach (var m in Model?.Machines) {
         <option value="@m.Id">@m.Name</option>
       }
     </select>
 
-    <button type="submit" class="button-on-table" @if (Model.Id == 0) { @: disabled
+    <button type="submit" class="button button-simple" @if (Model.Order.Id == 0) { @: disabled
             }>
-      Add machine
+      Добавить оборудование
     </button>
   </form>
   <form style="display: inline-block">
     <input type="hidden" name="allPZO" value="true" />
-    <input type="submit" value="ПЗО всем" class="button-on-table" />
+    <input type="submit" value="ПЗО всем" class="button button-simple" />
   </form>
 </div>
 <hr />
@@ -141,7 +141,7 @@
       <td><h6>Удалить</h6></td>
 
     </tr>
-    @foreach (var m in ViewBag?.MachOnShift) {
+    @foreach (var m in Model.Order?.Machineries) {
       <tr class="table-content">
         <td><p>@m.Group.Number</p></td>
         <td><p>@m.Number</p></td>
@@ -161,8 +161,8 @@
         <td><p>@m.RepairingTime</p></td>
         <td><p>@m.HolidayTime</p></td>
         <td><p><input type="checkbox" disabled checked="@m.PZO" /></p></td>
-        <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id"><img src="~/source/Image/change.png" alt="change" /></a></p></td>
-        <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&IdOrder=@Model.Id"><img src="~/source/Image/delete.png" alt="delete" /></a></p></td>
+        <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id"><img src="~/source/Image/change.png" alt="change" /></a></p></td>
+        <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&OrderId=@Model.Order.Id"><img src="~/source/Image/delete.png" alt="delete" /></a></p></td>
       </tr>
 
     }

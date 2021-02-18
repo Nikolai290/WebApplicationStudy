@@ -1,4 +1,5 @@
-﻿@*
+﻿@using WebApplication3.Models.ViewModels;
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
   Model Order
   ViewBag.Areas
@@ -7,10 +8,10 @@
 }
 <div class="order-area-choice">
   <ul class="order-area choice">
-    @foreach (var area in ViewBag.Areas) {
+    @foreach (var area in Model.Areas) {
       <li>
-        <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Area.Id==area.Id)" id="area+@area.Id" />
-        <label class="button-on-table label-radio" for="area+@area.Id">
+        <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Order.Area.Id==area.Id)" id="area+@area.Id" />
+        <label class="button button-simple label-radio" for="area+@area.Id">
           @area.Name
         </label>
       </li>

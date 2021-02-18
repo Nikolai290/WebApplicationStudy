@@ -4,32 +4,57 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
+using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Services {
     public class WorkManager {
         IDbManager dbManager;
+        OrderManager orderManager;
 
         public WorkManager(IDbManager dbManager) {
             this.dbManager = dbManager;
+            orderManager = new OrderManager(dbManager);
         }
 
-        public bool Create(int machId) {
+        public TimeLineViewModel GetModelForTimeline(TimelineGetDTO dto) {
+            var model = new TimeLineViewModel();
 
+            if (dto.Date.Year < 1950)
+                dto.Date = DateTime.Now.Date;
 
+            model.Order = dto.OrderId > 0 ?
+                dbManager.GetById<Order>(dto.OrderId) :
+                orderManager.Get(dto.Date, dto.Shift, dto.OrderAreaId);
+            model.Work = dto.WorkId > 0? dbManager.GetById<Work>(dto.WorkId) : null;
+            model.MachineName = dto.MoSId > 0? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
 
-            return true;
+            model.WorkTypes = GetTypes();
+            model.CoalSorts = GetSorts();
+            model.Areas = dbManager.GetAll<OrderArea>().ToList();
+
+            var startHour = model.Order.Shift == 1 ?
+                new DateTime(1, 1, 1, 8, 0, 0) :
+                new DateTime(1, 1, 1, 20, 0, 0);
+            var hours = new List<string>();
+            for (int i = 0; i < 12; i++) {
+                hours.Add(startHour.AddHours(i).ToString("HH:mm"));
+            }
+            hours.Add(startHour.AddHours(11).ToString("HH:59"));
+            model.Hours = hours;
+
+            return model;
         }
 
-        public List<WorkTypes> GetTypes()
+        public IList<WorkTypes> GetTypes()
             => dbManager.GetAll<WorkTypes>().ToList();
         public WorkTypes GetTypeById(int id)
             => GetTypes().Where(x => x.Id == id).First();
 
-        public List<CoalSort> GetSorts()
+        public IList<CoalSort> GetSorts()
             => dbManager.GetAll<CoalSort>().ToList();
 
         public CoalSort GetSortById(int id)
-            =>GetSorts().Where(x => x.Id == id).First();
+            => GetSorts().Where(x => x.Id == id).First();
 
         public void Delete(int workId) {
             var work = GetById(workId);
@@ -43,15 +68,21 @@ namespace WebApplication3.Models.Services {
 
         public Work GetById(int id) => dbManager.GetById<Work>(id);
 
+        public Work NewWork(AddWorkDTO dto)
+            => NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
+                dto.Note,
+                dto.SortId, dto.Volume, dto.Weight, dto.Ash, dto.Heat, dto.Wet,
+                dto.Wagons);
+
         internal Work NewWork(
-            int workId, int machId, int typework, DateTime startTime, DateTime endTime, 
-            string note, 
-            int sort, double volume, double weight, double ash, double heat, double wet, 
+            int workId, int machId, int typework, DateTime startTime, DateTime endTime,
+            string note,
+            int sort, double volume, double weight, double ash, double heat, double wet,
             int wagons) {
 
             var mach = dbManager.GetById<MachineryOnShift>(machId);
 
-            var work = workId > 0? GetById(workId) : new Work().SetParent(mach);
+            var work = workId > 0 ? GetById(workId) : new Work().SetParent(mach);
             var order = dbManager.GetById<Order>(mach.Order.Id);
 
             bool isRightTime = CheckTime(order, startTime, endTime);
@@ -64,7 +95,7 @@ namespace WebApplication3.Models.Services {
 
             if (work.Type.Id == 2) {
                 work.SetVolume(volume);
-            } else if(work.Type.Id == 3 || work.Type.Id == 4) {
+            } else if (work.Type.Id == 3 || work.Type.Id == 4) {
                 work.SetProperties(weight, ash, heat, wet, GetSortById(sort));
                 if (work.Type.Id == 4) {
                     work.SetWagons(wagons);

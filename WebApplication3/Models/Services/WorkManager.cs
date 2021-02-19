@@ -48,13 +48,12 @@ namespace WebApplication3.Models.Services {
         public IList<WorkTypes> GetTypes()
             => dbManager.GetAll<WorkTypes>().ToList();
         public WorkTypes GetTypeById(int id)
-            => GetTypes().Where(x => x.Id == id).First();
-
+            => dbManager.GetById<WorkTypes>(id);
         public IList<CoalSort> GetSorts()
             => dbManager.GetAll<CoalSort>().ToList();
 
         public CoalSort GetSortById(int id)
-            => GetSorts().Where(x => x.Id == id).First();
+            => dbManager.GetById<CoalSort>(id);
 
         public void Delete(int workId) {
             var work = GetById(workId);
@@ -74,20 +73,19 @@ namespace WebApplication3.Models.Services {
                 dto.SortId, dto.Volume, dto.Weight, dto.Ash, dto.Heat, dto.Wet,
                 dto.Wagons);
 
-        internal Work NewWork(
-            int workId, int machId, int typework, DateTime startTime, DateTime endTime,
+        public Work NewWork(
+            int workId, int moSId, int typework, DateTime startTime, DateTime endTime,
             string note,
             int sort, double volume, double weight, double ash, double heat, double wet,
             int wagons) {
 
-            var mach = dbManager.GetById<MachineryOnShift>(machId);
-
+            var mach = dbManager.GetById<MachineryOnShift>(moSId);
             var work = workId > 0 ? GetById(workId) : new Work().SetParent(mach);
             var order = dbManager.GetById<Order>(mach.Order.Id);
 
             bool isRightTime = CheckTime(order, startTime, endTime);
             if (!isRightTime)
-                return new Work();
+                return new Work().SetNote("Укажите правильное время");
 
             work.SetType(GetTypeById(typework))
                 .SetNote(note)
@@ -136,6 +134,8 @@ namespace WebApplication3.Models.Services {
             if (startTime < minTime && startTime > maxTime)
                 return false;
             if (endTime < minTime && startTime > maxTime)
+                return false;
+            if ((endTime - startTime).TotalMinutes < 10 )
                 return false;
             return result;
         }

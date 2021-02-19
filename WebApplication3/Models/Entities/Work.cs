@@ -48,6 +48,9 @@ namespace WebApplication3.Models.Entities {
                 DateTime morning = new DateTime().AddHours(8);
                  var startPosition = Convert.ToInt32((start.TimeOfDay - morning.TimeOfDay).TotalMinutes);
                 StartPosition = startPosition%720;
+            } else {
+                StartTime = start;
+                EndTime = start.AddMinutes(10);
             }
 
             

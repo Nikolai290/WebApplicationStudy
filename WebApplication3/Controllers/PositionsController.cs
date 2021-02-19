@@ -8,9 +8,9 @@ using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Controllers {
     public class PositionsController : Controller {
-        private IDbManager dbManager;
+        private readonly IDbManager dbManager;
 
-        private PositionManager positionManager;
+        private readonly PositionManager positionManager;
 
         public PositionsController() {
             dbManager = new DbManager();
@@ -39,17 +39,21 @@ namespace WebApplication3.Controllers {
         [HttpPost]
         public IActionResult Add(PositionsAddDTO pos) {
             var result = positionManager.CreateNewPosition(pos);
-            string message = result ? "Объект сохранён" : "Не удалось";
             dbManager.Commit();
-            return View("Result", message);
+
+            string message = result ? $"Объект сохранён" : "Не удалось";
+            var res = new ResultViewModel(message, message, $"/positions", "Назад");
+            return View("Result", res);
         }
 
         [HttpGet]
         public IActionResult Delete(int id) {
-            bool result = positionManager.Delete(id);
-            string message = result ? "Объект удалён" : "Не удалось";
+            bool result = positionManager.DeleteAsync(id);
             dbManager.Commit();
-            return View("Result", message);
+
+            string message = result ? $"Объект удалён" : "Не удалось";
+            var res = new ResultViewModel(message, message, $"/positions", "Назад");
+            return View("Result", res);
         }
 
 

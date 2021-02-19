@@ -317,6 +317,7 @@ header {
 .timeline-content-table td {
     vertical-align: top;
     border-left: 1px dashed black;
+    
 }
 
     .timeline-content-table td:nth-child(6n+2) {
@@ -350,7 +351,6 @@ header {
     transform: perspective(100px) scaleX(0.98) rotateX(15deg);
 }
 .rectangle {
-    
     height: 1.5em;
     border: 2px solid;
     text-align: center;

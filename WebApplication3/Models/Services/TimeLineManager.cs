@@ -7,11 +7,11 @@ using WebApplication3.Models.Entities;
 using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Services {
-    public class WorkManager {
-        IDbManager dbManager;
-        OrderManager orderManager;
+    public class TimeLineManager {
+        private readonly IDbManager dbManager;
+        private readonly OrderManager orderManager;
 
-        public WorkManager(IDbManager dbManager) {
+        public TimeLineManager(IDbManager dbManager) {
             this.dbManager = dbManager;
             orderManager = new OrderManager(dbManager);
         }
@@ -47,66 +47,67 @@ namespace WebApplication3.Models.Services {
 
         public IList<WorkTypes> GetTypes()
             => dbManager.GetAll<WorkTypes>().ToList();
-        public WorkTypes GetTypeById(int id)
-            => dbManager.GetById<WorkTypes>(id);
+        public async Task<WorkTypes> GetTypeByIdAsync(int id)
+            => await dbManager.GetByIdAsync<WorkTypes>(id);
         public IList<CoalSort> GetSorts()
             => dbManager.GetAll<CoalSort>().ToList();
 
-        public CoalSort GetSortById(int id)
-            => dbManager.GetById<CoalSort>(id);
+        public async Task<CoalSort> GetSortByIdAsync(int id)
+            => await dbManager.GetByIdAsync<CoalSort>(id);
 
-        public void Delete(int workId) {
-            var work = GetById(workId);
+        public async void Delete(int workId) {
+            var work = await GetByIdAsync(workId);
             var mach = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
 
             mach.Works.Remove(work);
             work.SetParent(null);
 
-            dbManager.Delete(work);
+            dbManager.DeleteAsync(work);
         }
 
-        public Work GetById(int id) => dbManager.GetById<Work>(id);
+        public async Task<Work>  GetByIdAsync(int id) 
+            => await dbManager.GetByIdAsync<Work>(id);
 
-        public Work NewWork(AddWorkDTO dto)
-            => NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
+        public async Task<Work> NewWork(AddWorkDTO dto)
+            => await NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
                 dto.Note,
                 dto.SortId, dto.Volume, dto.Weight, dto.Ash, dto.Heat, dto.Wet,
                 dto.Wagons);
 
-        public Work NewWork(
+        public async Task<Work> NewWork(
             int workId, int moSId, int typework, DateTime startTime, DateTime endTime,
             string note,
             int sort, double volume, double weight, double ash, double heat, double wet,
             int wagons) {
 
             var mach = dbManager.GetById<MachineryOnShift>(moSId);
-            var work = workId > 0 ? GetById(workId) : new Work().SetParent(mach);
+            var work = workId > 0 ? await GetByIdAsync(workId) : new Work().SetParent(mach);
             var order = dbManager.GetById<Order>(mach.Order.Id);
 
             bool isRightTime = CheckTime(order, startTime, endTime);
             if (!isRightTime)
                 return new Work().SetNote("Укажите правильное время");
 
-            work.SetType(GetTypeById(typework))
+            work.SetType(await GetTypeByIdAsync(typework))
                 .SetNote(note)
                 .SetTime(startTime, endTime);
 
             if (work.Type.Id == 2) {
                 work.SetVolume(volume);
             } else if (work.Type.Id == 3 || work.Type.Id == 4) {
-                work.SetProperties(weight, ash, heat, wet, GetSortById(sort));
+                work.SetProperties(weight, ash, heat, wet, await GetSortByIdAsync(sort));
                 if (work.Type.Id == 4) {
                     work.SetWagons(wagons);
                 }
             }
 
 
-            dbManager.Add(work);
+            dbManager.AddAsync(work);
 
             return work;
         }
 
-        private bool CheckTime(Order order, DateTime startTime, DateTime endTime) {
+        private static bool CheckTime(Order order, DateTime startTime, DateTime endTime) {
             if (startTime > endTime)
                 return false;
 
@@ -129,7 +130,7 @@ namespace WebApplication3.Models.Services {
             return result;
         }
 
-        private bool IsValidTime(DateTime startTime, DateTime endTime, DateTime minTime, DateTime maxTime) {
+        private static bool IsValidTime(DateTime startTime, DateTime endTime, DateTime minTime, DateTime maxTime) {
             bool result = true;
             if (startTime < minTime && startTime > maxTime)
                 return false;

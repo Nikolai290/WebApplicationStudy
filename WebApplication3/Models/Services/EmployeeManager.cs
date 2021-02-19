@@ -4,59 +4,50 @@ using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace WebApplication3.Models.Services {
     public class EmployeeManager {
 
-        private IDbManager dbManager;
+        private readonly IDbManager dbManager;
 
         public EmployeeManager(IDbManager dbManager) {
             this.dbManager = dbManager;
         }
 
-        public bool CreateNewEmployee(Employee emp) {
-            bool result;
-            if (IsValid(emp, true)) {
-                result = dbManager.Add(emp);
-            } else {
-                result = false;
-            }
+        public bool CreateNewEmployee(Employee emp) 
+            => dbManager.AddAsync(emp);
 
-            return result;
-        }
 
-        public bool CreateNewEmployee(StaffAddDTO model) {
-            bool result = false;
+        public async Task<Employee> AddAsync(StaffAddDTO dto) {
             Employee emp;
-            model.Position = dbManager.GetById<Position>(model.PosId);
-                
-            if (model.Id > 0) {
-                emp = GetEmployeeById(model.Id);
-                if (IsNotTrueTableNumber(model.TableNumber) <= 1) {
-                    emp.Create(model);
-                    result = true;
+            dto.Position = await dbManager.GetByIdAsync<Position>(dto.PosId);
+
+            if (dto.Id > 0) {
+                emp = await dbManager.GetByIdAsync<Employee>(dto.Id);
+                if (IsNotTrueTableNumber(dto.TableNumber) <= 1) {
+                    emp.Create(dto);
                 }
 
             } else {
                 emp = new Employee();
-                if (IsNotTrueTableNumber(model.TableNumber) == 0) {
-                    emp.Create(model);
-                    result = dbManager.Add(emp);
+                if (IsNotTrueTableNumber(dto.TableNumber) == 0) {
+                    emp.Create(dto);
+                    dbManager.AddAsync(emp);
                 }
             }
-
-            return result;
+            return emp;
         }
 
-        public bool DeleteEmployee(Employee emp) {
+        public bool DeleteAsync(int id)
+            => DeleteAsync(GetById(id));
+
+        public bool DeleteAsync(Employee emp) {
             emp.SetNulls();
-            return dbManager.Delete(emp);
+            return dbManager.DeleteAsync(emp); 
         }
 
-        public bool DeleteEmployee(int id)
-            => DeleteEmployee(GetEmployeeById(id));
-
-        public IQueryable<Employee> GetAllEmployee()
+        public IQueryable<Employee> GetAll()
             => dbManager.GetAll<Employee>();
         public List<Order> GetAllOrderOnThisDateAndShift(Order order)
             => dbManager.GetAll<Order>().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList();
@@ -114,26 +105,18 @@ namespace WebApplication3.Models.Services {
 
 
 
-        public Employee GetEmployeeById(int id)
+        public Employee GetById(int id)
             => dbManager.GetById<Employee>(id);
 
         public IList<Employee> GetEmployeeByPosition(Position position)
             => dbManager.GetAll<Employee>().Where(x => x.Position.Id == position.Id).ToList();
 
         public IList<Employee> GetEmployeesByStringFind(string find)
-            => GetAllEmployee().ToList().Where(x => x.ToString().ToUpper().Contains(find.ToUpper())).ToList();
-
-
-        public bool IsValid(Employee emp, bool newEmployee) {
-
-
-
-            return true;
-        }
+            => GetAll().ToList().Where(x => x.ToString().ToUpper().Contains(find.ToUpper())).ToList();
 
         private int IsNotTrueTableNumber(int tableNumber) {
             if (tableNumber > 1000 && tableNumber < 1000000)
-                return GetAllEmployee().Where(x => x.TableNumber == tableNumber).Count();
+                return GetAll().Where(x => x.TableNumber == tableNumber).Count();
             else
                 return 999;
             }

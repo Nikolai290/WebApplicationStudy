@@ -46,7 +46,7 @@ namespace WebApplication3.Models.Entities {
             return line;
         }
         public virtual void SetNulls() {
-            Position.Employees.Remove(this);
+            Position?.Employees.Remove(this);
             Position = null;
             Orders = null;
             Machinaries = null;

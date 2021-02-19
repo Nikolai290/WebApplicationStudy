@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
@@ -10,9 +11,9 @@ using WebApplication3.Models.ViewModels;
 namespace WebApplication3.Controllers {
     public class StaffController : Controller {
 
-        private IDbManager dbManager;
-        private PositionManager positionManager;
-        private EmployeeManager employeeManager;
+        private readonly IDbManager dbManager;
+        private readonly PositionManager positionManager;
+        private readonly EmployeeManager employeeManager;
 
         public StaffController() {
             dbManager = new DbManager();
@@ -24,7 +25,7 @@ namespace WebApplication3.Controllers {
         public IActionResult Index(string find) {
 
             var empls = String.IsNullOrEmpty(find) ? 
-                employeeManager.GetAllEmployee().ToList() :
+                employeeManager.GetAll().ToList() :
                 employeeManager.GetEmployeesByStringFind(find);
 
             dbManager.Commit();
@@ -36,7 +37,7 @@ namespace WebApplication3.Controllers {
         public IActionResult Add(int id) {
             ViewBag.Positions = positionManager.GetAll().ToList();
             Employee emp = id > 0 ?
-                employeeManager.GetEmployeeById(id) :
+                employeeManager.GetById(id) :
                 new Employee();
 
             dbManager.Commit();
@@ -45,24 +46,28 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public IActionResult Add(StaffAddDTO emp) {
+        public async Task<IActionResult> Add(StaffAddDTO emp) {
 
 
-            var result = employeeManager.CreateNewEmployee(emp);
+            var result = await employeeManager.AddAsync(emp);
 
-            string message = result ? "Объект сохранён" : "Не удалось";
+            //string message = result ? "Объект сохранён" : "Не удалось";
 
             dbManager.Commit();
-            return View("Result", message);
+            string message = result != null ? $"Объект сохранён" : "Не удалось";
+            var res = new ResultViewModel(message, message, $"/staff", "Назад");
+
+            return View("Result", res);
         }
 
         [HttpGet]
         public IActionResult Delete(int id) {
-            bool result = employeeManager.DeleteEmployee(id);
-            string message = result ? "Объект удалён" : "Не удалось";
-
+            var result = employeeManager.DeleteAsync(id);
             dbManager.Commit();
-            return View("Result", message);
+            string message = result ? $"Объект удалён" : "Не удалось";
+            var res = new ResultViewModel(message, message, $"/staff", "Назад");
+
+            return View("Result", res);
         }
 
     }

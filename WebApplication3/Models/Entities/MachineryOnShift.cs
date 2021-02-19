@@ -88,7 +88,7 @@ namespace WebApplication3.Models.Entities {
 
 
 
-        private bool IsValidNumberGroupe(int value)
+        private static bool IsValidNumberGroupe(int value)
             => (value > 0 && value < 1000);
 
         public virtual MachineryOnShift AddEmployee(Employee empl) {
@@ -128,7 +128,7 @@ namespace WebApplication3.Models.Entities {
             Volume = IsNotNegative(volume) ? volume : 0;
             Overexcavation = IsNotNegative(overex) ? overex : 0;
             Ash = IsNotNegative(ash) ? ash : 0;
-            Heat = IsNotNegative (heat) ? heat : 0;
+            Heat = IsNotNegative(heat) ? heat : 0;
             Wet = IsNotNegative(wet) ? wet : 0;
             HighAsh = highAsh;
 
@@ -146,9 +146,7 @@ namespace WebApplication3.Models.Entities {
         private bool IsValidDownTime(int num)
             => (num >= 0 && num <= 24);
 
-        private bool IsNotNegative(double n)
-            => (n >= 0);
-        private bool IsNotNegative(int n)
+        private static bool IsNotNegative(double n)
             => (n >= 0);
 
 

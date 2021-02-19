@@ -8,45 +8,16 @@ using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Services {
     public class OrderManager {
-        private IDbManager dbManager;
-
-        private MachineryManager machineryManager;
-        private EmployeeManager employeeManager;
+        private readonly IDbManager dbManager;
+        private readonly EmployeeManager employeeManager;
 
         public OrderManager(IDbManager dbManager) {
             this.dbManager = dbManager;
-            machineryManager = new MachineryManager(dbManager);
-            employeeManager = new EmployeeManager(dbManager);
-
+            employeeManager = new EmployeeManager(dbManager as DbManager);
         }
-
-        public bool Create(Order obj) => dbManager.Add(obj);
-
-
-
-        private bool AlreadyExist(Order obj) {
-            var result = false;
-            result = CheckId(obj);
-            result = CheckRepeat(obj);
-
-
-            return result;
-        }
-
-        private bool CheckRepeat(Order obj)
-            => (GetAll().Where(x =>
-            x.Date == obj.Date &&
-            x.Shift == obj.Shift &&
-            x.Area.Id == obj.Area.Id)).Any();
-
-        private Order Find(Order obj)
-            => (GetAll().Where(x =>
-            x.Date == obj.Date &&
-            x.Shift == obj.Shift &&
-            x.Area.Id == obj.Area.Id)).First();
 
         public IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
-            var machUnique = machineryManager.GetAll().ToList();
+            var machUnique = dbManager.GetAll<Machinery>().ToList();
             var busyMachs = GetAllBusyMachinesOnThisDateAndShift(order);
             return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId).Any()).ToList();
         }
@@ -56,41 +27,40 @@ namespace WebApplication3.Models.Services {
 
         public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
             var machs = new List<MachineryOnShift>();
-            GetAllOrderOnThisDateAndShift(order).ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x)));
+            GetAllOrderOnThisDateAndShift(order).ForEach(x => machs.AddRange(x.Machineries));
             return machs;
         }
 
 
-        public OrderIndexViewModel GetOrderIndexViewModel(OrderGetDTO dto) {
-            var model = new OrderIndexViewModel();
-            model.Order = Get(dto);
+
+        public async Task<OrderIndexViewModel> GetOrderIndexViewModel(OrderGetDTO dto) {
+            var model = new OrderIndexViewModel {
+                Order = dto.OrderIdForce != 0 ? await dbManager.GetByIdAsync<Order>(dto.OrderIdForce) : Get(dto)
+            };
             FillViewModel(model);
             return model;
         }
 
         private OrderIndexViewModel FillViewModel(OrderIndexViewModel model) {
-
             model.Areas = dbManager.GetAll<OrderArea>().ToList();
             model.Dispetchers = employeeManager.GetFreeDispetchers(model.Order);
             model.Chiefs = employeeManager.GetFreeChiefs(model.Order);
             model.MiningMasters = employeeManager.GetFreeMasters(model.Order);
             model.Machines = GetAddingListMachinesExcludeRepeats(model.Order);
-
             return model;
         }
 
-        public bool AddNewMachineryOnShift(AddMachintPostDTO dto) {
-            bool result = false;
+        public async Task<bool> AddNewMachineryOnShift(AddMachintPostDTO dto) {
+            bool result;
             var Area = dbManager.GetById<QuarryArea>(dto.AreaId);
             var Field = dbManager.GetById<QuarryField>(dto.FieldId);
             var Horizon = dbManager.GetById<QuarryHorizon>(dto.HorizonId);
             var Group = dbManager.GetById<Group>(dto.GroupId);
             var Plast = dbManager.GetById<QuarryPlast>(dto.PlastId);
-            var empls = employeeManager.GetAllEmployee();
             var Crew = dbManager.GetByListId<Employee>(dto.Crew);
             bool PZO = dto.PZO == "on";
             bool HighAsh = dto.HighAsh == "on";
-            var order = GetById(dto.OrderId);
+            var order = await dbManager.GetByIdAsync<Order>(dto.OrderId);
 
             // insert validation here
 
@@ -104,30 +74,25 @@ namespace WebApplication3.Models.Services {
                 obj = new MachineryOnShift(mach);
                 order.AddMachines(obj);
                 obj.SetOrder(order);
-                result = dbManager.Add(obj);
+                result = dbManager.AddAsync(obj);
             }
-            
-
             obj.SetLocation(Area, Field, Horizon, Plast, dto.Picket)
                 .SetGroup(Group, dto.Number)
                 .SetOrderProperties(dto.Weight, dto.Volume, dto.Overex, dto.Ash, dto.Heat, dto.Wet, HighAsh)
                 .SetDownTime(dto.Transport, dto.Repair, dto.HoliDays)
                 .SetCrew(Crew)
                 .SetPZO(PZO);
-            
-
             return result;
         }
 
         internal AddingMachineViewModel GetAddingMachineViewModel(AddMachineGetDTO dtoGet) {
-            var model = new AddingMachineViewModel();
-            model.OrderId = dtoGet.OrderId;
-            model.MachineryOnShift = dtoGet.MoSId > 0 ?
+            var model = new AddingMachineViewModel {
+                OrderId = dtoGet.OrderId,
+                MachineryOnShift = dtoGet.MoSId > 0 ?
                 dbManager.GetById<MachineryOnShift>(dtoGet.MoSId) :
-                new MachineryOnShift(dbManager.GetById<Machinery>(dtoGet.MachineId));
-
+                new MachineryOnShift(dbManager.GetById<Machinery>(dtoGet.MachineId))
+            };
             model = FillViewModelForAddingMachine(model);
-
             return model;
         }
 
@@ -141,12 +106,12 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public OrderIndexViewModel PostOrderIndexViewModel(OrderGetDTO dtoGet, OrderPostDTO dtoPost) {
-            var model = new OrderIndexViewModel();
-            model.Order = dtoPost.OrderId > 0 ?
-                GetById(dtoPost.OrderId) :
-                Get(dtoGet);
-
+        public async Task<OrderIndexViewModel> PostOrderIndexViewModel(OrderGetDTO dtoGet, OrderPostDTO dtoPost) {
+            var model = new OrderIndexViewModel {
+                Order = dtoPost.OrderId > 0 ?
+                await dbManager.GetByIdAsync<Order>(dtoPost.OrderId) :
+                Get(dtoGet)
+            };
             FillViewModel(model);
 
             var disp = dtoPost.DispetcherId > 0 ? dbManager.GetById<Employee>(dtoPost.DispetcherId) : model.Order.Dispetcher;
@@ -156,7 +121,7 @@ namespace WebApplication3.Models.Services {
                 .SetStaff(disp, chief, masters);
 
             if (model.Order.Id == 0)
-                dbManager.Add(model.Order);
+                dbManager.AddAsync(model.Order);
 
             return model;
         }
@@ -164,24 +129,7 @@ namespace WebApplication3.Models.Services {
         public bool DeleteMachineryOnShift(int id) {
             var obj = dbManager.GetById<MachineryOnShift>(id);
             obj.SetNulls();
-            return dbManager.Delete(obj);
-        }
-
-        public Order GetById(int id) {
-            Order result;
-            result = dbManager.GetById<Order>(id);
-            return result;
-        }
-
-        private bool CheckId(Order obj)
-            => GetAll().Where(x => x.Id == obj.Id).Any();
-
-        // Сделать метод апдейт
-        private bool Update(Order obj) {
-
-            Order order = Find(obj);
-            order = obj.CopyTo(order);
-            return dbManager.Update(order);
+            return dbManager.DeleteAsync(obj);
         }
 
         public IQueryable<Order> GetAll() => dbManager.GetAll<Order>();
@@ -198,14 +146,11 @@ namespace WebApplication3.Models.Services {
 
             return result;
         }
-        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId) {
-
-            return new Order().SetBase(date, shiftId).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
-        }
+        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId) 
+            =>new Order().SetBase(date, shiftId).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
+        
 
         public Order Get(OrderGetDTO dto)
             => Get(dto.Date, dto.ShiftId, dto.OrderAreaId);
-
-
     }
 }

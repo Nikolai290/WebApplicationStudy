@@ -10,8 +10,10 @@
   <tr>
     <td class="top-menu">
       <form>
-        <div >
-          <div>@await Html.PartialAsync("_OrderShift")</div>
+        <div>
+          <div>
+            @await Html.PartialAsync("_OrderShift")
+          </div>
           <div class="timeline-staff">
             <table class="timeline-staff-table">
               <tr>
@@ -33,15 +35,15 @@
         </div>
       </form>
     </td>
-    <td rowspan="2"  class="timeline-addwork-panel">
+    <td rowspan="2" class="timeline-addwork-panel">
       <div @if (String.IsNullOrEmpty(Model.MachineName)) { @: hidden
-                   }>
+           }>
         @await Html.PartialAsync("_AddWorkPanel")
       </div>
     </td>
   </tr>
   <tr>
-    <td  class="timeline-main">
+    <td class="timeline-main">
 
       <div>
         @await Html.PartialAsync("_TimelineTable")
@@ -52,5 +54,8 @@
 </table>
 
 
-
+<menu type="context" id="context-menu-timeline">
+  <menuitem label="Работа" icon="~/wwwroot/Source/ContextMenuIcons/Pen.png" onclick="/timeline?create=1"></menuitem>
+  <menuitem label="Удалить" icon="~/wwwroot/Source/ContextMenuIcons/Delete.png" onclick="/timeline?delete=1"></menuitem>
+</menu>
 

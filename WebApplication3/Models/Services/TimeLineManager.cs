@@ -24,7 +24,7 @@ namespace WebApplication3.Models.Services {
 
             model.Order = dto.OrderId > 0 ?
                 dbManager.GetById<Order>(dto.OrderId) :
-                orderManager.Get(dto.Date, dto.Shift, dto.OrderAreaId);
+                orderManager.Get(dto.Date, dto.ShiftId, dto.OrderAreaId);
             model.Work = dto.WorkId > 0? dbManager.GetById<Work>(dto.WorkId) : null;
             model.MachineName = dto.MoSId > 0? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
 

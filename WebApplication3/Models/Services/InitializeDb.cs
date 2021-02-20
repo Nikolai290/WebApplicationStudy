@@ -213,7 +213,7 @@ namespace WebApplication3.Models.Services {
 
             var Employees = new List<Employee>();
 
-            while (Employees.Count < 100)
+            while (Employees.Count < 200)
                 Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), Positions[Rnd(pos)]));
 
             //PullToDb(Employees);

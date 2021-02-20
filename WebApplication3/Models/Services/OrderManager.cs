@@ -99,7 +99,6 @@ namespace WebApplication3.Models.Services {
                 new MachineryOnShift(dbManager.GetById<Machinery>(dtoGet.MachineId))
             };
             model = FillViewModelForAddingMachine(model);
-            model.FreeDrivers.ToList().AddRange(model.MachineryOnShift.Crew.Where(x => x.IsDelete));
             return model;
         }
 
@@ -161,16 +160,12 @@ namespace WebApplication3.Models.Services {
                 if (orderAreaId > 0) {
                     order.SetArea(areas.Single(x => x.Id == orderAreaId));
                 } else {
-                    order.SetArea(areas.First(x => !x.IsDelete));
+                    order.SetArea(areas.First());
 
                 }
             } else {
                 order.SetArea(null);
             }
-
-            order.SetArea(
-                orderAreaId > 0 ?
-                dbManager.GetById<OrderArea>(orderAreaId) : order.Area);
             return order;
         }
 

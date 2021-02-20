@@ -86,14 +86,18 @@ namespace WebApplication3.Models.Services {
         public IList<Employee> GetFreeDrivers(Order order, int machId) {
             var machs = GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
 
-            var aurMach = dbManager.GetById<MachineryOnShift>(machId);
             var busyEmpls = new List<Employee>();
             machs?.ForEach(x => busyEmpls.AddRange(x.Crew));
             if (busyEmpls.Count == 0)
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Машинист").Difference(busyEmpls);
-            var isdeletedempls = aurMach.Crew.Where(x => x.IsDelete).ToList();
-            isdeletedempls.ForEach(x => freeEmpls.Insert(0,x));
+
+            if(machId > 0) {
+                var aurMach = dbManager.GetById<MachineryOnShift>(machId);
+                var isdeletedempls = aurMach.Crew.Where(x => x.IsDelete).ToList();
+                isdeletedempls.ForEach(x => freeEmpls.Insert(0, x));
+            }
+            
 
             return freeEmpls;
         }

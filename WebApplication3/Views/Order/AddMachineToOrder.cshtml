@@ -66,13 +66,13 @@
                                 <td colspan="3">
                                     <p><label for="Weight">Вес</label></p>
                                     <p>
-                                        <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight" />
+                                        <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight" step="0.01"/>
                                     </p>
                                 </td>
                                 <td colspan="3">
                                     <p><label for="Volume">Объём</label></p>
                                     <p>
-                                        <input type="number" name="Volume" id="Volume" min="0"  value="@Model.MachineryOnShift.Volume" />
+                                        <input type="number" name="Volume" id="Volume" min="0"  value="@Model.MachineryOnShift.Volume" step="0.01" />
                                     </p>
                                 </td>
                             </tr>
@@ -80,7 +80,7 @@
                                 <td colspan="6">
                                     <p><label for="Overex">Переэкскавация</label></p>
                                     <p>
-                                        <input type="number" name="Overex" id="Overex" min="0"  value="@Model.MachineryOnShift.Overexcavation" />
+                                        <input type="number" name="Overex" id="Overex" min="0"  value="@Model.MachineryOnShift.Overexcavation" step="0.01" />
                                     </p>
                                 </td>
                             </tr>
@@ -88,19 +88,19 @@
                                 <td colspan="2">
                                     <p><label for="Ash">Зола</label></p>
                                     <p>
-                                        <input type="number" name="Ash" id="Ash" min="0"  value="@Model.MachineryOnShift.Ash" />
+                                        <input type="number" name="Ash" id="Ash" min="0"  value="@Model.MachineryOnShift.Ash" step="0.01" />
                                     </p>
                                 </td>
                                 <td colspan="2">
                                     <p><label for="Heat">Теплота</label></p>
                                     <p>
-                                        <input type="number" name="Heat" id="Heat" min="0"  value="@Model.MachineryOnShift.Heat" />
+                                        <input type="number" name="Heat" id="Heat" min="0"  value="@Model.MachineryOnShift.Heat" step="0.01" />
                                     </p>
                                 </td>
                                 <td colspan="2">
                                     <p><label for="Wet">Влага</label></p>
                                     <p>
-                                        <input type="number" name="Wet" id="Wet" min="0"  value="@Model.MachineryOnShift.Wet" />
+                                        <input type="number" name="Wet" id="Wet" min="0"  value="@Model.MachineryOnShift.Wet" step="0.01" />
                                     </p>
                                 </td>
                             </tr>

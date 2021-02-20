@@ -15,7 +15,6 @@ namespace WebApplication3.Models.Services {
             this.dbManager = dbManager;
         }
 
-        // Команды
         public bool Create(Position pos) {
             if (IsValid(pos)) {
                 return dbManager.AddAsync(pos);
@@ -51,8 +50,6 @@ namespace WebApplication3.Models.Services {
         private bool IsAlreadyExist(Position pos)
             => (dbManager.GetAll<Position>().Where(x => x.Name == pos.Name && x.Subname == pos.Subname).Any());
 
-        // Команды
-
         public bool DeleteAsync(Position pos) {
              if (IsWriteProtection(pos.Id))
                 return false;
@@ -69,7 +66,6 @@ namespace WebApplication3.Models.Services {
         public bool DeleteAsync(int id)
             => DeleteAsync(GetById(id));
 
-        // Запросы
         public IQueryable<Position> GetAll()
             => dbManager.GetAll<Position>();
 

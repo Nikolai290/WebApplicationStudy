@@ -7,15 +7,18 @@
 }
 
 <div class="staff-table">
-    <div class="submenu">
-        <a href="staff/add?0" class="button button-simple">Добавить</a>
-    </div>
+
     <div class="find">
-        <form class="find-form" method="get">
-            <input type="search" name="find" class="find-input"
-                   placeholder="Введите строку для поиска" maxlength="50" />
-            <input type="submit" class="button button-simple" value="Найти"/>
-        </form>
+      <form class="find-form" method="get">
+        <input type="search" name="find" class="find-input"
+               placeholder="Введите строку для поиска" maxlength="50" />
+        <button type="submit" class="button button-simple">
+          <img class="icon" src="~/source/Image/find.png" alt="find" /> Поиск
+        </button>
+
+        <a href="staff/add?0" class="button button-simple">Добавить</a>
+
+      </form>
     </div>
     <table class="machinery-table">
         <tr class="table-header">
@@ -38,8 +41,8 @@
                     @emp.Position.Subname
                     </p>
                 </td>
-                <td><a href="~/staff/add?id=@emp.Id" class="button-on-table">Изменить</a></td>
-                <td><a href="~/staff/delete?id=@emp.Id" class="button-on-table">Удалить</a></td>
+                <td class="active-cell"><a href="~/staff/add?id=@emp.Id"><img class="icon" src="~/source/Image/change.png" alt="change" /></a></td>
+                <td class="active-cell"><a href="~/staff/delete?id=@emp.Id"><img class="icon" src="~/source/Image/delete.png" alt="delete" /></a></td>
             </tr>
         }
     </table>

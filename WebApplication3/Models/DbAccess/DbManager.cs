@@ -81,7 +81,7 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         public IList<T> GetByListId<T>(IList<int> ids) where T : DbEntities {
-            return GetAll<T>().Where(x => ids.Contains(x.Id)).ToList();
+            return ids.Count>0? GetAll<T>().Where(x => ids.Contains(x.Id)).ToList(): null;
         }
 
         public async Task<IList<T>> GetByListAsync<T>(IList<int> ids) where T : DbEntities {

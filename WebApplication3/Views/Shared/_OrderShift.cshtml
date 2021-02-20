@@ -38,6 +38,31 @@
     </tr>
   </table>
   <div>
-    <button type="submit" formmethod="get" class="button button-simple">Найти</button>
+    <a href="/order?@GetPrevios()" class="button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>
+    <a href="/order?@GetNext()" class="button button-simple"><img class="icon" src="~/source/Image/right.png" alt=">" /></a>
+    <button type="submit" formmethod="get" class="button button-simple"><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
   </div>
 </div>
+
+@functions {
+
+  string GetNext() {
+    string next = "";
+    if (Model.Order.Shift == 1) {
+      next = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={2}&Date={Model.Order.Date.ToString("yyyy-MM-dd")}";
+    } else if (Model.Order.Shift == 2) {
+      next = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={1}&Date={Model.Order.Date.AddDays(1).ToString("yyyy-MM-dd")}";
+    }
+    return next;
+  }
+
+  string GetPrevios() {
+    string previos = "";
+    if (Model.Order.Shift == 1) {
+      previos = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={2}&Date={Model.Order.Date.AddDays(-1).ToString("yyyy-MM-dd")}";
+    } else if (Model.Order.Shift == 2) {
+      previos = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={1}&Date={Model.Order.Date.ToString("yyyy-MM-dd")}";
+    }
+    return previos;
+  }
+}

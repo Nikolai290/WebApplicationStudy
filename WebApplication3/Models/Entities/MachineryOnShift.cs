@@ -100,8 +100,8 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual MachineryOnShift SetCrew(IList<Employee> empls) {
-            if (empls.Count <= 10)
-                Crew = empls;
+            if (empls != null)
+                Crew = empls.Take(10).ToList();
             return this;
         }
 
@@ -150,11 +150,11 @@ namespace WebApplication3.Models.Entities {
             => (n >= 0);
 
 
-        public virtual MachineryOnShift SetPZO (bool pzo) {
+        public virtual MachineryOnShift SetPZO(bool pzo) {
             PZO = pzo;
             return this;
         }
-        public virtual MachineryOnShift InversePZO () {
+        public virtual MachineryOnShift InversePZO() {
             PZO = !PZO;
             return this;
         }
@@ -163,14 +163,14 @@ namespace WebApplication3.Models.Entities {
             return this;
         }
 
-        public virtual MachineryOnShift AddWork (Work work) {
+        public virtual MachineryOnShift AddWork(Work work) {
 
             Works.Add(work);
             work.SetParent(this);
             return this;
         }
 
-        public virtual MachineryOnShift SetWorks (IList<Work> works) {
+        public virtual MachineryOnShift SetWorks(IList<Work> works) {
             Works = works;
             works.ToList().ForEach(x => x.SetParent(this));
             return this;

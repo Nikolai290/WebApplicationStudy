@@ -38,6 +38,7 @@ namespace WebApplication3.Models.Services {
                 Order = dto.OrderIdForce != 0 ? await dbManager.GetByIdAsync<Order>(dto.OrderIdForce) : Get(dto)
             };
             FillViewModel(model);
+
             return model;
         }
 
@@ -57,12 +58,13 @@ namespace WebApplication3.Models.Services {
             var Horizon = dbManager.GetById<QuarryHorizon>(dto.HorizonId);
             var Group = dbManager.GetById<Group>(dto.GroupId);
             var Plast = dbManager.GetById<QuarryPlast>(dto.PlastId);
-            var Crew = dbManager.GetByListId<Employee>(dto.Crew);
+            var Crew = dto.Crew != null? dbManager.GetByListId<Employee>(dto?.Crew) : null;
             bool PZO = dto.PZO == "on";
             bool HighAsh = dto.HighAsh == "on";
             var order = await dbManager.GetByIdAsync<Order>(dto.OrderId);
 
             // insert validation here
+            
 
             MachineryOnShift obj;
 
@@ -76,6 +78,7 @@ namespace WebApplication3.Models.Services {
                 obj.SetOrder(order);
                 result = dbManager.AddAsync(obj);
             }
+
             obj.SetLocation(Area, Field, Horizon, Plast, dto.Picket)
                 .SetGroup(Group, dto.Number)
                 .SetOrderProperties(dto.Weight, dto.Volume, dto.Overex, dto.Ash, dto.Heat, dto.Wet, HighAsh)
@@ -146,9 +149,9 @@ namespace WebApplication3.Models.Services {
 
             return result;
         }
-        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId) 
-            =>new Order().SetBase(date, shiftId).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
-        
+        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId)
+            => new Order().SetBase(date, shiftId).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
+
 
         public Order Get(OrderGetDTO dto)
             => Get(dto.Date, dto.ShiftId, dto.OrderAreaId);

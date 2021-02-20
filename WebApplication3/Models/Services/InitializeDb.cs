@@ -240,11 +240,11 @@ namespace WebApplication3.Models.Services {
 
             while (masters.Count > 2)
                 masters.RemoveAt(Rnd(masters.Count));
-
+/*
             Order order = new Order();
             order.SetBase(DateTime.Now.Date, 1).SetStaff(disps.First(), chiefs.First(), masters).SetArea(orderAreas.First());
 
-            dbManager.AddAsync(order);
+            dbManager.AddAsync(order);*/
         }
 
         private static int Rnd(int max) => Rnd(0, max);

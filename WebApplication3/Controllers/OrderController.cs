@@ -19,15 +19,15 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(OrderGetDTO dto) {
-            OrderIndexViewModel model = await orderManager.GetOrderIndexViewModel(dto);
+        public IActionResult Index(OrderGetDTO dto) {
+            OrderIndexViewModel model = orderManager.GetOrderIndexViewModel(dto);
             dbManager.Commit();
             return View("Order", model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(OrderGetDTO dtoGet,OrderPostDTO dtoPost) {
-            OrderIndexViewModel model = await orderManager.PostOrderIndexViewModel(dtoGet, dtoPost);
+        public IActionResult Index(OrderGetDTO dtoGet,OrderPostDTO dtoPost) {
+            OrderIndexViewModel model = orderManager.PostOrderIndexViewModel(dtoGet, dtoPost);
             dbManager.Commit();
             return View("Order", model);
         }
@@ -43,8 +43,8 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public async Task<IActionResult> AddMachineToOrder(AddMachintPostDTO dto) {
-            var result = await orderManager.AddNewMachineryOnShift(dto);
+        public IActionResult AddMachineToOrder(AddMachintPostDTO dto) {
+            var result = orderManager.AddNewMachineryOnShift(dto);
             dbManager.Commit();
             string message = result ? $"Объект сохранён" : "Не удалось";
             var res = new ResultViewModel(message, message, $"/order?orderIdforce={dto.OrderId}", "Назад");

@@ -10,7 +10,7 @@
   <ul class="order-area choice">
     @foreach (var area in Model.Areas) {
       <li>
-        <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model.Order.Area.Id==area.Id)" id="area+@area.Id" />
+        <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model?.Order?.Area.Id==area.Id)" id="area+@area.Id" />
         <label class="button button-simple label-radio" for="area+@area.Id">
           @area.Name
         </label>

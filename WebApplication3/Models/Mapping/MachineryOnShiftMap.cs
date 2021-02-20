@@ -8,6 +8,7 @@ namespace WebApplication3.Models.Mapping {
 
             // Base
             Id(x => x.Id);
+            Map(x => x.IsDelete);
             Map(x => x.Name);
             Map(x => x.MachineryId);
             References(x => x.Order).Cascade.All();

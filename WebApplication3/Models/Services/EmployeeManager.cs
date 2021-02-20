@@ -15,16 +15,16 @@ namespace WebApplication3.Models.Services {
             this.dbManager = dbManager;
         }
 
-        public bool CreateNewEmployee(Employee emp) 
+        public bool CreateNewEmployee(Employee emp)
             => dbManager.AddAsync(emp);
 
 
-        public async Task<Employee> AddAsync(StaffAddDTO dto) {
+        public Employee AddAsync(StaffAddDTO dto) {
             Employee emp;
-            dto.Position = await dbManager.GetByIdAsync<Position>(dto.PosId);
+            dto.Position = dbManager.GetById<Position>(dto.PosId);
 
             if (dto.Id > 0) {
-                emp = await dbManager.GetByIdAsync<Employee>(dto.Id);
+                emp = dbManager.GetById<Employee>(dto.Id);
                 if (IsNotTrueTableNumber(dto.TableNumber) <= 1) {
                     emp.Create(dto);
                 }
@@ -39,13 +39,8 @@ namespace WebApplication3.Models.Services {
             return emp;
         }
 
-        public bool DeleteAsync(int id)
-            => DeleteAsync(GetById(id));
-
-        public bool DeleteAsync(Employee emp) {
-            emp.SetNulls();
-            return dbManager.DeleteAsync(emp); 
-        }
+        public bool PseudoDelete(int id)
+            => GetById(id).Delete(true);
 
         public IQueryable<Employee> GetAll()
             => dbManager.GetAll<Employee>();
@@ -60,6 +55,8 @@ namespace WebApplication3.Models.Services {
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Диспетчер").Difference(busyEmpls);
 
+            if (order.Dispetcher.IsDelete) freeEmpls.Add(order.Dispetcher);
+
             return freeEmpls;
         }
 
@@ -70,6 +67,7 @@ namespace WebApplication3.Models.Services {
             if (busyEmpls.Count == 0)
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Начальник").Difference(busyEmpls);
+            if (order.Chief.IsDelete) freeEmpls.Add(order.Chief);
 
             return freeEmpls;
         }
@@ -80,17 +78,22 @@ namespace WebApplication3.Models.Services {
             if (busyEmpls.Count == 0)
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Горный мастер").Difference(busyEmpls);
+            if (order.MiningMaster.Any(x => x.IsDelete))
+                freeEmpls.ToList().AddRange(order.MiningMaster.Where(x => x.IsDelete));
 
             return freeEmpls;
         }
         public IList<Employee> GetFreeDrivers(Order order, int machId) {
             var machs = GetAllBusyMachinesOnThisDateAndShift(order).Where(x => x.Id != machId).ToList();
 
+            var aurMach = dbManager.GetById<MachineryOnShift>(machId);
             var busyEmpls = new List<Employee>();
             machs?.ForEach(x => busyEmpls.AddRange(x.Crew));
             if (busyEmpls.Count == 0)
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Машинист").Difference(busyEmpls);
+            var isdeletedempls = aurMach.Crew.Where(x => x.IsDelete).ToList();
+            isdeletedempls.ForEach(x => freeEmpls.Insert(0,x));
 
             return freeEmpls;
         }
@@ -99,7 +102,9 @@ namespace WebApplication3.Models.Services {
 
         public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
             var machs = new List<MachineryOnShift>();
-            GetAllOrderOnThisDateAndShift(order).ForEach(x => x.Machineries.ToList().ForEach(x => machs.Add(x)));
+            GetAllOrderOnThisDateAndShift(order).ForEach(x => x.Machineries
+            .Where(x => !x.IsDelete).ToList()
+            .ForEach(x => machs.Add(x)));
             return machs;
         }
 
@@ -119,7 +124,7 @@ namespace WebApplication3.Models.Services {
                 return GetAll().Where(x => x.TableNumber == tableNumber).Count();
             else
                 return 999;
-            }
+        }
 
 
     }

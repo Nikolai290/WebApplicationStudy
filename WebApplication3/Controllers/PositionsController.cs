@@ -19,7 +19,7 @@ namespace WebApplication3.Controllers {
 
         public IActionResult Index() {
 
-            var positions = positionManager.GetAll().ToList();
+            var positions = positionManager.GetAllClean();
             dbManager.Commit();
             return View("Positions", positions);
         }
@@ -48,7 +48,7 @@ namespace WebApplication3.Controllers {
 
         [HttpGet]
         public IActionResult Delete(int id) {
-            bool result = positionManager.DeleteAsync(id);
+            bool result = positionManager.PseudoDelete(id);
             dbManager.Commit();
 
             string message = result ? $"Объект удалён" : "Не удалось";

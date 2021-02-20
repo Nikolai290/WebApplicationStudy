@@ -26,10 +26,10 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public async Task<IActionResult> Index(TimelineGetDTO dto, AddWorkDTO dtoPost) {
+        public IActionResult Index(TimelineGetDTO dto, AddWorkDTO dtoPost) {
             var work = workManager.NewWork(dtoPost);
             var model = workManager.GetModelForTimeline(dto);
-            model.Work = await work;
+            model.Work = work;
             dbManager.Commit();
             return View("TimeLine", model);
         }

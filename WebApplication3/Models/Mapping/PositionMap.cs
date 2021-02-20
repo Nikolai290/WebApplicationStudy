@@ -6,6 +6,7 @@ namespace WebApplication3.Models.Mapping {
         
         public PositionMap() {
             Id(x => x.Id);
+            Map(x => x.IsDelete);
             Map(x => x.Name);
             Map(x => x.Subname);
             HasMany(x => x.Employees)

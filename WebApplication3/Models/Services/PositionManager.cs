@@ -50,31 +50,42 @@ namespace WebApplication3.Models.Services {
         private bool IsAlreadyExist(Position pos)
             => (dbManager.GetAll<Position>().Where(x => x.Name == pos.Name && x.Subname == pos.Subname).Any());
 
-        public bool DeleteAsync(Position pos) {
-             if (IsWriteProtection(pos.Id))
-                return false;
-            foreach (var emp in pos.Employees) {
-                emp.Position = dbManager.GetById<Position>(1);
-            }
-            pos.Employees = null;
-            return dbManager.DeleteAsync(pos);
+        public bool PseudoDelete(int id) {
+            return dbManager.PseudoDelete<Position>(id);
         }
+
+        //public bool DeleteAsync(Position pos) {
+        //     if (IsWriteProtection(pos.Id))
+        //        return false;
+        //    foreach (var emp in pos.Employees) {
+        //        emp.Position = dbManager.GetById<Position>(1);
+        //    }
+        //    pos.Employees = null;
+        //    return dbManager.DeleteAsync(pos);
+        //}
 
         private static bool IsWriteProtection(int id)
             => (id == 1 || id == 2 || id == 3 || id == 4);
 
-        public bool DeleteAsync(int id)
-            => DeleteAsync(GetById(id));
+        //public bool DeleteAsync(int id)
+        //    => DeleteAsync(GetById(id));
 
         public IQueryable<Position> GetAll()
             => dbManager.GetAll<Position>();
+
+        public IList<PositionsViewModel> GetAllClean() {
+            var model = new List<PositionsViewModel>();
+            dbManager.GetAll<Position>().ToList().ForEach( x => model.Add(new PositionsViewModel(x)));
+            model.ForEach(x => x.Employees = dbManager.GetAll<Employee>().Where(z => z.Position.Id == x.Id).ToList());
+            return model;
+        }
 
         public Position GetById(int id)
             => dbManager.GetById<Position>(id);
 
 
-        public async Task<Position> GetByIdAsync(int id)
-            => await dbManager.GetByIdAsync<Position>(id);
+        public Position GetByIdAsync(int id)
+            => dbManager.GetById<Position>(id);
 
         public IList<string> GetDistinctNames() {
             var all = GetAll().Select(x => x.Name).ToArray();

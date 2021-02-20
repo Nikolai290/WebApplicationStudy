@@ -6,6 +6,7 @@ namespace WebApplication3.Models.Mapping {
         public OrderMap() {
             // Base
             Id(x => x.Id);
+            Map(x => x.IsDelete);
             Map(x => x.Date);
             Map(x => x.Shift);
             Map(x => x.IsClose);

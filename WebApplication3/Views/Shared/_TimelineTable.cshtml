@@ -22,25 +22,25 @@
             </span>
           </td>
           @for (int j = 0; j < 5; j++) {
-            <td class="timeline-cells"></td>
+            <td class=""></td>
           }
         }
       </tr>
     </thead>
 
     <tbody class="timeline-content-table">
-      @foreach (var m in Model.Order?.Machineries) {
+      @foreach (var m in Model?.Order?.Machineries) {
         <tr>
-          <td>
-            <a class="button-on-table" href="/timeline?OrderId=@Model.Order.Id&MoSId=@m?.Id">
+          <td class="active-cell">
+            <a class="button button-simple" href="/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id">
               @m?.Name
             </a>
           </td>
           <td class="timeline-cells">
-            @foreach (var w in m.Works) {
+            @foreach (var w in m?.Works) {
               <div class="work-for-timeline @w.Type.Figure.Name" style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
                  width: @(w.TotalMinutes*2)px; position:relative; left: @(w.StartPosition *2-2)px;">
-                <a href="/timeline?OrderId=@Model.Order.Id&MoSId=@m?.Id&workId=@w.Id" class="button-fill">
+                <a href="/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id&workId=@w.Id" class="button-fill">
                   @w.Type.Name
 
                 </a>

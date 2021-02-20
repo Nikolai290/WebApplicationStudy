@@ -46,10 +46,10 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(StaffAddDTO emp) {
+        public IActionResult Add(StaffAddDTO emp) {
 
 
-            var result = await employeeManager.AddAsync(emp);
+            var result = employeeManager.AddAsync(emp);
 
             //string message = result ? "Объект сохранён" : "Не удалось";
 
@@ -62,7 +62,7 @@ namespace WebApplication3.Controllers {
 
         [HttpGet]
         public IActionResult Delete(int id) {
-            var result = employeeManager.DeleteAsync(id);
+            var result = employeeManager.PseudoDelete(id);
             dbManager.Commit();
             string message = result ? $"Объект удалён" : "Не удалось";
             var res = new ResultViewModel(message, message, $"/staff", "Назад");

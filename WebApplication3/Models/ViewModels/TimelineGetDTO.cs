@@ -16,6 +16,7 @@ namespace WebApplication3.Models.ViewModels {
             Date = DateTime.Now.Date;
             Shift = 1;
             OrderAreaId = 1;
+
         }
     }
 }

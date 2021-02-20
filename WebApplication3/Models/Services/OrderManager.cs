@@ -33,9 +33,9 @@ namespace WebApplication3.Models.Services {
 
 
 
-        public async Task<OrderIndexViewModel> GetOrderIndexViewModel(OrderGetDTO dto) {
+        public OrderIndexViewModel GetOrderIndexViewModel(OrderGetDTO dto) {
             var model = new OrderIndexViewModel {
-                Order = dto.OrderIdForce != 0 ? await dbManager.GetByIdAsync<Order>(dto.OrderIdForce) : Get(dto)
+                Order = dto.OrderIdForce != 0 ? dbManager.GetById<Order>(dto.OrderIdForce) : Get(dto)
             };
             FillViewModel(model);
 
@@ -43,7 +43,7 @@ namespace WebApplication3.Models.Services {
         }
 
         private OrderIndexViewModel FillViewModel(OrderIndexViewModel model) {
-            model.Areas = dbManager.GetAll<OrderArea>().ToList();
+            model.Areas = dbManager.GetAll<OrderArea>().ToList().Where(x => !String.IsNullOrEmpty(x.Name)).ToList();
             model.Dispetchers = employeeManager.GetFreeDispetchers(model.Order);
             model.Chiefs = employeeManager.GetFreeChiefs(model.Order);
             model.MiningMasters = employeeManager.GetFreeMasters(model.Order);
@@ -51,20 +51,23 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public async Task<bool> AddNewMachineryOnShift(AddMachintPostDTO dto) {
+        public bool DeleteMachineryOnShift(int mosId)
+            => dbManager.PseudoDelete<MachineryOnShift>(mosId);
+
+        public bool AddNewMachineryOnShift(AddMachintPostDTO dto) {
             bool result;
             var Area = dbManager.GetById<QuarryArea>(dto.AreaId);
             var Field = dbManager.GetById<QuarryField>(dto.FieldId);
             var Horizon = dbManager.GetById<QuarryHorizon>(dto.HorizonId);
             var Group = dbManager.GetById<Group>(dto.GroupId);
             var Plast = dbManager.GetById<QuarryPlast>(dto.PlastId);
-            var Crew = dto.Crew != null? dbManager.GetByListId<Employee>(dto?.Crew) : null;
+            var Crew = dto.Crew != null ? dbManager.GetByListId<Employee>(dto?.Crew) : null;
             bool PZO = dto.PZO == "on";
             bool HighAsh = dto.HighAsh == "on";
-            var order = await dbManager.GetByIdAsync<Order>(dto.OrderId);
+            var order = dbManager.GetById<Order>(dto.OrderId);
 
             // insert validation here
-            
+
 
             MachineryOnShift obj;
 
@@ -96,6 +99,7 @@ namespace WebApplication3.Models.Services {
                 new MachineryOnShift(dbManager.GetById<Machinery>(dtoGet.MachineId))
             };
             model = FillViewModelForAddingMachine(model);
+            model.FreeDrivers.ToList().AddRange(model.MachineryOnShift.Crew.Where(x => x.IsDelete));
             return model;
         }
 
@@ -109,10 +113,10 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public async Task<OrderIndexViewModel> PostOrderIndexViewModel(OrderGetDTO dtoGet, OrderPostDTO dtoPost) {
+        public OrderIndexViewModel PostOrderIndexViewModel(OrderGetDTO dtoGet, OrderPostDTO dtoPost) {
             var model = new OrderIndexViewModel {
                 Order = dtoPost.OrderId > 0 ?
-                await dbManager.GetByIdAsync<Order>(dtoPost.OrderId) :
+                dbManager.GetById<Order>(dtoPost.OrderId) :
                 Get(dtoGet)
             };
             FillViewModel(model);
@@ -129,11 +133,11 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public bool DeleteMachineryOnShift(int id) {
-            var obj = dbManager.GetById<MachineryOnShift>(id);
-            obj.SetNulls();
-            return dbManager.DeleteAsync(obj);
-        }
+        //public bool DeleteMachineryOnShift(int id) {
+        //    var obj = dbManager.GetById<MachineryOnShift>(id);
+        //    obj.SetNulls();
+        //    return dbManager.DeleteAsync(obj);
+        //}
 
         public IQueryable<Order> GetAll() => dbManager.GetAll<Order>();
         public Order Get(DateTime date, int shiftId, int orderAreaId) {
@@ -149,8 +153,26 @@ namespace WebApplication3.Models.Services {
 
             return result;
         }
-        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId)
-            => new Order().SetBase(date, shiftId).SetArea(dbManager.GetById<OrderArea>(orderAreaId));
+        private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId) {
+            var order = new Order()
+            .SetBase(date, shiftId);
+            var areas = dbManager.GetAll<OrderArea>().ToList();
+            if (areas.Count > 0) {
+                if (orderAreaId > 0) {
+                    order.SetArea(areas.Single(x => x.Id == orderAreaId));
+                } else {
+                    order.SetArea(areas.First(x => !x.IsDelete));
+
+                }
+            } else {
+                order.SetArea(null);
+            }
+
+            order.SetArea(
+                orderAreaId > 0 ?
+                dbManager.GetById<OrderArea>(orderAreaId) : order.Area);
+            return order;
+        }
 
 
         public Order Get(OrderGetDTO dto)

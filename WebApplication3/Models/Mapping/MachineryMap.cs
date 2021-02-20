@@ -6,6 +6,7 @@ namespace WebApplication3.Models.Mapping {
 
         public MachineryMap() {
             Id(x => x.Id);
+            Map(x => x.IsDelete);
             Map(x => x.Name);
         }
     }

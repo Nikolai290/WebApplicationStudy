@@ -112,6 +112,7 @@ header {
 .button {
     display: inline-block;
     text-decoration: none;
+
     text-align: center;
     padding: 5px;
     border: none;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Models.Services;
 using WebApplication3.Models.DbAccess;
+using WebApplication3.Models.ViewModels;
 
 
 namespace WebApplication3.Controllers {
@@ -16,7 +17,10 @@ namespace WebApplication3.Controllers {
         public IActionResult Initialize() {
             new DbManager().Commit();
             new InitializeDb().Start();
-            return View("Result", "База успешно инициализрована!");
+            string message = "База успешно инициализиорована";
+            var res = new ResultViewModel(message, message, $"/staff", "Назад");
+
+            return View("Result", res);
 
         }
 

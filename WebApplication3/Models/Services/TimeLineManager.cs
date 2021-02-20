@@ -30,7 +30,7 @@ namespace WebApplication3.Models.Services {
 
             model.WorkTypes = GetTypes();
             model.CoalSorts = GetSorts();
-            model.Areas = dbManager.GetAll<OrderArea>().ToList();
+            model.Areas = dbManager.GetAll<OrderArea>().ToList().Where(x => !String.IsNullOrEmpty(x.Name)).ToList();
 
             var startHour = model.Order.Shift == 1 ?
                 new DateTime(1, 1, 1, 8, 0, 0) :
@@ -45,57 +45,60 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
+        public void Delete(int workId)
+            => dbManager.PseudoDelete<Work>(workId);
+
         public IList<WorkTypes> GetTypes()
             => dbManager.GetAll<WorkTypes>().ToList();
-        public async Task<WorkTypes> GetTypeByIdAsync(int id)
-            => await dbManager.GetByIdAsync<WorkTypes>(id);
+        public WorkTypes GetTypeById(int id)
+            => dbManager.GetById<WorkTypes>(id);
         public IList<CoalSort> GetSorts()
             => dbManager.GetAll<CoalSort>().ToList();
 
-        public async Task<CoalSort> GetSortByIdAsync(int id)
-            => await dbManager.GetByIdAsync<CoalSort>(id);
+        public CoalSort GetSortById(int id)
+            => dbManager.GetById<CoalSort>(id);
 
-        public async void Delete(int workId) {
-            var work = await GetByIdAsync(workId);
-            var mach = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
+        //public void Delete(int workId) {
+        //    //var work = dbManager.GetById<Work>(workId);
+        //    //var mach = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
 
-            mach.Works.Remove(work);
-            work.SetParent(null);
+        //    //mach.Works.Remove(work);
+        //    //work.SetParent(null);
 
-            dbManager.DeleteAsync(work);
-        }
+        //    dbManager.DeleteAsync(work);
+        //}
 
-        public async Task<Work>  GetByIdAsync(int id) 
-            => await dbManager.GetByIdAsync<Work>(id);
+        public Work  GetById(int id) 
+            => dbManager.GetById<Work>(id);
 
-        public async Task<Work> NewWork(AddWorkDTO dto)
-            => await NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
+        public Work NewWork(AddWorkDTO dto)
+            => NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
                 dto.Note,
                 dto.SortId, dto.Volume, dto.Weight, dto.Ash, dto.Heat, dto.Wet,
                 dto.Wagons);
 
-        public async Task<Work> NewWork(
+        public Work NewWork(
             int workId, int moSId, int typework, DateTime startTime, DateTime endTime,
             string note,
             int sort, double volume, double weight, double ash, double heat, double wet,
             int wagons) {
 
             var mach = dbManager.GetById<MachineryOnShift>(moSId);
-            var work = workId > 0 ? await GetByIdAsync(workId) : new Work().SetParent(mach);
+            var work = workId > 0 ? GetById(workId) : new Work().SetParent(mach);
             var order = dbManager.GetById<Order>(mach.Order.Id);
 
             bool isRightTime = CheckTime(order, startTime, endTime);
             if (!isRightTime)
                 return new Work().SetNote("Укажите правильное время");
 
-            work.SetType(await GetTypeByIdAsync(typework))
+            work.SetType(GetTypeById(typework))
                 .SetNote(note)
                 .SetTime(startTime, endTime);
 
             if (work.Type.Id == 2) {
                 work.SetVolume(volume);
             } else if (work.Type.Id == 3 || work.Type.Id == 4) {
-                work.SetProperties(weight, ash, heat, wet, await GetSortByIdAsync(sort));
+                work.SetProperties(weight, ash, heat, wet, GetSortById(sort));
                 if (work.Type.Id == 4) {
                     work.SetWagons(wagons);
                 }

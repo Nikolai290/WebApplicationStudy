@@ -12,8 +12,8 @@ namespace WebApplication3.Models.ViewModels {
 
 
         public OrderGetDTO() {
-            OrderAreaId = 1;
             ShiftId = 1;
+            OrderAreaId = 1;
             Date = DateTime.Now.Date;
         }
         

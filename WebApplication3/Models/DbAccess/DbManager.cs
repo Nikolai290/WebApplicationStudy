@@ -24,12 +24,13 @@ namespace WebApplication3.Models.DbAccess {
         public bool AddAsync<T>(T obj) where T : DbEntities {
             bool result = true;
             try {
-                session.SaveOrUpdateAsync(obj);
+                session.SaveAsync(obj);
             } catch {
                 result = false;
             }
             return result;
         }
+
 
 
 
@@ -59,18 +60,22 @@ namespace WebApplication3.Models.DbAccess {
 
 
         public IQueryable<T> GetAll<T>() where T : DbEntities
-        => session.Query<T>();
+        => session.Query<T>().Where(x => !x.IsDelete);
 
-        public async Task<T> GetByIdAsync<T>(int id) where T : DbEntities
-            => await session.GetAsync<T>(id);
+        public IQueryable<T> GetAllForce<T>() where T : DbEntities
+            => session.Query<T>();
+        public async Task<T> GetByIdAsync<T>(int id) where T : DbEntities {
+            return await session.GetAsync<T>(id);
+        }
 
         public T GetById<T>(int id) where T : DbEntities
             => GetAll<T>().Single(x => x.Id == id);
+        public T GetByIdForce<T>(int id) where T : DbEntities
+            => GetAllForce<T>().Single(x => x.Id == id);
 
 
 
-
-            public bool UpdateAsync<T>(T obj) where T : DbEntities {
+        public bool UpdateAsync<T>(T obj) where T : DbEntities {
             bool result = true;
             try {
                 session.Update(obj);
@@ -91,5 +96,9 @@ namespace WebApplication3.Models.DbAccess {
             }
             return result;
         }
+
+
+        public bool PseudoDelete<T>(int id) where T : DbEntities
+            => GetById<T>(id).Delete(true);
     }
 }

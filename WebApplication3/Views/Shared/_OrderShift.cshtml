@@ -21,14 +21,14 @@
       <td>
         <p>
           <input type="radio" value="1" name="ShiftId" checked="@(Model.Order.Shift==1)" id="shift1" />
-          <label class="button-on-table label-radio" for="shift1">
+          <label class="button button-simple" for="shift1">
             Смена 1
           </label>
 
         </p>
         <p>
           <input type="radio" value="2" name="ShiftId" checked="@(Model.Order.Shift==2)" id="shift2" />
-          <label class="button-on-table label-radio" for="shift2">
+          <label class="button button-simple" for="shift2">
             Смена 2
           </label>
         </p>
@@ -49,9 +49,9 @@
   string GetNext() {
     string next = "";
     if (Model.Order.Shift == 1) {
-      next = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={2}&Date={Model.Order.Date.ToString("yyyy-MM-dd")}";
+      next = $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
     } else if (Model.Order.Shift == 2) {
-      next = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={1}&Date={Model.Order.Date.AddDays(1).ToString("yyyy-MM-dd")}";
+      next = $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.AddDays(1).ToString("yyyy-MM-dd")}";
     }
     return next;
   }
@@ -59,9 +59,9 @@
   string GetPrevios() {
     string previos = "";
     if (Model.Order.Shift == 1) {
-      previos = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={2}&Date={Model.Order.Date.AddDays(-1).ToString("yyyy-MM-dd")}";
+      previos = $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.AddDays(-1).ToString("yyyy-MM-dd")}";
     } else if (Model.Order.Shift == 2) {
-      previos = $"OrderAreaId={Model.Order.Area.Id}&ShiftId={1}&Date={Model.Order.Date.ToString("yyyy-MM-dd")}";
+      previos = $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
     }
     return previos;
   }

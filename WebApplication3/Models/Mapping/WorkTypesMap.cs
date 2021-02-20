@@ -5,6 +5,7 @@ namespace WebApplication3.Models.Mapping {
     public class WorkTypesMap : ClassMap<WorkTypes> {
         public WorkTypesMap() {
             Id(x => x.Id);
+            Map(x => x.IsDelete);
             Map(x => x.Name);
             Map(x => x.BackgroundColor);
             Map(x => x.TextColor);

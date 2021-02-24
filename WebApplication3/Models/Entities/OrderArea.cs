@@ -5,6 +5,7 @@ namespace WebApplication3.Models.Entities {
 
         public virtual string Name { get; protected set; }
         public virtual IList<Order> Orders { get; protected set; }
+        public virtual IList<MachineryType> MachineryTypes { get; protected set; }
 
         public OrderArea() { }
         public OrderArea(string name) {

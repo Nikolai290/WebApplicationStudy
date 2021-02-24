@@ -8,6 +8,7 @@ namespace WebApplication3.Models.Mapping {
             Id(x => x.Id);
             Map(x => x.IsDelete);
             Map(x => x.Name);
+            References(x => x.Type).Not.LazyLoad().Cascade.All();
         }
     }
 }

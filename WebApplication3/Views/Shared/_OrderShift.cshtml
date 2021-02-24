@@ -6,42 +6,60 @@
 @{
 }
 <div class="order-main-settings">
-  <table>
-    <tr>
-      <td>Дата</td>
-      <td>
-        Смена
-        @if (Model.Order.IsClose) {
-          <p id="isClose">(Смена закрыта)</p>
-        }
-      </td>
-    </tr>
-    <tr>
-      <td><input type="date" name="Date" value="@Model.Order?.Date.ToString("yyyy-MM-dd")" required /></td>
-      <td>
-        <p>
+  <form>
+    <div class="order-date-choice">
+      <div>
+
+        <input type="date" name="Date" value="@Model.Order?.Date.ToString("yyyy-MM-dd")" required />
+        <button type="submit" formmethod="get" class="button button-simple"><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
+
+        <a href="@GetPrevios()" class="button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>
+        <a href="@GetNext()" class="button button-simple"><img class="icon" src="~/source/Image/right.png" alt=">" /></a>
+      </div>
+    </div>
+
+    <div class="order-shift-choice">
+      <ul class="inline-ul">
+
+        <li>
           <input type="radio" value="1" name="ShiftId" checked="@(Model.Order.Shift==1)" id="shift1" />
-          <label class="button button-simple" for="shift1">
-            Смена 1
+          <label for="shift1">
+            <a class="button button-simple"
+               href="@CheckModel()OrderAreaId=@Model?.Order?.Area.Id&ShiftId=1&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
+              Смена 1
+            </a>
           </label>
 
-        </p>
-        <p>
+        </li>
+
+        <li>
           <input type="radio" value="2" name="ShiftId" checked="@(Model.Order.Shift==2)" id="shift2" />
-          <label class="button button-simple" for="shift2">
-            Смена 2
+          <label for="shift2">
+            <a class="button button-simple"
+               href="@CheckModel()OrderAreaId=@Model?.Order?.Area.Id&ShiftId=2&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
+              Смена 2
+            </a>
           </label>
-        </p>
-      </td>
-    </tr>
-    <tr>
-    </tr>
-  </table>
-  <div>
-    <a href="@GetPrevios()" class="button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>
-    <a href="@GetNext()" class="button button-simple"><img class="icon" src="~/source/Image/right.png" alt=">" /></a>
-    <button type="submit" formmethod="get" class="button button-simple"><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
-  </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="order-area-choice">
+      <ul class="inline-ul">
+        @foreach (var area in Model.Areas) {
+          <li>
+            <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model?.Order?.Area.Id==area.Id)" id="area+@area.Id" />
+            <label class="" for="area+@area.Id">
+              <a class="button button-simple"
+                 href="@CheckModel()OrderAreaId=@area.Id&ShiftId=@(Model?.Order?.Shift)&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
+                @area.Name
+              </a>
+            </label>
+          </li>
+        }
+      </ul>
+    </div>
+  </form>
 </div>
 
 @functions {

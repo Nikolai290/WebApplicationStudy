@@ -52,9 +52,11 @@
       <input type="text" name="note" id="note" value="@Model.Work?.Note" />
     </div>
 
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("sort")) { @: hidden
+         }>
       <label for="sort">Сорт</label> <br />
-      <select name="sortId" id="sort">
+      <select name="sortId" id="sort"@if (Model.Work.Type.NeedsFields.Contains("sort")) { @: required
+         }>
         <option selected disabled></option>
         @foreach (var s in Model.CoalSorts) {
           <option value="@s.Id" selected="@(Model.Work?.Sort?.Id == s.Id)">@s.Name</option>
@@ -62,28 +64,34 @@
       </select>
     </div>
 
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("volume")) { @: hidden
+         }>
       <label for="volume">Объём</label> <br />
       <input type="text" name="volume" id="volume" value="@Model.Work?.Volume" />
     </div>
 
-    <div>
-      <label for="wiegth">Вес</label> <br />
-      <input type="text" name="wiegth" id="wiegth" value="@Model.Work?.Weight" />
+    <div @if (!Model.Work.Type.NeedsFields.Contains("weight")) { @: hidden
+         }>
+      <label for="weight">Вес</label> <br />
+      <input type="text" name="weight" id="weight" value="@Model.Work?.Weight" />
     </div>
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("ash")) { @: hidden
+         }>
       <label for="ash">Зола</label> <br />
       <input type="text" name="ash" id="ash" value="@Model.Work?.Ash" />
     </div>
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("heat")) { @: hidden
+         }>
       <label for="heat">Теплота</label> <br />
       <input type="text" name="heat" id="heat" value="@Model.Work?.Heat" />
     </div>
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("wet")) { @: hidden
+         }>
       <label for="wet">Влага</label> <br />
       <input type="text" name="wet" id="wet" value="@Model.Work?.Wet" />
     </div>
-    <div>
+    <div @if (!Model.Work.Type.NeedsFields.Contains("wagons")) { @: hidden
+         }>
       <label for="wagons">Число вагонов</label> <br />
       <input type="number" name="wagons" id="wagons" value="@Model.Work?.Wagons" />
     </div>

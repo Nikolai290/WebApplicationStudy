@@ -5,7 +5,7 @@ namespace WebApplication3.Models.Entities {
         // dependence
         public virtual MachineryOnShift Parent { get; protected set; }
         //
-        public virtual WorkTypes Type { get; protected set; }
+        public virtual WorkTypes Type { get; protected set; } = new WorkTypes();
         // base
         public virtual DateTime StartTime { get; protected set; }
         public virtual DateTime EndTime { get; protected set; }
@@ -72,7 +72,6 @@ namespace WebApplication3.Models.Entities {
             Heat = heat > 0 ? heat: 0;
             Wet = wet > 0 ? wet: 0;
             Sort = sort;
-            sort.Works.Add(this);
 
             return this;
         }

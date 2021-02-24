@@ -10,80 +10,64 @@
 
 
 <div class="main">
-  <form id="order-settings-form" method="post">
-    <input type="hidden" name="IsClose" value="false" />
-    <input type="hidden" name="OrderId" value="@Model.Order.Id" />
-    <table id="main-table">
-      <tr id="main-properties">
-        <td>
-          @*
-            partial view is here  
-          *@
-          @await Html.PartialAsync("_OrderShift")
-        </td>
-        <td colspan="2">
-          <div class="order-staff">
-            <table>
-              <tr>
-                <td>Диспетчер</td>
-                <td>Начальник</td>
-                <td>Горный мастер</td>
-              </tr>
-              <tr>
-                <td>
-                  <select disabled="@Model.Order.IsClose" name="DispetcherId">
-                    @if (Model.Order.Dispetcher == null) {
-                      <option selected disabled></option>
-                    }
-                    @foreach (var disp in Model.Dispetchers) {
-                      <option value="@disp.Id" selected="@(disp.Id==Model.Order?.Dispetcher?.Id)">@disp.GetFIO()</option>
-                    }
-                  </select>
-                </td>
-                <td>
-                  <select disabled="@Model.Order.IsClose" name="ChiefId">
-                    @if (Model.Order.Chief == null) {
-                      <option selected disabled></option>
-                    }
-                    @foreach (var chief in Model.Chiefs) {
-                      <option value="@chief.Id" selected="@(chief.Id==Model.Order?.Chief?.Id)">@chief.GetFIO()</option>
-                    }
-                  </select>
-                </td>
-                <td rowspan="2">
-                  <select disabled="@Model.Order.IsClose" name="MastersId" multiple>
-                    @foreach (var master in Model.MiningMasters) {
-                      <option value="@master.Id" selected="@(Model.Order?.MiningMaster?.Any(x => x.Id == master.Id))">@master.GetFIO()</option>
-                    }
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <button type="submit" action="~/Order/post" class="button button-simple">Сохранить</button>
-                </td>
-              </tr>
-            </table>
+  <div class="order-main-settings">
 
-
-
+    @await Html.PartialAsync("_OrderShift")
+  </div>
+  <div class="order-staff-settings">
+    <form id="order-settings-form" method="post">
+      <input type="hidden" name="IsClose" value="false" />
+      <input type="hidden" name="OrderId" value="@Model.Order.Id" />
+      <ul class="inline-ul">
+        <li>
+          <div>Диспетчер</div>
+          <div>
+            <select disabled="@Model.Order.IsClose" name="DispetcherId" required>
+              @if (Model.Order.Dispetcher.Id == 0) {
+                <option selected disabled></option>
+              }
+              @foreach (var disp in Model.Dispetchers) {
+                <option value="@disp.Id" selected="@(disp.Id==Model.Order?.Dispetcher?.Id)">@disp.GetFIO()</option>
+              }
+            </select>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="3">
-          @*
-           order area choice  
-          *@
-          @await Html.PartialAsync("_OrderAreaChoice")
-        </td>
-      </tr>
+        </li>
 
-    </table>
+        <li class="inline-ul">
+          <div>Начальник  смены</div>
+        
+            <div>
+              <select disabled="@Model.Order.IsClose" name="ChiefId" required>
+                @if (Model.Order.Chief.Id == 0) {
+                  <option selected disabled></option>
+                }
+                @foreach (var chief in Model.Chiefs) {
+                  <option value="@chief.Id" selected="@(chief.Id==Model.Order?.Chief?.Id)">@chief.GetFIO()</option>
+                }
+              </select>
+            </div>
+        </li>
+
+        <li class="inline-ul">
+          <div>Горный мастер</div>
+          <div>
+            <select disabled="@Model.Order.IsClose" name="MastersId" multiple required>
+              @foreach (var master in Model.MiningMasters) {
+                <option value="@master.Id" selected="@(Model.Order?.MiningMaster?.Any(x => x.Id == master.Id))">@master.GetFIO()</option>
+              }
+            </select>
+          </div>
+          <p class="hint">CTRL + ЛКМ чтобы выбрать несколько</p>
+        </li>
+      </ul>
+      <div id="save-panel">
+        <button type="submit" action="~/Order/post" class="button button-simple">Сохранить</button>
+      </div>
 
 
-  </form>
 
+    </form>
+  </div>
 </div>
 
 
@@ -137,33 +121,33 @@
       <td><h6>Ремонт</h6></td>
       <td><h6>Выходные</h6></td>
       <td><h6>ПЗО</h6></td>
-      <td><h6>Изменить</h6></td>
       <td><h6>Удалить</h6></td>
 
     </tr>
-    @foreach (var m in Model.Order?.Machineries) {
+    @foreach (var m in Model.Order?.Machineries?.Where(x => !x.IsDelete)) {
+
       <tr class="table-content">
-        <td><p>@m.Group.Number</p></td>
-        <td><p>@m.Number</p></td>
-        <td><p>@m.Name</p></td>
-        <td><p>@m.Picket</p></td>
-        <td><p>@m.Area.Name</p></td>
-        <td><p>@m.Field.Name</p></td>
-        <td><p>@m.Plast.Name</p></td>
-        <td><p>@m.Horizon.Name</p></td>
-        <td><p>@m.Weight</p></td>
-        <td><p>@m.Volume</p></td>
-        <td><p>@m.Overexcavation</p></td>
-        <td><p>@m.Ash</p></td>
-        <td><p>@m.Heat</p></td>
-        <td><p>@m.Wet</p></td>
-        <td><p>@m.TransportingTime</p></td>
-        <td><p>@m.RepairingTime</p></td>
-        <td><p>@m.HolidayTime</p></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Group.Number</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Number</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Name</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Picket</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Area.Name</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Field.Name</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Plast.Name</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Horizon.Name</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Weight</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Volume</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Overexcavation</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Ash</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Heat</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.Wet</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.TransportingTime</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.RepairingTime</a></td>
+        <td><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id">@m.HolidayTime</a></td>
         <td><p><input type="checkbox" disabled checked="@m.PZO" /></p></td>
-        <td class="active-cell change-cell"><p><a href="/Order/AddMachineToOrder?mosId=@m.Id&OrderId=@Model.Order.Id"><img class="icon" src="~/source/Image/change.png" alt="change" /></a></p></td>
-        <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&OrderId=@Model.Order.Id"><img  class="icon"  src="~/source/Image/delete.png" alt="delete" /></a></p></td>
+        <td class="active-cell delete-cell"><p><a href="/Order/Delete?mosId=@m.Id&OrderId=@Model.Order.Id"><img class="icon" src="~/source/Image/delete.png" alt="delete" /></a></p></td>
       </tr>
+
 
     }
   </table>

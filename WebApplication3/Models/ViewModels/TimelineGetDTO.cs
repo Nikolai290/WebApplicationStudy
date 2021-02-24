@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace WebApplication3.Models.ViewModels {
     public class TimelineGetDTO {
-        public virtual int OrderId { get; set; }
-        public virtual DateTime Date { get; set; }
-        public virtual int ShiftId { get; set; }
-        public virtual int OrderAreaId { get; set; }
-        public virtual int MoSId{ get; set; }
-        public virtual int WorkId{ get; set; }
+        public int OrderId { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime StartTime { get; set; }
+        public int ShiftId { get; set; }
+        public int OrderAreaId { get; set; }
+        public int MoSId{ get; set; }
+        public int WorkId{ get; set; }
 
         public TimelineGetDTO() {
             Date = DateTime.Now.Date;

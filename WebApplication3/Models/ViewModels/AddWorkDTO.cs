@@ -24,6 +24,8 @@ namespace WebApplication3.Models.ViewModels {
         public virtual double Wet { get; set; }
 
         public virtual AddWorkDTO ConvertStringToDouble() {
+            Double.TryParse(volume, out double vol);
+            Volume = vol;
             Volume = IsRight(volume) ? Convert.ToDouble(volume) : 0;
             Weight = IsRight(weight) ? Convert.ToDouble(weight) : 0;
             Ash = IsRight(ash) ? Convert.ToDouble(ash) : 0;

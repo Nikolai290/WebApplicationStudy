@@ -115,9 +115,12 @@ namespace WebApplication3.Models.Services {
 
             var TypeWorks = new List<WorkTypes> {
                 new WorkTypes("Технологические операции", "orange", "black", figures[0]),
-                new WorkTypes("Дробление горельника", "green", "white", figures[0]),
-                new WorkTypes("Погрузка угля в автотранспорт", "rebeccapurple", "white", figures[1]),
+                new WorkTypes("Дробление горельника", "green", "white", figures[0])
+                .SetNeedFields("volume"),
+                new WorkTypes("Погрузка угля в автотранспорт", "rebeccapurple", "white", figures[1])
+                .SetNeedFields("weight", "sort", "ash", "heat", "wet"),
                 new WorkTypes("Обогащение угля", "royalblue", "white", figures[0])
+                .SetNeedFields("weight", "sort", "ash", "heat", "wet", "wagons")
             };
 
             var Positions = new List<Position> {
@@ -213,7 +216,7 @@ namespace WebApplication3.Models.Services {
 
             var Employees = new List<Employee>();
 
-            while (Employees.Count < 200)
+            while (Employees.Count < 100)
                 Employees.Add(new Employee(names[Rnd(names.Count)], lastnames[Rnd(lastnames.Count)], fathernames[Rnd(fathernames.Count)], Rnd(), Positions[Rnd(pos)]));
 
             //PullToDb(Employees);

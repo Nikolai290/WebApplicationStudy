@@ -25,7 +25,9 @@ namespace WebApplication3.Models.Services {
             model.Order = dto.OrderId > 0 ?
                 dbManager.GetById<Order>(dto.OrderId) :
                 orderManager.Get(dto.Date, dto.ShiftId, dto.OrderAreaId);
-            model.Work = dto.WorkId > 0? dbManager.GetById<Work>(dto.WorkId) : null;
+            model.Work = dto.WorkId > 0? 
+                dbManager.GetById<Work>(dto.WorkId) : 
+                new Work().SetTime(dto.StartTime, dto.StartTime.AddMinutes(10));
             model.MachineName = dto.MoSId > 0? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
 
             model.WorkTypes = GetTypes();
@@ -42,6 +44,13 @@ namespace WebApplication3.Models.Services {
             hours.Add(startHour.AddHours(11).ToString("HH:59"));
             model.Hours = hours;
 
+            var timeIntervals = new List<string>();
+            for(int i=0; i<72; i++) {
+                timeIntervals.Add(startHour.AddMinutes(i * 10).ToString("HH:mm"));
+            }
+            
+            model.TimeIntervals = timeIntervals;
+
             return model;
         }
 
@@ -57,16 +66,6 @@ namespace WebApplication3.Models.Services {
 
         public CoalSort GetSortById(int id)
             => dbManager.GetById<CoalSort>(id);
-
-        //public void Delete(int workId) {
-        //    //var work = dbManager.GetById<Work>(workId);
-        //    //var mach = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
-
-        //    //mach.Works.Remove(work);
-        //    //work.SetParent(null);
-
-        //    dbManager.DeleteAsync(work);
-        //}
 
         public Work  GetById(int id) 
             => dbManager.GetById<Work>(id);

@@ -31,7 +31,7 @@ namespace WebApplication3.Models.Entities {
             Dispetcher = new Employee();
             Chief = new Employee();
             MiningMaster = new List<Employee>() { new Employee() };
-            Area = new OrderArea();
+            Area= new OrderArea();
 
         }
 

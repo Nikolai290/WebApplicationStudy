@@ -7,6 +7,7 @@ namespace WebApplication3.Models.Entities {
         public virtual string TextColor { get; protected set; }
         public virtual Figure Figure { get; protected set; }
         public virtual IList<Work> Works { get; protected set; } = new List<Work>();
+        public virtual string NeedsFields { get; set; } = "";
 
         public WorkTypes() { }
 
@@ -20,6 +21,13 @@ namespace WebApplication3.Models.Entities {
 
         public virtual WorkTypes SetId(int id) {
             Id = id > 0 ? id : 0;
+            return this;
+        }
+
+        public virtual WorkTypes SetNeedFields (params string[] fields) {
+
+            foreach (var line in fields)
+                NeedsFields += line + " ";
             return this;
         }
 

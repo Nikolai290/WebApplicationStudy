@@ -16,6 +16,7 @@ namespace WebApplication3.Models.Mapping {
 
             //
             References(x => x.Sort).Not.LazyLoad();
+            Map(x => x.Volume);
             Map(x => x.Weight);
             Map(x => x.Ash);
             Map(x => x.Heat);

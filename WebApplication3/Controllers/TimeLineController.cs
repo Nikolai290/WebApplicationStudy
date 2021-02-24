@@ -2,7 +2,6 @@
 using WebApplication3.Models.Services;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.ViewModels;
-using System.Threading.Tasks;
 
 namespace WebApplication3.Controllers {
     public class TimeLineController : Controller {
@@ -14,16 +13,12 @@ namespace WebApplication3.Controllers {
             dbManager = new DbManager();
             workManager = new TimeLineManager(dbManager);
         }
-
-
-
-        [HttpGet]
+        
         public IActionResult Index(TimelineGetDTO dto) { 
             var model = workManager.GetModelForTimeline(dto);
             dbManager.Commit();
             return View("TimeLine", model);
         }
-
 
         [HttpPost]
         public IActionResult Index(TimelineGetDTO dto, AddWorkDTO dtoPost) {

@@ -69,7 +69,7 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         public T GetById<T>(int id) where T : DbEntities
-            => GetAll<T>().Single(x => x.Id == id);
+            => GetAll<T>()?.SingleOrDefault(x => x.Id == id);
         public T GetByIdForce<T>(int id) where T : DbEntities
             => GetAllForce<T>().Single(x => x.Id == id);
 

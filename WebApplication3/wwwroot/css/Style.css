@@ -1,7 +1,7 @@
 ﻿body {
 }
 a{
-    text-decoration-style:none;
+    text-decoration:none;
     color:black;
 }
 a:hover {
@@ -47,24 +47,29 @@ a:active {
         display: inline;
     }
 
-        #nav ul li a {
-            display: inline-block;
-            width: 10em;
-            height: 2em;
-            padding: 2px;
-            background-color: #ddd;
-            text-decoration: none;
-            color: #222;
-            text-align: center;
-        }
+    .current-position {
+        background-color: #CCC;
+    }
+.navbutton {
+    text-decoration: none;
+    display: inline-block;
+    width: 10em;
+    height: 2em;
+    padding: 2px;
+    color: #222;
+    text-align: center;
+}
 
-            #nav ul li a:hover {
-                background-color: #ccc;
-            }
+    .navbutton:hover {
+        text-decoration: none;
+        background-color: #ccc;
+    }
 
-            #nav ul li a:active {
-                background-color: #bbb;
-            }
+    .navbutton:active {
+        text-decoration: none;
+        background-color: #bbb;
+    }
+
 
 header {
     background-color: #eee;
@@ -410,7 +415,6 @@ work-for-timeline {
 }
 
     .button-fill:hover {
-        text-decoration: underline;
         color: inherit;
     }
     .button-fill:active {

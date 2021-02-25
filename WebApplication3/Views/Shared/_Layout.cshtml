@@ -11,19 +11,18 @@
 </head>
 <body>
     <div id="wrapper"  class="border-radius">
-        <header>
-            <nav id="nav">
-                <ul id="menu">
-                    <li><a href="~/Home">Главная</a></li>
-                    <li><a href="~/Timeline">Временная шкала</a></li>
-                    <li><a href="~/Order">Наряд</a></li>
-                    <li><a href="~/Machinery">Техника</a></li>
-                    <li><a href="~/MachineryTypes">Типы техники</a></li>
-                    <li><a href="~/Staff">Сотрудники</a></li>
-                    <li><a href="~/Positions">Должности</a></li>
-                </ul>
-            </nav>
-        </header>
+      <header>
+        <nav id="nav">
+          <ul id="menu">
+            <li><a class="navbutton @IsActrive("/Timeline")" href="~/Timeline">Временная шкала</a></li>
+            <li><a class="navbutton @IsActrive("/Order")" href="~/Order">Наряд</a></li>
+            <li><a class="navbutton @IsActrive("/Machineries")" href="~/Machineries">Техника</a></li>
+            <li><a class="navbutton @IsActrive("/MachineryTypes")" href="~/MachineryTypes">Типы техники</a></li>
+            <li><a class="navbutton @IsActrive("/Staff")" href="~/Staff">Сотрудники</a></li>
+            <li><a class="navbutton @IsActrive("/Positions")" href="~/Positions">Должности</a></li>
+          </ul>
+        </nav>
+      </header>
         <div id="container">
             <main id="main">
                 @RenderBody()
@@ -38,3 +37,11 @@
     </div>
 </body>
 </html>
+@functions{
+
+    string IsActrive(string path) {
+      if (Context.Request.Path.ToString().ToUpper().Contains(path.ToUpper()))
+        return "current-position";
+      return "";
+    }
+}

@@ -405,4 +405,18 @@ work-for-timeline {
     }
 
 
+    /* machinaries editing table*/
+.main-table {
+    max-width: 600;
+    display: inline-block;
+}
+    .adding-panel {
+        margin-left: 20px;
+        vertical-align: top;
+        max-width: 300px;
+        display: inline-block;
+    }
 
+    .machinery-page {
+        vertical-align: top;
+    }

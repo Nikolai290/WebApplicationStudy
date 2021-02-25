@@ -68,12 +68,23 @@ namespace WebApplication3.Models.DbAccess {
             return await session.GetAsync<T>(id);
         }
 
-        public T GetById<T>(int id) where T : DbEntities
-            => GetAll<T>()?.SingleOrDefault(x => x.Id == id);
-        public T GetByIdForce<T>(int id) where T : DbEntities
-            => GetAllForce<T>().Single(x => x.Id == id);
+        public T GetById<T>(int id) where T : DbEntities {
+            try {
+                var obj = GetAll<T>().Single(x => x.Id == id);
+                return obj;
+            } catch {
+                return null;
+            }
 
-
+        }
+        public T GetByIdForce<T>(int id) where T : DbEntities {
+            try {
+                var obj = GetAllForce<T>().Single(x => x.Id == id);
+                return obj;
+            } catch {
+                return null;
+            }
+        }
 
         public bool UpdateAsync<T>(T obj) where T : DbEntities {
             bool result = true;
@@ -86,19 +97,28 @@ namespace WebApplication3.Models.DbAccess {
         }
 
         public IList<T> GetByListId<T>(IList<int> ids) where T : DbEntities {
-            return ids.Count>0? GetAll<T>().Where(x => ids.Contains(x.Id)).ToList(): null;
+            return ids.Count > 0 ? GetAll<T>().Where(x => ids.Contains(x.Id)).ToList() : new List<T>();
         }
 
         public async Task<IList<T>> GetByListAsync<T>(IList<int> ids) where T : DbEntities {
             var result = new List<T>();
             foreach (var id in ids) {
-                result.Add( await session.GetAsync<T>(id));
+                result.Add(await session.GetAsync<T>(id));
             }
             return result;
         }
 
 
-        public bool PseudoDelete<T>(int id) where T : DbEntities
-            => GetById<T>(id).Delete(true);
+        public bool PseudoDelete<T>(int id) where T : DbEntities {
+            try {
+                var obj = GetById<T>(id);
+                obj.Delete(true);
+                return true;
+            } catch {
+                return false;
+            }
+
+        }
     }
 }
+

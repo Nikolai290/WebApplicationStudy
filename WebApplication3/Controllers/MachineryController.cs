@@ -18,8 +18,8 @@ namespace WebApplication3.Controllers {
             dbManager = new DbManager();
             machineryManager = new MachineryManager(dbManager);
         }
-        public IActionResult Index(int machineId) {
-            var model = machineryManager.GetMachineryViewModel(machineId);
+        public IActionResult Index(int id) {
+            var model = machineryManager.GetMachineryViewModel(id);
             dbManager.Commit();
             return View("Machinery", model);
         }
@@ -31,9 +31,8 @@ namespace WebApplication3.Controllers {
             return View("Machinery", model);
         }
 
-        public IActionResult Delete(int machineId) {
-            machineryManager.Delete(machineId);
-            var model = machineryManager.GetMachineryViewModel(machineId);
+        public IActionResult Delete(int delId) {
+            var model  = machineryManager.Delete(delId);
             dbManager.Commit();
             return View("Machinery", model);
         }

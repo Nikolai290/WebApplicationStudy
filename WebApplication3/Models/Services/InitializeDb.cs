@@ -30,6 +30,12 @@ namespace WebApplication3.Models.Services {
                 new OrderArea("Автовскрыша")
             };
 
+            var types = new List<MachineryType> {
+                new MachineryType("Дизельный", orderAreas[2]),
+                new MachineryType("Ручной", orderAreas[1]),
+                new MachineryType("Электрический", orderAreas[0])
+            };
+
             var quarryAreas = new List<QuarryArea> {
                 new QuarryArea("Восток"),
                 new QuarryArea("Запад"),
@@ -71,29 +77,29 @@ namespace WebApplication3.Models.Services {
             };
 
             var Machineries = new List<Machinery> {
-                new Machinery("Д-155 №3"),
-                new Machinery("Д-155 №4"),
-                new Machinery("Д-155 №5"),
-                new Machinery("Д65-12 №11"),
-                new Machinery("ЖД весовая"),
-                new Machinery("МСГ-2000"),
-                new Machinery("МСУ"),
-                new Machinery("Насосная"),
-                new Machinery("ПДСУ"),
-                new Machinery("РС-300-7 №14"),
-                new Machinery("РС-300-7 №16"),
-                new Machinery("ЭРП-2500 №3"),
-                new Machinery("ЭРП-2500 №4"),
-                new Machinery("ЭРП-1250 №4"),
-                new Machinery("ЭРП-1250 №5"),
-                new Machinery("ЭРП-1250 №6"),
-                new Machinery("DOOSAN Solar №15"),
-                new Machinery("HITACHI ZX850 №17"),
-                new Machinery("KOMATSU HD 785-7 №26"),
-                new Machinery("KOMATSU HD 785-7 №27"),
-                new Machinery("KOMATSU HD 785-7 №4"),
-                new Machinery("KOMATSU HD 785-7 №5"),
-                new Machinery("KOMATSU HD 785-7 №54")
+                new Machinery("Д-155 №3", types[0]),
+                new Machinery("Д-155 №4", types[0]),
+                new Machinery("Д-155 №5", types[0]),
+                new Machinery("Д65-12 №11", types[1]),
+                new Machinery("ЖД весовая", types[1]),
+                new Machinery("МСГ-2000", types[1]),
+                new Machinery("МСУ", types[1]),
+                new Machinery("Насосная", types[2]),
+                new Machinery("ПДСУ", types[2]),
+                new Machinery("РС-300-7 №14", types[2]),
+                new Machinery("РС-300-7 №16", types[2]),
+                new Machinery("ЭРП-2500 №3", types[0]),
+                new Machinery("ЭРП-2500 №4", types[0]),
+                new Machinery("ЭРП-1250 №4", types[0]),
+                new Machinery("ЭРП-1250 №5", types[0]),
+                new Machinery("ЭРП-1250 №6", types[0]),
+                new Machinery("DOOSAN Solar №15", types[1]),
+                new Machinery("HITACHI ZX850 №17", types[1]),
+                new Machinery("KOMATSU HD 785-7 №26", types[2]),
+                new Machinery("KOMATSU HD 785-7 №27", types[2]),
+                new Machinery("KOMATSU HD 785-7 №4", types[2]),
+                new Machinery("KOMATSU HD 785-7 №5", types[2]),
+                new Machinery("KOMATSU HD 785-7 №54", types[2])
             };
 
             var CoalSorts = new List<CoalSort> {

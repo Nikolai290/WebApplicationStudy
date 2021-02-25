@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Services;
 using WebApplication3.Models.ViewModels;
-using WebApplication3.Models.Entities;
 
 namespace WebApplication3.Controllers {
     public class MachineryTypesController : Controller {
@@ -25,15 +20,14 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Index(MachineryDTO dto) {
+        public IActionResult Index(MachineryTypeDTO dto) {
             var model = typesManager.SaveOrUpdateMachineryType(dto);
             dbManager.Commit();
             return View("Machinery", model);
         }
 
         public IActionResult Delete(int typeId) {
-            typesManager.Delete(typeId);
-            var model = typesManager.GetMachineryTypesViewModel(typeId);
+            var model = typesManager.Delete(typeId);
             dbManager.Commit();
             return View("Machinery", model);
         }

@@ -13,23 +13,23 @@ namespace WebApplication3.Controllers {
             typesManager = new MachineryTypesManager(dbManager);
         }
 
-        public IActionResult Index(int typeId) {
-            var model = typesManager.GetMachineryTypesViewModel(typeId);
+        public IActionResult Index(int id) {
+            var model = typesManager.GetMachineryTypesViewModel(id);
             dbManager.Commit();
-            return View("Machinery", model);
+            return View("MachineryTypes", model);
         }
 
         [HttpPost]
         public IActionResult Index(MachineryTypeDTO dto) {
             var model = typesManager.SaveOrUpdateMachineryType(dto);
             dbManager.Commit();
-            return View("Machinery", model);
+            return View("MachineryTypes", model);
         }
 
-        public IActionResult Delete(int typeId) {
-            var model = typesManager.Delete(typeId);
+        public IActionResult Delete(int delId) {
+            var model = typesManager.Delete(delId);
             dbManager.Commit();
-            return View("Machinery", model);
+            return View("MachineryTypes", model);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace WebApplication3.Models.Services {
         }
 
         public MachineriesViewModel SaveOrUpdateMachinery(MachineryDTO dto) {
-            var res = Check(dto, out string message);
-            if (res) {
+            var check = Check(dto, out string message);
+            if (check) {
                 var machine = dto.Id > 0 ? dbManager.GetById<Machinery>(dto.Id) : new Machinery();
                 machine.SetName(dto.Name).SetType(dbManager.GetById<MachineryType>(dto.TypeId));
                 if (dto.Id == 0) dbManager.AddAsync(machine);
@@ -52,7 +52,6 @@ namespace WebApplication3.Models.Services {
                 message = "Строка не должна быть пустой";
                 return false;
             }
-
             if (dto.Name.Length < 4) {
                 message = "Строка должна содержать 5 и более символов";
                 return false;

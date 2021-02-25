@@ -9,67 +9,68 @@
 }
 
 
-<div class="main">
+<div class="top-menu">
   <div class="order-main-settings">
 
     @await Html.PartialAsync("_OrderShift")
   </div>
+
   <div class="order-staff-settings">
     <form id="order-settings-form" method="post">
+
       <input type="hidden" name="IsClose" value="false" />
       <input type="hidden" name="OrderId" value="@Model.Order.Id" />
-      <ul class="inline-ul">
-        <li>
-          <div>Диспетчер</div>
-          <div>
-            <select disabled="@Model.Order.IsClose" name="DispetcherId" required>
-              @if (Model.Order.Dispetcher.Id == 0) {
-                <option selected disabled></option>
-              }
-              @foreach (var disp in Model.Dispetchers) {
-                <option value="@disp.Id" selected="@(disp.Id==Model.Order?.Dispetcher?.Id)">@disp.GetFIO()</option>
-              }
-            </select>
-          </div>
-        </li>
+      <div>
+        <h6>Диспетчер</h6>
+        <p>
+          <select disabled="@Model.Order.IsClose" name="DispetcherId" required>
+            @if (Model.Order.Dispetcher.Id == 0) {
+              <option selected disabled></option>
+            }
+            @foreach (var disp in Model.Dispetchers) {
+              <option value="@disp.Id" selected="@(disp.Id==Model.Order?.Dispetcher?.Id)">@disp.GetFIO()</option>
+            }
+          </select>
+        </p>
+      </div>
 
-        <li class="inline-ul">
-          <div>Начальник  смены</div>
-        
-            <div>
-              <select disabled="@Model.Order.IsClose" name="ChiefId" required>
-                @if (Model.Order.Chief.Id == 0) {
-                  <option selected disabled></option>
-                }
-                @foreach (var chief in Model.Chiefs) {
-                  <option value="@chief.Id" selected="@(chief.Id==Model.Order?.Chief?.Id)">@chief.GetFIO()</option>
-                }
-              </select>
-            </div>
-        </li>
+      <div>
+        <h6>Начальник  смены</h6>
 
-        <li class="inline-ul">
-          <div>Горный мастер</div>
-          <div>
-            <select disabled="@Model.Order.IsClose" name="MastersId" multiple required>
-              @foreach (var master in Model.MiningMasters) {
-                <option value="@master.Id" selected="@(Model.Order?.MiningMaster?.Any(x => x.Id == master.Id))">@master.GetFIO()</option>
-              }
-            </select>
-          </div>
-          <p class="hint">CTRL + ЛКМ чтобы выбрать несколько</p>
-        </li>
-      </ul>
-      <div id="save-panel">
-        <button type="submit" action="~/Order/post" class="button button-simple">Сохранить</button>
+        <p>
+          <select disabled="@Model.Order.IsClose" name="ChiefId" required>
+            @if (Model.Order.Chief.Id == 0) {
+              <option selected disabled></option>
+            }
+            @foreach (var chief in Model.Chiefs) {
+              <option value="@chief.Id" selected="@(chief.Id==Model.Order?.Chief?.Id)">@chief.GetFIO()</option>
+            }
+          </select>
+        </p>
+      </div>
+
+      <div>
+        <h6>Горный мастер</h6>
+        <p>
+          <select disabled="@Model.Order.IsClose" name="MastersId" multiple required>
+            @foreach (var master in Model.MiningMasters) {
+              <option value="@master.Id" selected="@(Model.Order?.MiningMaster?.Any(x => x.Id == master.Id))">@master.GetFIO()</option>
+            }
+          </select>
+        </p>
+        <p class="hint">CTRL + ЛКМ чтобы выбрать несколько</p>
       </div>
 
 
-
+      <div id="save-panel">
+        <button type="submit" action="~/Order/post" class="button button-simple">Сохранить</button>
+      </div>
     </form>
-  </div>
-</div>
 
+  </div>
+
+
+</div>
 
 
 
@@ -78,9 +79,9 @@
 <hr />
 <div class="buttons-bar">
   <form action="/Order/AddMachineToOrder" method="get" style="display: inline-block">
-    <input type="hidden" name="OrderId" value="@Model.Order.Id" @if (Model.Order.Id == 0) { @: disabled
-           } />
-    <select name="MachineId" required>
+    <input type="hidden" name="OrderId" value="@Model.Order.Id"/>
+    <select name="MachineId" required  @if (Model.Order.Id == 0) { @: disabled
+           } >
       <option selected disabled></option>
       @foreach (var m in Model?.Machines) {
         <option value="@m.Id">@m.Name</option>

@@ -6,52 +6,42 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table>
-  <tr>
-    <td class="top-menu">
-      <form>
-        <div>
-          <div>
-            @await Html.PartialAsync("_OrderShift")
-          </div>
-          <div class="timeline-staff">
-            <table class="timeline-staff-table">
-              <tr>
-                <td>Диспетчер:</td>
-                <td> @Model.Order?.Dispetcher.GetFIO()</td>
-                <td>Начальник:</td>
-                <td>@Model.Order?.Chief.GetFIO()</td>
-                <td>Горный мастер:</td>
-                <td>
-                  @foreach (var m in Model.Order?.MiningMaster) {
-                    @m.GetFIO()<br>
-                  }
-                </td>
-              </tr>
-            </table>
+<div class="top-menu">
+  <div class="order-main-settings">
+    @await Html.PartialAsync("_OrderShift")
+  </div>
+  <div class="order-staff-settings">
+    <div>
+      <h6> Диспетчер: </h6>
+      <p> @Model.Order?.Dispetcher.GetFIO()</p>
+    </div>
+    <div>
+      <h6> Начальник: </h6>
+      <p> @Model.Order?.Chief.GetFIO()</p>
+    </div>
+    <div>
+      <h6> Горный мастер: </h6>
+      <p>
+        @foreach (var m in Model.Order?.MiningMaster) {
+          @m.GetFIO()<br>
+        }
+      </p>
+    </div>
+  </div>
+</div>
 
-          </div>
-          @*<div class="order-area-choice">@await Html.PartialAsync("_OrderAreaChoice")</div>*@
-        </div>
-      </form>
-    </td>
-    <td rowspan="2" class="timeline-addwork-panel">
-      <div @if (String.IsNullOrEmpty(Model.MachineName)) { @: hidden
-           }>
-        @await Html.PartialAsync("_AddWorkPanel")
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td class="timeline-main">
+<div class="timeline-addwork-panel">
+  <div @if (String.IsNullOrEmpty(Model.MachineName)) { @: hidden
+       }>
+    @await Html.PartialAsync("_AddWorkPanel")
+  </div>
+</div>
 
-      <div>
-        @await Html.PartialAsync("_TimelineTable")
-      </div>
-    </td>
-  </tr>
-
-</table>
+<div class="timeline-main">
+  <div>
+    @await Html.PartialAsync("_TimelineTable")
+  </div>
+</div>
 
 
 <menu type="context" id="context-menu-timeline">

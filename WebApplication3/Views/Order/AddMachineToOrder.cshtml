@@ -4,217 +4,224 @@
 
 @{
 
-    ViewData["Title"] = Model.MachineryOnShift.Name;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  ViewData["Title"] = Model.MachineryOnShift.Name;
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <form method="post">
-    <input type="hidden" name="OrderId" value="@Model.OrderId" />
-    <input type="hidden" name="MoSId" value="@Model.MachineryOnShift.Id" />
-    <table class="machinery-property">
-        <tr>
-            <td>
-                <div class="subblock location">
-                    <fieldset>
-                        <legend>Местонахождение</legend>
-                        <p><label for="Area">Крыло</label></p>
-                        <p>
-                            <select name="AreaId" id="Area">
-                                @foreach (var area in Model.Areas) {
-                                    <option value="@area.Id" selected="@(Model.MachineryOnShift?.Area?.Id==area.Id)">@area.Name</option>
-                                }
-                            </select>
-                        </p>
-                        <p><label for="FieldId">Участок</label></p>
-                        <p>
-                            <select name="FieldId" id="Field">
-                                @foreach (var field in Model.Fields) {
-                                    <option value="@field.Id" selected="@(Model.MachineryOnShift?.Field?.Id==field.Id)">@field.Name</option>
-                                }
-                            </select>
-                        </p>
-                        <p><label for="PlastId">Пласт</label></p>
-                        <p>
-                            <select name="PlastId" id="Plast">
-                                @foreach (var plast in Model.Plasts) {
-                                    <option value="@plast.Id" selected="@(Model.MachineryOnShift?.Plast?.Id==plast.Id)">@plast.Name</option>
-                                }
-                            </select>
-                        </p>
-                        <p><label for="HorizonId">Горизонт</label></p>
-                        <p>
-                            <select name="HorizonId" id="Horizon">
-                                @foreach (var hor in Model.Horizons) {
-                                    <option value="@hor.Id" selected="@(Model.MachineryOnShift?.Horizon?.Id==hor.Id)">@hor.Name</option>
-                                }
-                            </select>
-                        </p>
-                        <p><label for="Picket">Пикет</label></p>
-                        <p>
-                            <input type="number" name="Picket" id="Picket" min="0"  value="@Model.MachineryOnShift.Picket"/>
-                        </p>
+  <input type="hidden" name="OrderId" value="@Model.OrderId" />
+  <input type="hidden" name="MoSId" value="@Model.MachineryOnShift.Id" />
+  <table class="machinery-property">
+    <tr>
+      <td>
+        <div class="subblock location">
+          <fieldset>
+            <legend>Местонахождение</legend>
+            <p><label for="Area">Крыло</label></p>
+            <p>
+              <select name="AreaId" id="Area" required>
+                <option selected disabled></option>
+                @foreach (var area in Model.Areas) {
+                  <option value="@area.Id" selected="@(Model.MachineryOnShift?.Area?.Id==area.Id)">@area.Name</option>
+                }
+              </select>
+            </p>
+            <p><label for="FieldId">Участок</label></p>
+            <p>
+              <select name="FieldId" id="Field" required>
+                <option selected disabled></option>
+                @foreach (var field in Model.Fields) {
+                  <option value="@field.Id" selected="@(Model.MachineryOnShift?.Field?.Id==field.Id)">@field.Name</option>
+                }
+              </select>
+            </p>
+            <p><label for="PlastId">Пласт</label></p>
+            <p>
+              <select name="PlastId" id="Plast" required>
+                <option selected disabled></option>
+                @foreach (var plast in Model.Plasts) {
+                  <option value="@plast.Id" selected="@(Model.MachineryOnShift?.Plast?.Id==plast.Id)">@plast.Name</option>
+                }
+              </select>
+            </p>
+            <p><label for="HorizonId">Горизонт</label></p>
+            <p>
+              <select name="HorizonId" id="Horizon" required>
+                <option selected disabled></option>
+                @foreach (var hor in Model.Horizons) {
+                  <option value="@hor.Id" selected="@(Model.MachineryOnShift?.Horizon?.Id==hor.Id)">@hor.Name</option>
+                }
+              </select>
+            </p>
+            <p><label for="Picket">Пикет</label></p>
+            <p>
+              <input type="number" name="Picket" id="Picket" min="0" value="@Model.MachineryOnShift.Picket.ToString().Replace(',','.')" step="0.01" />
+            </p>
 
 
-                    </fieldset>
-                </div>
-            </td>
-            <td>
-                <div class="subblock order-machinery">
-                    <fieldset>
-                        <legend>Наряд</legend>
-                        <table>
-                            <tr>
-                                <td colspan="3">
-                                    <p><label for="Weight">Вес</label></p>
-                                    <p>
-                                        <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight" step="0.01"/>
-                                    </p>
-                                </td>
-                                <td colspan="3">
-                                    <p><label for="Volume">Объём</label></p>
-                                    <p>
-                                        <input type="number" name="Volume" id="Volume" min="0"  value="@Model.MachineryOnShift.Volume" step="0.01" />
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <p><label for="Overex">Переэкскавация</label></p>
-                                    <p>
-                                        <input type="number" name="Overex" id="Overex" min="0"  value="@Model.MachineryOnShift.Overexcavation" step="0.01" />
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <p><label for="Ash">Зола</label></p>
-                                    <p>
-                                        <input type="number" name="Ash" id="Ash" min="0"  value="@Model.MachineryOnShift.Ash" step="0.01" />
-                                    </p>
-                                </td>
-                                <td colspan="2">
-                                    <p><label for="Heat">Теплота</label></p>
-                                    <p>
-                                        <input type="number" name="Heat" id="Heat" min="0"  value="@Model.MachineryOnShift.Heat" step="0.01" />
-                                    </p>
-                                </td>
-                                <td colspan="2">
-                                    <p><label for="Wet">Влага</label></p>
-                                    <p>
-                                        <input type="number" name="Wet" id="Wet" min="0"  value="@Model.MachineryOnShift.Wet" step="0.01" />
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <p>
-                                        <input type="checkbox" name="HighAsh" id="HighAsh" checked="@Model.MachineryOnShift.HighAsh"/>
-                                        <label for="HighAsh">Высокозольный</label>
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
+          </fieldset>
+        </div>
+      </td>
+      <td>
+        <div class="subblock order-machinery">
+          <fieldset>
+            <legend>Наряд</legend>
+            <table>
+              <tr>
+                <td colspan="3">
+                  <p><label for="Weight">Вес</label></p>
+                  <p>
+                    <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+                <td colspan="3">
+                  <p><label for="Volume">Объём</label></p>
+                  <p>
+                    <input type="number" name="Volume" id="Volume" min="0" value="@Model.MachineryOnShift.Volume.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <p><label for="Overex">Переэкскавация</label></p>
+                  <p>
+                    <input type="number" name="Overex" id="Overex" min="0" value="@Model.MachineryOnShift.Overexcavation.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <p><label for="Ash">Зола</label></p>
+                  <p>
+                    <input type="number" name="Ash" id="Ash" min="0" value="@Model.MachineryOnShift.Ash.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+                <td colspan="2">
+                  <p><label for="Heat">Теплота</label></p>
+                  <p>
+                    <input type="number" name="Heat" id="Heat" min="0" value="@Model.MachineryOnShift.Heat.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+                <td colspan="2">
+                  <p><label for="Wet">Влага</label></p>
+                  <p>
+                    <input type="number" name="Wet" id="Wet" min="0" value="@Model.MachineryOnShift.Wet.ToString().Replace(',','.')" step="0.01" />
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <p>
+                    <input type="checkbox" name="HighAsh" id="HighAsh" checked="@Model.MachineryOnShift.HighAsh" />
+                    <label for="HighAsh">Высокозольный</label>
+                  </p>
+                </td>
+              </tr>
+            </table>
 
 
-                    </fieldset>
-                </div>
-            </td>
-            <td>
-                <div class="subblock crew">
-                    <fieldset>
-                        <legend>Экипаж (не более 10)</legend>
-                        <p>
-                            <select name="Crew" id="Crew" multiple>
-                                @foreach (var emp in Model?.FreeDrivers) {
-                                    <option value="@emp.Id" selected="@Model.MachineryOnShift?.Crew?.Any(x => x.Id==emp.Id)">@emp.GetShortFioProf()</option>
-                                }
-                            </select>
-                        </p>
-                      <p class="hint">CTRL + ЛКМ чтобы выбрать несколько</p>
-                    </fieldset>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="subblock pos-on-groupe">
-                    <fieldset>
-                        <legend>Положение в графике</legend>
-                        <table>
-                            <tr>
-                                <td>
-                                    <p><label for="Group">Группа</label></p>
-                                    <p>
-                                        <select name="GroupId" id="Group">
-                                            @foreach (var g in Model.Groups) {
-                                                <option value="@g.Id" selected="@(Model.MachineryOnShift?.Group?.Id==g.Id)">@g.Number</option>
-                                            }
-                                        </select>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p><label for="Number">№ п/п в группе</label></p>
-                                    <p>
-                                        <input type="number" name="Number" id="Number" min="0" value="@Model.MachineryOnShift.Number"/>
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
+          </fieldset>
+        </div>
+      </td>
+      <td>
+        <div class="subblock crew">
+          <fieldset>
+            <legend>Экипаж (не более 10)</legend>
+            <p>
+              <select name="Crew" id="Crew" multiple>
+                @foreach (var emp in Model?.FreeDrivers) {
+                  <option value="@emp.Id" selected="@Model.MachineryOnShift?.Crew?.Any(x => x.Id==emp.Id)">
+                    @emp.GetShortFioProf()
+                  </option>
+                }
+              </select>
+            </p>
+            <p class="hint">CTRL + ЛКМ чтобы выбрать несколько</p>
+          </fieldset>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="subblock pos-on-groupe">
+          <fieldset>
+            <legend>Положение в графике</legend>
+            <table>
+              <tr>
+                <td>
+                  <p><label for="Group">Группа</label></p>
+                  <p>
+                    <select name="GroupId" id="Group" required>
+                      <option selected disabled></option>
+                      @foreach (var g in Model.Groups) {
+                        <option value="@g.Id" selected="@(Model.MachineryOnShift?.Group?.Id==g.Id)">@g.Number</option>
+                      }
+                    </select>
+                  </p>
+                </td>
+                <td>
+                  <p><label for="Number">№ п/п в группе</label></p>
+                  <p>
+                    <input type="number" name="Number" id="Number" min="0" value="@Model.MachineryOnShift.Number" required />
+                  </p>
+                </td>
+              </tr>
+            </table>
 
-                    </fieldset>
-                </div>
-            </td>
-            <td>
-                <div class="subblock downtime">
-                    <fieldset>
-                        <legend>Плановые простои</legend>
-                        <table>
-                            <tr>
-                                <td>
-                                    <div class="subblock3in1">
-                                        <p><label for="Transport">Время перегона</label></p>
-                                        <p>
-                                            <input type="number" name="Transport" id="Transport" min="0" max="24"  value="@Model.MachineryOnShift.TransportingTime"/>
-                                        </p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="subblock3in1">
-                                        <p><label for="Repair">Время ремонта</label></p>
-                                        <p>
-                                            <input type="number" name="Repair" id="Repair" min="0" max="24"  value="@Model.MachineryOnShift.RepairingTime"/>
-                                        </p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="subblock3in1">
-                                        <p><label for="Holidays">Выходные/ Праздничные</label></p>
-                                        <p>
-                                            <input type="number" name="Holidays" id="Holidays" min="0" max="24"  value="@Model.MachineryOnShift.HolidayTime"/>
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+          </fieldset>
+        </div>
+      </td>
+      <td>
+        <div class="subblock downtime">
+          <fieldset>
+            <legend>Плановые простои</legend>
+            <table>
+              <tr>
+                <td>
+                  <div class="subblock3in1">
+                    <p><label for="Transport">Время перегона</label></p>
+                    <p>
+                      <input type="number" name="Transport" id="Transport" min="0" max="24" value="@Model.MachineryOnShift.TransportingTime" />
+                    </p>
+                  </div>
+                </td>
+                <td>
+                  <div class="subblock3in1">
+                    <p><label for="Repair">Время ремонта</label></p>
+                    <p>
+                      <input type="number" name="Repair" id="Repair" min="0" max="24" value="@Model.MachineryOnShift.RepairingTime" />
+                    </p>
+                  </div>
+                </td>
+                <td>
+                  <div class="subblock3in1">
+                    <p><label for="Holidays">Выходные/ Праздничные</label></p>
+                    <p>
+                      <input type="number" name="Holidays" id="Holidays" min="0" max="24" value="@Model.MachineryOnShift.HolidayTime" />
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </table>
 
-                    </fieldset>
-                </div>
-            </td>
-            <td>
-                <div class="subblock PZO">
-                    <fieldset>
-                        <legend>ПЗО</legend>
-                        <p>
-                            <input type="checkbox" name="PZO" id="PZO" checked="@Model.MachineryOnShift.PZO"/>
-                            <label for="PZO">Подготовительно-заключительные операции</label>
-                        </p>
-                    </fieldset>
-                </div>
-            </td>
-        </tr>
-    </table>
+          </fieldset>
+        </div>
+      </td>
+      <td>
+        <div class="subblock PZO">
+          <fieldset>
+            <legend>ПЗО</legend>
+            <p>
+              <input type="checkbox" name="PZO" id="PZO" checked="@Model.MachineryOnShift.PZO" />
+              <label for="PZO">Подготовительно-заключительные операции</label>
+            </p>
+          </fieldset>
+        </div>
+      </td>
+    </tr>
+  </table>
 
-    <div class="savebuttons">
-        <button type="submit"  class="button button-simple">Сохранить</button>
-        <a href="/order?IdOrder=@ViewBag.OrderId" class="button button-simple">Назад</a>
-    </div>
+  <div class="savebuttons">
+    <button type="submit" class="button button-simple">Сохранить</button>
+    <a href="/order?IdOrder=@ViewBag.OrderId" class="button button-simple">Назад</a>
+  </div>
 </form>

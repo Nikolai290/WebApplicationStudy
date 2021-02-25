@@ -21,6 +21,7 @@ namespace WebApplication3.Models.ViewModels {
         //
         public virtual string HighAsh { get; set; }
         public virtual string PZO { get; set; }
+
         public virtual double Picket { get; set; }
         public virtual double Weight { get; set; }
         public virtual double Volume { get; set; }
@@ -29,7 +30,25 @@ namespace WebApplication3.Models.ViewModels {
         public virtual double Heat { get; set; }
         public virtual double Wet { get; set; }
 
+        public virtual string picket { get; set; }
+        public virtual string weight { get; set; }
+        public virtual string volume { get; set; }
+        public virtual string overex { get; set; }
+        public virtual string ash { get; set; }
+        public virtual string heat { get; set; }
+        public virtual string wet { get; set; }
 
 
+        public AddMachintPostDTO ConvertToDouble() {
+
+            Picket = double.TryParse(picket?.Replace('.', ','), out double pick)? pick: 0;
+            Weight = double.TryParse(weight?.Replace('.',','), out double weight1)? weight1 : 0;
+            Volume = double.TryParse(volume?.Replace('.', ','), out double vol)? vol : 0;
+            Overex = double.TryParse(overex?.Replace('.', ','), out double over)? over : 0;
+            Ash = double.TryParse(ash?.Replace('.', ','), out double ash1)? ash1 : 0;
+            Heat = double.TryParse(heat?.Replace('.', ','), out double heat1) ? heat1 : 0;
+            Wet = double.TryParse(wet?.Replace('.', ','), out double wet1)? wet1 : 0;
+            return this;
+        }
     }
 }

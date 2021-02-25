@@ -88,7 +88,7 @@ namespace WebApplication3.Models.Services {
                 obj.SetOrder(order);
                 result = dbManager.AddAsync(obj);
             }
-
+            dto.ConvertToDouble();
             obj.SetLocation(Area, Field, Horizon, Plast, dto.Picket)
                 .SetGroup(Group, dto.Number)
                 .SetOrderProperties(dto.Weight, dto.Volume, dto.Overex, dto.Ash, dto.Heat, dto.Wet, HighAsh)

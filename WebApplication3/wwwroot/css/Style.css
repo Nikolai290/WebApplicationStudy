@@ -49,8 +49,8 @@ div {
         #nav ul li a {
             display: inline-block;
             width: 10em;
-            height: 3em;
-            padding: 10px;
+            height: 2em;
+            padding: 2px;
             background-color: #ddd;
             text-decoration: none;
             color: #222;
@@ -131,6 +131,7 @@ header {
 }
 
 .button-simple {
+    margin: 2px;
     width: auto;
     height: 2em;
     max-width: 20em;
@@ -187,19 +188,38 @@ header {
 
 .order-main-settings {
     max-width: 350px;
-    float: left;
+display: inline-block;
+vertical-align: top;
 }
-.order-main-settings div {
-padding-top: 5px;
-}
-    .order-staff-settings div {
+
+    .order-main-settings div {
         padding-top: 5px;
+        max-width: 350px;
+        display: inline-block;
     }
 
-.save-panel{
+.order-staff-settings div {
     display: inline-block;
-    
+    vertical-align: top;
+    margin-right: 20px;
 }
+.order-staff-settings  {
+    padding-top: 5px;
+    display: inline-block;
+    max-width: 1000px
+}
+    .order-staff-settings p {
+        padding: 0px;
+        margin: 0px;
+    }
+    #save-panel {
+        max-width: 100px;
+        display: block;
+        text-align: center;
+        vertical-align: top;
+
+    }
+
 
 .inline-ul {
     list-style: none;
@@ -217,9 +237,6 @@ padding-top: 5px;
     display: inline-block;
     width: 7em;
 }
-        #save-panel{
-            display:inline-block;
-        }
 
 /* AddMachineToOrder */
 .machinery-property {
@@ -325,7 +342,7 @@ padding-top: 5px;
     
 }
 .top-menu {
-    height: 200px;
+    max-height: 200px;
 }
 /* TimeLine table */
 .timeline-table {
@@ -407,7 +424,6 @@ work-for-timeline {
 
     /* machinaries editing table*/
 .main-table {
-    max-width: 600;
     display: inline-block;
 }
     .adding-panel {

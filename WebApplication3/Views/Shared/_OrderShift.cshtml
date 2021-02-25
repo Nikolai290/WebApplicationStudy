@@ -9,8 +9,7 @@
   <form>
     <div class="order-date-choice">
       <div>
-
-        <input type="date" name="Date" value="@Model.Order?.Date.ToString("yyyy-MM-dd")" required />
+        <input type="date" name="Date" value="@Model.Order?.Date.ToString("yyyy-MM-dd")" required action="/"/>
         <button type="submit" formmethod="get" class="button button-simple"><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
 
         <a href="@GetPrevios()" class="button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>

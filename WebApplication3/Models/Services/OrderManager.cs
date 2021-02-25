@@ -22,6 +22,13 @@ namespace WebApplication3.Models.Services {
             return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId).Any()).ToList();
         }
 
+        public IList<Machinery> GetMachinesForOrder(Order order) {
+            var machines = GetAddingListMachinesExcludeRepeats(order);
+            var machines1 = machines.Where(x => x.Type.Areas.Any(z => z.Id == order.Area.Id)).ToList();
+
+            return machines1;
+        }
+
         public List<Order> GetAllOrderOnThisDateAndShift(Order order)
             => GetAll().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList();
 
@@ -47,7 +54,7 @@ namespace WebApplication3.Models.Services {
             model.Dispetchers = employeeManager.GetFreeDispetchers(model.Order);
             model.Chiefs = employeeManager.GetFreeChiefs(model.Order);
             model.MiningMasters = employeeManager.GetFreeMasters(model.Order);
-            model.Machines = GetAddingListMachinesExcludeRepeats(model.Order);
+            model.Machines = GetMachinesForOrder(model.Order);
             return model;
         }
 

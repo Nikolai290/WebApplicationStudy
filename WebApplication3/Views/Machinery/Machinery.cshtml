@@ -24,7 +24,7 @@
           <td><p><a href="~/Machinery?id=@m.Id"> @m.Id </a></p></td>
           <td><p><a href="~/Machinery?id=@m.Id"> @m.Name </a></p></td>
           <td><p><a href="~/Machinery?id=@m.Id"> @m?.Type?.Name </a></p></td>
-          <td><p><a href="~/Machinery?id=@m.Id"> @m?.Type.GetAreasNames() </a></p></td>
+          <td><p><a href="~/Machinery?id=@m.Id"> @m?.Type?.GetAreasNames() </a></p></td>
           <td class="active-cell">
             <p>
               <a href="~/Machinery/delete?delId=@m.Id">
@@ -43,9 +43,7 @@
     <h3>@Model.Title</h3>
     <form method="post" action="~/Machinery">
       <input hidden name="id" value="@Model.Machine.Id" />
-      <div>
         <div><label for="name">Название техники</label></div>
-        <div>
           <input type="text" id="name" name="name" value="@Model.Machine?.Name" required /><div>
           </div>
           <div><label for="typeid">Тип техники</label></div>

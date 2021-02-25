@@ -7,6 +7,7 @@ using WebApplication3.Models.ViewModels;
 namespace WebApplication3.Models.Services {
     public class MachineryTypesManager {
         private readonly IDbManager dbManager;
+        private readonly ValidationManager valid = new ValidationManager();
 
         public MachineryTypesManager(IDbManager dbManager) {
             this.dbManager = dbManager;
@@ -24,7 +25,7 @@ namespace WebApplication3.Models.Services {
         }
 
         internal MachinariesTypeViewModel SaveOrUpdateMachineryType(MachineryTypeDTO dto) {
-            var check = Check(dto, out string message);
+            var check = valid.CheckMachineryTypeDTO(dto, out string message);
             if (check) {
                 var type = dto.Id > 0 ? dbManager.GetById<MachineryType>(dto.Id): new MachineryType();
                 type.Name = check ? dto.Name : type.Name;
@@ -46,23 +47,5 @@ namespace WebApplication3.Models.Services {
 
             return model;
         }
-
-        private bool Check(MachineryTypeDTO dto, out string message) {
-            if (String.IsNullOrEmpty(dto.Name)) {
-                message = "Строка не должна быть пустой";
-                return false;
-            }
-            if (dto.Name.Length < 4) {
-                message = "Строка должна содержать 5 и более символов";
-            return false;
-            }
-            if(dto.AreasId.Count == 0) {
-                message = "Необходимо выбрать участок, соответствующий типу";
-                return false;
-            }
-            message = "Успешно";
-            return true;
-        }
-
     }
 }

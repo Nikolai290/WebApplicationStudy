@@ -126,7 +126,15 @@ header {
     border-style: none;
     padding: 5px;
 }
-
+.small-witdh{
+    width: 5em;
+}
+.medium-witdh {
+    width: 10em;
+}
+.big-witdh {
+    width: 20em;
+}
 .button {
     display: inline-block;
     text-decoration: none;
@@ -212,7 +220,6 @@ vertical-align: top;
 .order-staff-settings  {
     padding-top: 5px;
     display: inline-block;
-    max-width: 1000px
 }
     .order-staff-settings p {
         padding: 0px;

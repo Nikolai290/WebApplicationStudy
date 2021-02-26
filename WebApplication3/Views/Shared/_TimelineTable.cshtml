@@ -31,32 +31,34 @@
       @foreach (var m in Model?.Order?.Machineries?.Where(x => !x.IsDelete)) {
         <tr>
           <td class="active-cell">
-            <a class="" href="/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id">
+            <a class="" href="~/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id">
               @m?.Name
             </a>
           </td>
           <td class="timeline-cells">
-              @foreach (var w in m?.Works?.Where(x => !x.IsDelete)) {
-                <div class="work-for-timeline @w.Type.Figure.Name" style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
+            @foreach (var w in m?.Works?.Where(x => !x.IsDelete)) {
+              <div class="work-for-timeline @w.Type.Figure.Name"
+                   style="background-color: @w.Type.BackgroundColor; color: @w.Type.TextColor; border-color: @w.Type.TextColor;
                  width: @(w.TotalMinutes * 2)px; position:relative; left: @(w.StartPosition * 2 - 2)px;">
-                  <a href="/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id&workId=@w.Id" class="button-fill">
-                    @{var lines = w.Type.Name.Split(" ").ToList();
-                      string txt = "";
-                      foreach (var line in lines) {
-                        int length = line.Count() > 4 ? 4 : line.Count();
-                        txt += line.Substring(0, length) + " ";
-                      }
-                      txt.Trim();
+
+                <a href="~/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id&workId=@w.Id" class="button-fill">
+                  @{var lines = w.Type.Name.Split(" ").ToList();
+                    string txt = "";
+                    foreach (var line in lines) {
+                      int length = line.Count() > 4 ? 4 : line.Count();
+                      txt += line.Substring(0, length) + " ";
                     }
-                    @txt
-                  </a>
-                </div>
-              }
+                    txt.Trim();
+                  }
+                  @txt
+                </a>
+              </div>
+            }
 
           </td>
           @for (int i = 1; i < 72; i++) {
             <td class="timeline-cells active-cell">
-              <a class="time-mark" href="/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id&StartTime=@(Model?.TimeIntervals[i])"></a>
+              <a class="time-mark" href="~/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id&StartTime=@(Model?.TimeIntervals[i])"></a>
             </td>
           }
         </tr>

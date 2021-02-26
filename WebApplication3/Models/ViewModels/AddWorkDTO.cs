@@ -24,13 +24,11 @@ namespace WebApplication3.Models.ViewModels {
         public virtual double Wet { get; set; }
 
         public virtual AddWorkDTO ConvertStringToDouble() {
-            Double.TryParse(volume, out double vol);
-            Volume = vol;
-            Volume = IsRight(volume) ? Convert.ToDouble(volume) : 0;
-            Weight = IsRight(weight) ? Convert.ToDouble(weight) : 0;
-            Ash = IsRight(ash) ? Convert.ToDouble(ash) : 0;
-            Heat = IsRight(heat) ? Convert.ToDouble(heat) : 0;
-            Wet = IsRight(wet) ? Convert.ToDouble(wet) : 0;
+            Volume = double.TryParse(volume?.Replace('.', ','), out double vol) ? vol : 0;
+            Weight = double.TryParse(weight?.Replace('.', ','), out double weight1) ? weight1 : 0;
+            Ash = double.TryParse(ash?.Replace('.', ','), out double ash1) ? ash1 : 0;
+            Heat = double.TryParse(heat?.Replace('.', ','), out double heat1) ? heat1 : 0;
+            Wet = double.TryParse(wet?.Replace('.', ','), out double wet1) ? wet1 : 0;
             return this;
         }
 

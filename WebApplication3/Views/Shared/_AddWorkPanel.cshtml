@@ -67,28 +67,28 @@
     <div @if (!Model.Work.Type.NeedsFields.Contains("volume")) { @: hidden
          }>
       <label for="volume">Объём</label> <br />
-      <input type="text" name="volume" id="volume" value="@Model.Work?.Volume" />
+      <input type="number" step="0.01" name="volume" id="volume" value="@Model.Work?.Volume.ToString().Replace(',','.')" />
     </div>
 
     <div @if (!Model.Work.Type.NeedsFields.Contains("weight")) { @: hidden
          }>
       <label for="weight">Вес</label> <br />
-      <input type="text" name="weight" id="weight" value="@Model.Work?.Weight" />
+      <input type="number" step="0.01" name="weight" id="weight" value="@Model.Work?.Weight.ToString().Replace(',','.')" />
     </div>
     <div @if (!Model.Work.Type.NeedsFields.Contains("ash")) { @: hidden
          }>
       <label for="ash">Зола</label> <br />
-      <input type="text" name="ash" id="ash" value="@Model.Work?.Ash" />
+      <input type="number" step="0.01" name="ash" id="ash" value="@Model.Work?.Ash.ToString().Replace(',','.')" />
     </div>
     <div @if (!Model.Work.Type.NeedsFields.Contains("heat")) { @: hidden
          }>
       <label for="heat">Теплота</label> <br />
-      <input type="text" name="heat" id="heat" value="@Model.Work?.Heat" />
+      <input type="number" step="0.01" name="heat" id="heat" value="@Model.Work?.Heat.ToString().Replace(',','.')" />
     </div>
     <div @if (!Model.Work.Type.NeedsFields.Contains("wet")) { @: hidden
          }>
       <label for="wet">Влага</label> <br />
-      <input type="text" name="wet" id="wet" value="@Model.Work?.Wet" />
+      <input type="number" step="0.01" name="wet" id="wet" value="@Model.Work?.Wet.ToString().Replace(',','.')" />
     </div>
     <div @if (!Model.Work.Type.NeedsFields.Contains("wagons")) { @: hidden
          }>

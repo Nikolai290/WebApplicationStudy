@@ -25,10 +25,10 @@ namespace WebApplication3.Models.Services {
             model.Order = dto.OrderId > 0 ?
                 dbManager.GetById<Order>(dto.OrderId) :
                 orderManager.Get(dto.Date, dto.ShiftId, dto.OrderAreaId);
-            model.Work = dto.WorkId > 0? 
-                dbManager.GetById<Work>(dto.WorkId) : 
+            model.Work = dto.WorkId > 0 ?
+                dbManager.GetById<Work>(dto.WorkId) :
                 new Work().SetTime(dto.StartTime, dto.StartTime.AddMinutes(10));
-            model.MachineName = dto.MoSId > 0? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
+            model.MachineName = dto.MoSId > 0 ? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
 
             model.WorkTypes = GetTypes();
             model.CoalSorts = GetSorts();
@@ -45,10 +45,10 @@ namespace WebApplication3.Models.Services {
             model.Hours = hours;
 
             var timeIntervals = new List<string>();
-            for(int i=0; i<72; i++) {
+            for (int i = 0; i < 72; i++) {
                 timeIntervals.Add(startHour.AddMinutes(i * 10).ToString("HH:mm"));
             }
-            
+
             model.TimeIntervals = timeIntervals;
 
             return model;
@@ -67,14 +67,17 @@ namespace WebApplication3.Models.Services {
         public CoalSort GetSortById(int id)
             => dbManager.GetById<CoalSort>(id);
 
-        public Work  GetById(int id) 
+        public Work GetById(int id)
             => dbManager.GetById<Work>(id);
 
-        public Work NewWork(AddWorkDTO dto)
-            => NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
+        public Work NewWork(AddWorkDTO dto) {
+            dto.ConvertStringToDouble();
+            return NewWork(dto.WorkId, dto.MoSId, dto.TypeWorkId, dto.StartTime, dto.EndTime,
                 dto.Note,
                 dto.SortId, dto.Volume, dto.Weight, dto.Ash, dto.Heat, dto.Wet,
                 dto.Wagons);
+        }
+
 
         public Work NewWork(
             int workId, int moSId, int typework, DateTime startTime, DateTime endTime,
@@ -138,7 +141,7 @@ namespace WebApplication3.Models.Services {
                 return false;
             if (endTime < minTime && startTime > maxTime)
                 return false;
-            if ((endTime - startTime).TotalMinutes < 10 )
+            if ((endTime - startTime).TotalMinutes < 10)
                 return false;
             return result;
         }

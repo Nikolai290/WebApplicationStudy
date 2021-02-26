@@ -341,11 +341,13 @@ vertical-align: top;
 }
 
 .timeline-main {
-    vertical-align:top;
+    display: inline-block;
+    vertical-align: top;
+    max-width: 1700px;
 }
 .timeline-addwork-panel {
-
-    
+    display: inline-block;
+    max-width: 200px;
 }
 .top-menu {
     max-height: 200px;

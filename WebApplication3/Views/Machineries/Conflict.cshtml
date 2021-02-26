@@ -1,0 +1,48 @@
+﻿@using WebApplication3.Models.ViewModels
+@model MachineriesViewModel
+@*
+  For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+  ViewData["Title"] = "Machineries";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div class="attention">
+  <h5>Чтобы изменить тип оборудования, неоходимо устранить конфликты.</h5>
+  <p>
+    Обнаружены наряды, в которых это оборудование применялось под другим типом! <br />
+    <span>Для заменённого оборудования все параметры будут скопированы из изменяемого.</span>
+  </p>
+
+
+  <p><b>@Model.Machine.Name</b> : <b>@Model.Machine.Type.Name </b>==> <b>@Model.NewType.Name</b></p>
+</div>
+<form method="post" action="">
+  <div>
+    <a class="button-simple button" href="#">Подтвердить</a>
+    <a class="button-simple button" href="#">Отменить</a>
+  </div>
+
+  <table class="machinery-table">
+    <tr class="table-header">
+      <td><h6>Дата</h6></td>
+      <td><h6>Смена</h6></td>
+      <td><h6>Участок</h6></td>
+      <td><h6>Тип работы</h6></td>
+      <td><h6>Описание</h6></td>
+      <td><h6>Время начала</h6></td>
+      <td><h6>Время окончания</h6></td>
+
+      <td><h6>Оборудование</h6></td>
+    </tr>
+    @foreach (var conflict in Model.ConflictOrders) {
+
+
+    }
+  </table>
+</form>
+
+
+

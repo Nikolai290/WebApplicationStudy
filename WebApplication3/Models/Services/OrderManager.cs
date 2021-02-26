@@ -35,7 +35,7 @@ namespace WebApplication3.Models.Services {
         public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
             var machs = new List<MachineryOnShift>();
             GetAllOrderOnThisDateAndShift(order).ForEach(x => machs.AddRange(x.Machineries));
-            return machs;
+            return machs.Where(x=> !x.IsDelete).ToList();
         }
 
 

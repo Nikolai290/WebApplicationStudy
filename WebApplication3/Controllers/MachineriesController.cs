@@ -28,6 +28,8 @@ namespace WebApplication3.Controllers {
         public IActionResult Index(MachineryDTO dto) {
             var model = machineryManager.SaveOrUpdateMachinery(dto);
             dbManager.Commit();
+            if (model.ConflictOrders.Count != 0)
+                return View("Conflict", model);
             return View("Machineries", model);
         }
 

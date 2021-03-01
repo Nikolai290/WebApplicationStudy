@@ -47,11 +47,11 @@
       <div>
         <div><label for="name">Тип</label></div>
         <div>
-          <input type="text" id="name" name="name" value="@Model.Type?.Name" required /><div>
+          <input type="text" id="name" name="name" value="@Model.Type?.Name" required class="width15"/><div>
           </div>
           <div><label for="areasid">Участок</label></div>
           <div>
-            <select name="areasid" id="areasid" required>
+            <select name="areasid" id="areasid" required class="width15">
               <option selected disabled></option>
               @foreach (var area in Model?.Areas) {
                 <option value="@area.Id" selected="@(Model?.Type?.Areas?.Any(x => x.Id==area.Id))">@area.Name</option>

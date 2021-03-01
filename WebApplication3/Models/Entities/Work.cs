@@ -39,21 +39,26 @@ namespace WebApplication3.Models.Entities {
             return this;
         }
 
-        public virtual Work SetTime(DateTime start, DateTime end) {
-            if(end > start) {
-                StartTime = start; // need external checking for right datetime
-                EndTime = end;
-                TimeSpan delta = (end - start);
-                TotalMinutes = Convert.ToInt32(delta.TotalMinutes);
-                DateTime morning = new DateTime().AddHours(8);
-                 var startPosition = Convert.ToInt32((start.TimeOfDay - morning.TimeOfDay).TotalMinutes);
-                StartPosition = startPosition%720;
-            } else {
-                StartTime = start;
-                EndTime = start.AddMinutes(10);
+        public virtual Work SetTime(DateTime start, DateTime end, int shift) {
+            StartTime = start; // need external checking for right datetime
+            EndTime = end;
+
+            if (shift == 2) {
+                start = start.AddHours(-12);
+                end = end.AddHours(-12);
             }
 
-            
+            TimeSpan delta = (end - start);
+            TotalMinutes = Convert.ToInt32(delta.TotalMinutes);
+            DateTime morning = new DateTime().AddHours(8);
+            var startPosition = Convert.ToInt32((start.TimeOfDay - morning.TimeOfDay).TotalMinutes);
+            StartPosition = startPosition % 720;
+
+            if (TotalMinutes < 10)
+                EndTime = StartTime.AddMinutes(10);
+
+
+
             return this;
         }
 
@@ -67,10 +72,10 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual Work SetProperties(double weight, double ash, double heat, double wet, CoalSort sort) {
-            Weight = weight > 0? weight: 0;
-            Ash = ash > 0 ? ash: 0;
-            Heat = heat > 0 ? heat: 0;
-            Wet = wet > 0 ? wet: 0;
+            Weight = weight > 0 ? weight : 0;
+            Ash = ash > 0 ? ash : 0;
+            Heat = heat > 0 ? heat : 0;
+            Wet = wet > 0 ? wet : 0;
             Sort = sort;
 
             return this;

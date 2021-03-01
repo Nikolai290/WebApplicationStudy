@@ -15,6 +15,7 @@ namespace WebApplication3.Models.ViewModels {
 
         public TimelineGetDTO() {
             Date = DateTime.Now.Date;
+            StartTime = Date.AddHours(8);
             ShiftId = 1;
             OrderAreaId = 1;
 

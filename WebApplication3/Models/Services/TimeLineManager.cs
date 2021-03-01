@@ -27,7 +27,7 @@ namespace WebApplication3.Models.Services {
                 orderManager.Get(dto.Date, dto.ShiftId, dto.OrderAreaId);
             model.Work = dto.WorkId > 0 ?
                 dbManager.GetById<Work>(dto.WorkId) :
-                new Work().SetTime(dto.StartTime, dto.StartTime.AddMinutes(10));
+                new Work().SetTime(dto.StartTime, dto.StartTime.AddMinutes(10), model.Order.Shift);
             model.MachineName = dto.MoSId > 0 ? dbManager.GetById<MachineryOnShift>(dto.MoSId).Name : null;
 
             model.WorkTypes = GetTypes();
@@ -95,7 +95,9 @@ namespace WebApplication3.Models.Services {
 
             work.SetType(GetTypeById(typework))
                 .SetNote(note)
-                .SetTime(startTime, endTime);
+                .SetTime(startTime, endTime, order.Shift);
+
+
 
             if (work.Type.Id == 2) {
                 work.SetVolume(volume);
@@ -113,6 +115,15 @@ namespace WebApplication3.Models.Services {
         }
 
         private static bool CheckTime(Order order, DateTime startTime, DateTime endTime) {
+            if (order.Shift == 2 && startTime<endTime) {
+                startTime = startTime.AddHours(-12);
+                endTime = endTime.AddHours(-12);
+            } else if( order.Shift ==2 && startTime > endTime) {
+                startTime = startTime.AddHours(-12);
+                endTime = endTime.AddHours(12);
+
+            }
+
             if (startTime > endTime)
                 return false;
 
@@ -121,29 +132,32 @@ namespace WebApplication3.Models.Services {
             DateTime minTime;
             DateTime maxTime;
 
-            if (order.Shift == 1) {
-                minTime = order.Date.AddHours(8);
-            } else {
-                minTime = order.Date.AddHours(20);
-            }
+
+            minTime = order.Date.AddHours(8);
+
             maxTime = minTime.AddHours(11).AddMinutes(59);
 
             if (IsValidTime(startTime, endTime, minTime, maxTime)) {
                 result = true;
             }
 
+            if (order.Shift == 2 && startTime < endTime) {
+                startTime = startTime.AddHours(12);
+                endTime = endTime.AddHours(12);
+            } else if (order.Shift == 2 && startTime > endTime) {
+                startTime = startTime.AddHours(12);
+                endTime = endTime.AddHours(-12);
+
+            }
             return result;
         }
 
         private static bool IsValidTime(DateTime startTime, DateTime endTime, DateTime minTime, DateTime maxTime) {
-            bool result = true;
             if (startTime < minTime && startTime > maxTime)
                 return false;
             if (endTime < minTime && startTime > maxTime)
                 return false;
-            if ((endTime - startTime).TotalMinutes < 10)
-                return false;
-            return result;
+            return true;
         }
     }
 }

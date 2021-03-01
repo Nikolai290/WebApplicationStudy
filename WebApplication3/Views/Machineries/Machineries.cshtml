@@ -44,11 +44,11 @@
     <form method="post" action="~/Machineries">
       <input hidden name="id" value="@Model.Machine.Id" />
       <div><label for="name">Название техники</label></div>
-      <input type="text" id="name" name="name" value="@Model.Machine?.Name" required /><div>
+      <input type="text" id="name" name="name" value="@Model.Machine?.Name" required class="width15"/><div>
       </div>
       <div><label for="typeid">Тип техники</label></div>
       <div>
-        <select name="typeid" id="typeid" required>
+        <select name="typeid" id="typeid" required class="width15">
           <option selected disabled></option>
           @foreach (var t in Model?.Types) {
             <option value="@t.Id" selected="@(Model?.Machine?.Type?.Id==t.Id)">@t.Name</option>

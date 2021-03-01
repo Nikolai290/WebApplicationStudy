@@ -119,6 +119,15 @@ namespace WebApplication3.Models.DbAccess {
             }
 
         }
+
+        public bool PseudoDelete<T>(T obj) where T : DbEntities {
+            try {
+                obj.Delete(true);
+                return true;
+            } catch {
+                return false;
+            }
+        }
     }
 }
 

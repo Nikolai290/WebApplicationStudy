@@ -18,7 +18,7 @@
             <legend>Местонахождение</legend>
             <p><label for="Area">Крыло</label></p>
             <p>
-              <select name="AreaId" id="Area" required>
+              <select name="AreaId" id="Area" required class="width15">
                 <option selected disabled></option>
                 @foreach (var area in Model.Areas) {
                   <option value="@area.Id" selected="@(Model.MachineryOnShift?.Area?.Id==area.Id)">@area.Name</option>
@@ -27,7 +27,7 @@
             </p>
             <p><label for="FieldId">Участок</label></p>
             <p>
-              <select name="FieldId" id="Field" required>
+              <select name="FieldId" id="Field" required class="width15">
                 <option selected disabled></option>
                 @foreach (var field in Model.Fields) {
                   <option value="@field.Id" selected="@(Model.MachineryOnShift?.Field?.Id==field.Id)">@field.Name</option>
@@ -36,7 +36,7 @@
             </p>
             <p><label for="PlastId">Пласт</label></p>
             <p>
-              <select name="PlastId" id="Plast" required>
+              <select name="PlastId" id="Plast" required class="width15">
                 <option selected disabled></option>
                 @foreach (var plast in Model.Plasts) {
                   <option value="@plast.Id" selected="@(Model.MachineryOnShift?.Plast?.Id==plast.Id)">@plast.Name</option>
@@ -45,7 +45,7 @@
             </p>
             <p><label for="HorizonId">Горизонт</label></p>
             <p>
-              <select name="HorizonId" id="Horizon" required>
+              <select name="HorizonId" id="Horizon" required class="width15">
                 <option selected disabled></option>
                 @foreach (var hor in Model.Horizons) {
                   <option value="@hor.Id" selected="@(Model.MachineryOnShift?.Horizon?.Id==hor.Id)">@hor.Name</option>
@@ -54,7 +54,7 @@
             </p>
             <p><label for="Picket">Пикет</label></p>
             <p>
-              <input type="number" name="Picket" id="Picket" min="0" value="@Model.MachineryOnShift.Picket.ToString().Replace(',','.')" step="0.01" />
+              <input class="width15" type="number" name="Picket" id="Picket" min="0" value="@Model.MachineryOnShift.Picket.ToString().Replace(',','.')" step="0.01" />
             </p>
 
 
@@ -70,13 +70,13 @@
                 <td colspan="3">
                   <p><label for="Weight">Вес</label></p>
                   <p>
-                    <input type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width10" type="number" name="Weight" id="Weight" min="0" value="@Model.MachineryOnShift.Weight.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
                 <td colspan="3">
                   <p><label for="Volume">Объём</label></p>
                   <p>
-                    <input type="number" name="Volume" id="Volume" min="0" value="@Model.MachineryOnShift.Volume.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width10" type="number" name="Volume" id="Volume" min="0" value="@Model.MachineryOnShift.Volume.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
               </tr>
@@ -84,7 +84,7 @@
                 <td colspan="6">
                   <p><label for="Overex">Переэкскавация</label></p>
                   <p>
-                    <input type="number" name="Overex" id="Overex" min="0" value="@Model.MachineryOnShift.Overexcavation.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width20" type="number" name="Overex" id="Overex" min="0" value="@Model.MachineryOnShift.Overexcavation.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
               </tr>
@@ -92,19 +92,19 @@
                 <td colspan="2">
                   <p><label for="Ash">Зола</label></p>
                   <p>
-                    <input type="number" name="Ash" id="Ash" min="0" value="@Model.MachineryOnShift.Ash.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width7" type="number" name="Ash" id="Ash" min="0" value="@Model.MachineryOnShift.Ash.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
                 <td colspan="2">
                   <p><label for="Heat">Теплота</label></p>
                   <p>
-                    <input type="number" name="Heat" id="Heat" min="0" value="@Model.MachineryOnShift.Heat.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width7" type="number" name="Heat" id="Heat" min="0" value="@Model.MachineryOnShift.Heat.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
                 <td colspan="2">
                   <p><label for="Wet">Влага</label></p>
                   <p>
-                    <input type="number" name="Wet" id="Wet" min="0" value="@Model.MachineryOnShift.Wet.ToString().Replace(',','.')" step="0.01" />
+                    <input class="width7" type="number" name="Wet" id="Wet" min="0" value="@Model.MachineryOnShift.Wet.ToString().Replace(',','.')" step="0.01" />
                   </p>
                 </td>
               </tr>
@@ -150,7 +150,7 @@
                 <td>
                   <p><label for="Group">Группа</label></p>
                   <p>
-                    <select name="GroupId" id="Group" required>
+                    <select name="GroupId" id="Group" required class="width7i5">
                       <option selected disabled></option>
                       @foreach (var g in Model.Groups) {
                         <option value="@g.Id" selected="@(Model.MachineryOnShift?.Group?.Id==g.Id)">@g.Number</option>
@@ -161,7 +161,7 @@
                 <td>
                   <p><label for="Number">№ п/п в группе</label></p>
                   <p>
-                    <input type="number" name="Number" id="Number" min="0" max="999" value="@Model.MachineryOnShift.Number" required />
+                    <input class="width7i5" type="number" name="Number" id="Number" min="0" max="999" value="@Model.MachineryOnShift.Number" required />
                   </p>
                 </td>
               </tr>
@@ -180,7 +180,7 @@
                   <div class="subblock3in1">
                     <p><label for="Transport">Время перегона</label></p>
                     <p>
-                      <input type="number" name="Transport" id="Transport" min="0" max="24" value="@Model.MachineryOnShift.TransportingTime" />
+                      <input class="width7" type="number" name="Transport" id="Transport" min="0" max="24" value="@Model.MachineryOnShift.TransportingTime" />
                     </p>
                   </div>
                 </td>
@@ -188,15 +188,15 @@
                   <div class="subblock3in1">
                     <p><label for="Repair">Время ремонта</label></p>
                     <p>
-                      <input type="number" name="Repair" id="Repair" min="0" max="24" value="@Model.MachineryOnShift.RepairingTime" />
+                      <input class="width7" type="number" name="Repair" id="Repair" min="0" max="24" value="@Model.MachineryOnShift.RepairingTime" />
                     </p>
                   </div>
                 </td>
                 <td>
                   <div class="subblock3in1">
-                    <p><label for="Holidays">Выходные/ Праздничные</label></p>
+                    <p><label for="Holidays">Выходные</label></p>
                     <p>
-                      <input type="number" name="Holidays" id="Holidays" min="0" max="24" value="@Model.MachineryOnShift.HolidayTime" />
+                      <input class="width7" type="number" name="Holidays" id="Holidays" min="0" max="24" value="@Model.MachineryOnShift.HolidayTime" />
                     </p>
                   </div>
                 </td>

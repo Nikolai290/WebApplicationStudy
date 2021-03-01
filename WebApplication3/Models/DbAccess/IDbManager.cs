@@ -13,6 +13,7 @@ namespace WebApplication3.Models.DbAccess {
         IQueryable<T> GetAll<T>() where T : DbEntities;
         IQueryable<T> GetAllForce<T>() where T : DbEntities;
         bool PseudoDelete<T>(int id) where T : DbEntities;
+        bool PseudoDelete<T>(T obj) where T : DbEntities;
         //bool DeleteById<T>(int id) where T : DbEntities;
         //bool DeleteAsync<T>(T obj) where T : DbEntities;
         void Commit();

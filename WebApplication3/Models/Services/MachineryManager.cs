@@ -44,6 +44,52 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
+        internal void SolveConflict(IList<SolveConflictDTO> dto) {
+            /*
+             * В случае конфликта нам необходимо получить из представления следующие данные:
+             * Массив данных содержащий:
+             * Id заменённого (нового) оборудования
+             * Id работы для которой производится замена
+             * Остальные данные находим из работы: Id ордера и Id заменяемого оборудования
+             * Заменяемое оборудование подлежит псевдо удалению. Все данные из него копируются в новое оборудование
+             * В изменяемой работе меняется только Id оборудования
+              */
+            /*
+             * Варианты событий:
+             * Для каждой работы назначается разная техника - самый простой вариант
+             * Для некоторых работ в наряде удаляемого оборудования назначется одинаковая техника
+             *  В этом случае необходимо это предусмотерть
+             * Для всех работ в наряде удаляемого оборудования назначается одна новая техника
+             */
+
+
+
+            var o = dto.GroupBy(x => x.OrderId);
+            var m = dto.GroupBy(x => x.MachineId);
+
+            foreach(var x in o) {
+                foreach(var z in x) {
+
+                }
+            }
+
+            foreach (var c in dto ){
+
+                var work = dbManager.GetById<Work>(c.WorkId);
+                var mos = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
+                var order = dbManager.GetById<Order>(mos.Order.Id);
+                mos.Delete(true);
+                var machine = dbManager.GetById<Machinery>(c.MachineId);
+
+
+
+
+            }
+
+
+
+        }
+
         private Machinery ChangeType(Machinery machine, int typeId, out IList<ConflictOrders> conflictOrders, out string message, out MachineryType newType) {
             conflictOrders = new List<ConflictOrders>();
             message = "Успешно";
@@ -59,7 +105,7 @@ namespace WebApplication3.Models.Services {
                 // Поиск конфликтов
 
                 var orders = dbManager.GetAll<Order>().Where(x => x.Machineries.Any(z => !z.IsDelete && z.MachineryId == machine.Id)).ToList();
-                foreach (var order in orders) 
+                foreach (var order in orders)
                     conflictOrders.Add(new ConflictOrders(order));
                 foreach (var c in conflictOrders)
                     c.FreeMachineries = orderManager.GetMachinesForOrder(c.Order);

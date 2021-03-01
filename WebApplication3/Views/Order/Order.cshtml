@@ -80,7 +80,7 @@
 <div class="buttons-bar">
   <form action="/Order/AddMachineToOrder" method="get" style="display: inline-block">
     <input type="hidden" name="OrderId" value="@Model.Order.Id"/>
-    <select name="MachineId" required  @if (Model.Order.Id == 0) { @: disabled
+    <select name="MachineId" required class="width15"  @if (Model.Order.Id == 0) { @: disabled
            } >
       <option selected disabled></option>
       @foreach (var m in Model?.Machines) {
@@ -88,14 +88,14 @@
       }
     </select>
 
-    <button type="submit" class="button button-simple" @if (Model.Order.Id == 0) { @: disabled
+    <button type="submit" class="button button-simple width15" @if (Model.Order.Id == 0) { @: disabled
             }>
       Добавить оборудование
     </button>
   </form>
   <form style="display: inline-block">
     <input type="hidden" name="allPZO" value="true" />
-    <input type="submit" value="ПЗО всем" class="button button-simple" />
+    <input type="submit" value="ПЗО всем" class="button button-simple width15" />
   </form>
 </div>
 <hr />

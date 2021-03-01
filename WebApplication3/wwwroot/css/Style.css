@@ -100,6 +100,7 @@ header {
 }
 
 
+
 /*Список сотрудников*/
 .submenu {
     margin-bottom: 10px;
@@ -126,14 +127,48 @@ header {
     border-style: none;
     padding: 5px;
 }
-.small-witdh{
+.width3 {
+    width: 3em;
+}
+.width4 {
+    width: 4em;
+}
+.width5 {
     width: 5em;
 }
-.medium-witdh {
-    width: 10em;
+.width5i7 {
+    width: 5.7em;
 }
-.big-witdh {
-    width: 20em;
+.width7 {
+    width: 6.9em;
+}
+.width7i5 {
+    width: 7.5em;
+}
+.width10 {
+    width: 10.5em;
+}
+.width10i8 {
+    width: 10.8em;
+}
+.width15 {
+    width: 15em;
+}
+.width20 {
+    width: 21em;
+}
+.width100 {
+    display: inline-block;
+    width: 100%;
+}
+.width33 {
+    display: inline-block;
+    width: 32%;
+}
+
+.width49 {
+    display: inline-block;
+    width: 49%;
 }
 .button {
     display: inline-block;
@@ -146,7 +181,6 @@ header {
 
 .button-simple {
     margin: 2px;
-    width: auto;
     height: 2em;
     max-width: 20em;
     background-color: #C5D4EB;
@@ -182,6 +216,9 @@ header {
     text-decoration: none;
     border: none;
 }
+.button-simple-active {
+    background-color: #93A7C5;
+}
 
 
 /* Строка поиска */
@@ -201,14 +238,13 @@ header {
 }
 
 .order-main-settings {
-    max-width: 350px;
+    max-width: 365px;
 display: inline-block;
 vertical-align: top;
 }
 
     .order-main-settings div {
         padding-top: 5px;
-        max-width: 350px;
         display: inline-block;
     }
 
@@ -253,7 +289,7 @@ vertical-align: top;
 
 /* AddMachineToOrder */
 .machinery-property {
-    width: 90%;
+    width: auto;
     margin: auto;
     border: 5px solid #8098CD;
 }

@@ -10,19 +10,19 @@
     <div class="order-date-choice">
       <div>
         <input type="date" name="Date" value="@Model.Order?.Date.ToString("yyyy-MM-dd")" required action="/" />
-        <button type="submit" formmethod="get" class="hide" ><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
-        <a href="@GetPrevios()" class="button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>
-        <a href="@GetNext()" class="button button-simple"><img class="icon" src="~/source/Image/right.png" alt=">" /></a>
+        <button type="submit" formmethod="get" class="hide"><img class="icon" src="~/source/Image/find.png" alt="find" /></button>
+        <a href="@GetPrevios()" class="width5i7 button button-simple"><img class="icon" src="~/source/Image/left.png" alt="<" /></a>
+        <a href="@GetNext()" class="width5i7 button button-simple"><img class="icon" src="~/source/Image/right.png" alt=">" /></a>
       </div>
     </div>
 
     <div class="order-shift-choice">
       <ul class="inline-ul">
 
-        <li>
-          <input type="radio" value="1" name="ShiftId" checked="@(Model.Order.Shift==1)" id="shift1" />
+        <li >
+          <input hidden type="radio" value="1" name="ShiftId" checked="@(Model.Order.Shift==1)" id="shift1" />
           <label for="shift1">
-            <a class="button button-simple"
+            <a class="width10i8 button button-simple @ShiftIsPressed(1)"
                href="@CheckModel()OrderAreaId=@Model?.Order?.Area.Id&ShiftId=1&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
               Смена 1
             </a>
@@ -30,10 +30,10 @@
 
         </li>
 
-        <li>
-          <input type="radio" value="2" name="ShiftId" checked="@(Model.Order.Shift==2)" id="shift2" />
+        <li >
+          <input hidden type="radio" value="2" name="ShiftId" checked="@(Model.Order.Shift==2)" id="shift2" />
           <label for="shift2">
-            <a class="button button-simple"
+            <a class="width10i8 button button-simple @ShiftIsPressed(2)"
                href="@CheckModel()OrderAreaId=@Model?.Order?.Area.Id&ShiftId=2&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
               Смена 2
             </a>
@@ -45,10 +45,10 @@
     <div class="order-area-choice">
       <ul class="inline-ul">
         @foreach (var area in Model.Areas) {
-          <li>
-            <input type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model?.Order?.Area.Id==area.Id)" id="area+@area.Id" />
-            <label class="" for="area+@area.Id">
-              <a class="button button-simple"
+          <li >
+            <input hidden type="radio" value="@area.Id" name="OrderAreaId" checked="@(Model?.Order?.Area.Id==area.Id)" id="area+@area.Id" />
+            <label for="area+@area.Id">
+              <a class="width7 button button-simple @AreaIsPressed(area.Id)"
                  href="@CheckModel()OrderAreaId=@area.Id&ShiftId=@(Model?.Order?.Shift)&Date=@Model?.Order?.Date.ToString("yyyy-MM-dd")">
                 @area.Name
               </a>
@@ -62,36 +62,50 @@
 
 @functions {
 
-  string CheckModel() {
-    string m = "";
-    if (Model.Order.Area != null)
-      if (Model is OrderIndexViewModel) {
-        m = "/order?";
-      } else if (Model is TimeLineViewModel) {
-        m = "/Timeline?";
-      }
-    return m;
-  }
+    string ShiftIsPressed(int shift) {
+      string result = "";
+      if (Model?.Order?.Shift == shift)
+        result = "button-simple-active";
+      return result;
+    }
 
-  string GetNext() {
-    string next = CheckModel();
-    if (Model.Order.Area != null)
-      if (Model.Order.Shift == 1) {
-        next += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
-      } else if (Model.Order.Shift == 2) {
-        next += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.AddDays(1).ToString("yyyy-MM-dd")}";
-      }
-    return next;
-  }
+    string AreaIsPressed(int id) {
+      string result = "";
+      if (Model?.Order?.Area?.Id == id)
+        result = "button-simple-active";
+      return result;
+    }
 
-  string GetPrevios() {
-    string previos = CheckModel();
-    if (Model.Order.Area != null)
-      if (Model.Order.Shift == 1) {
-        previos += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.AddDays(-1).ToString("yyyy-MM-dd")}";
-      } else if (Model.Order.Shift == 2) {
-        previos += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
-      }
-    return previos;
-  }
+    string CheckModel() {
+      string m = "";
+      if (Model.Order.Area != null)
+        if (Model is OrderIndexViewModel) {
+          m = "/order?";
+        } else if (Model is TimeLineViewModel) {
+          m = "/Timeline?";
+        }
+      return m;
+    }
+
+    string GetNext() {
+      string next = CheckModel();
+      if (Model.Order.Area != null)
+        if (Model.Order.Shift == 1) {
+          next += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
+        } else if (Model.Order.Shift == 2) {
+          next += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.AddDays(1).ToString("yyyy-MM-dd")}";
+        }
+      return next;
+    }
+
+    string GetPrevios() {
+      string previos = CheckModel();
+      if (Model.Order.Area != null)
+        if (Model.Order.Shift == 1) {
+          previos += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={2}&Date={Model?.Order?.Date.AddDays(-1).ToString("yyyy-MM-dd")}";
+        } else if (Model.Order.Shift == 2) {
+          previos += $"OrderAreaId={Model?.Order?.Area.Id}&ShiftId={1}&Date={Model?.Order?.Date.ToString("yyyy-MM-dd")}";
+        }
+      return previos;
+    }
 }

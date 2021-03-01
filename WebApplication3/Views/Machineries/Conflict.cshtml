@@ -19,10 +19,10 @@
 
   <p><b>@Model.Machine.Name</b> : <b>@Model.Machine.Type.Name </b>==> <b>@Model.NewType.Name</b></p>
 </div>
-<form method="post" action="">
+<form method="post" action="~/Machineries/SolveConflict">
   <div>
-    <a class="button-simple button" href="#">Подтвердить</a>
-    <a class="button-simple button" href="#">Отменить</a>
+    <button type="submit" class="button-simple button" formmethod="get">Подтвердить</button>
+    <a class="button-simple button" href="~/Machineries">Отменить</a>
   </div>
 
   <table class="machinery-table">
@@ -38,8 +38,34 @@
       <td><h6>Оборудование</h6></td>
     </tr>
     @foreach (var conflict in Model.ConflictOrders) {
-
-
+      foreach (var m in conflict.OrderVM.Machineries.Where(x => x.MachineryId == Model.Machine.Id)) {
+        int lenght = m.Works.Count();
+        int i = 0;
+        foreach (var w in m.Works) {
+          <tr>
+            <td><p>@conflict.OrderVM.Date.ToString("dd.MM.yyyy")</p></td>
+            <td><p>@conflict.OrderVM.Shift</p></td>
+            <td><p>@conflict.OrderVM.Area.Name</p></td>
+            <td><p>@w.Type.Name</p></td>
+            <td><p>@w.Note</p></td>
+            <td><p>@w.StartTime</p></td>
+            <td><p>@w.EndTime</p></td>
+            <td>
+              <p>
+                <input type="hidden" value="@conflict.OrderVM.Id" name="[@i].OrderId" />
+                <input type="hidden" value="@w.Id" name="[@i].WorkId" />
+                <select name="[@i].MachineId" required>
+                  <option selected disabled>@m.Name</option>
+                  @foreach (var n in conflict.FreeMachineries) {
+                    <option value="@n.Id">@n.Name</option>
+                  }
+                </select>
+              </p>
+            </td>
+          </tr>
+          i++;
+        }
+      }
     }
   </table>
 </form>

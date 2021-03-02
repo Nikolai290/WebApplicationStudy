@@ -49,7 +49,7 @@ namespace WebApplication3.Models.Entities {
         public virtual bool PZO { get; protected set; }
 
         // Works
-        public virtual IList<Work> Works { get; protected set; }
+        public virtual IList<Work> Works { get; protected set; } = new List<Work>();
 
 
         public MachineryOnShift() {
@@ -60,8 +60,9 @@ namespace WebApplication3.Models.Entities {
             Horizon = new QuarryHorizon();
             Group = new Group();
             Crew = new List<Employee>();
+            Works = new List<Work>();
         }
-        public MachineryOnShift(Machinery m) {
+        public MachineryOnShift(Machinery m) : base() {
             MachineryId = m.Id;
             Name = m.Name;
         }
@@ -85,6 +86,33 @@ namespace WebApplication3.Models.Entities {
             Crew = null;
         }
 
+        public virtual MachineryOnShift GetAllParametres(MachineryOnShift source) {
+            Order = source.Order;
+            Area = source.Area;
+            Field = source.Field;
+            Plast = source.Plast;
+            Horizon = source.Horizon;
+            Picket = source.Picket;
+            Group = source.Group;
+            Number = source.Number;
+
+            Weight = source.Weight;
+            Volume = source.Volume;
+            Overexcavation = source.Overexcavation;
+            Ash = source.Ash;
+            Heat = source.Heat;
+            Wet = source.Wet;
+            HighAsh = source.HighAsh;
+
+            TransportingTime = source.TransportingTime;
+            RepairingTime = source.RepairingTime;
+            HolidayTime = source.HolidayTime;
+
+            Crew = source.Crew.Where(x => !x.IsDelete).ToList();
+            PZO = source.PZO;
+
+            return this;
+        }
 
 
 

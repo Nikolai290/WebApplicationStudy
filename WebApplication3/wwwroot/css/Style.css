@@ -369,6 +369,7 @@ vertical-align: top;
     width: 100%;
 }
 .icon {
+    vertical-align: top;
     max-height: 2em;
     height: 100%;
     width: auto;

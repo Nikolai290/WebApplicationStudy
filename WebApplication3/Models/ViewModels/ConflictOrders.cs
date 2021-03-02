@@ -12,5 +12,8 @@ namespace WebApplication3.Models.ViewModels {
             Order = order;
             OrderVM = new OrderViewModel(order);
         }
+        public ConflictOrders(OrderViewModel orderVm) {
+            OrderVM = orderVm;
+        }
     }
 }

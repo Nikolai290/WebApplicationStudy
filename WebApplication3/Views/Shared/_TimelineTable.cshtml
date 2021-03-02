@@ -45,7 +45,7 @@
                   @{var lines = w.Type.Name.Split(" ").ToList();
                     string txt = "";
                     foreach (var line in lines) {
-                      int length = line.Count() > 4 ? 4 : line.Count();
+                      int length = line.Count() > 5 ? 5 : line.Count();
                       txt += line.Substring(0, length) + " ";
                     }
                     txt.Trim();

@@ -16,6 +16,7 @@ namespace WebApplication3.Models.Services {
         }
 
         public MachineriesViewModel GetMachineryViewModel(int id) {
+
             var model = new MachineriesViewModel();
             model.Machine = id > 0 ?
                 dbManager.GetById<Machinery>(id) :
@@ -27,19 +28,28 @@ namespace WebApplication3.Models.Services {
         }
 
         public MachineriesViewModel SaveOrUpdateMachinery(MachineryDTO dto) {
-            var check = valid.CheckMachineryDTO(dto, out string message);
-            IList<ConflictOrders> conflict = null;
+
+
+            IList<ConflictOrders> conflictOrders = null;
+            IList<Work> conflictWorks = null;
             MachineryType newType = null;
-            if (check) {
+            string message ="";
+            
+            {
                 var machine = dto.Id > 0 ? dbManager.GetById<Machinery>(dto.Id) : new Machinery();
-                machine.SetName(dto.Name);
-                ChangeType(machine, dto.TypeId, out conflict, out message, out newType);
+                if(!String.IsNullOrEmpty(dto.Name)) machine.SetName(dto.Name);
+                ChangeType(machine, dto.TypeId, out conflictOrders, out conflictWorks, out message, out newType);
                 if (dto.Id == 0) dbManager.AddAsync(machine);
             }
+
             var model = GetMachineryViewModel(dto.Id);
-            model.ConflictOrders = conflict;
+            model.ConflictWorks = conflictWorks;
+            model.ConflictOrders = conflictOrders;
             model.Message = message;
             model.NewType = newType;
+            model.Id = dto.Id;
+            model.Name = dto.Name;
+            model.TypeId = dto.TypeId;
 
             return model;
         }
@@ -48,9 +58,10 @@ namespace WebApplication3.Models.Services {
             /*
              * В случае конфликта нам необходимо получить из представления следующие данные:
              * Массив данных содержащий:
+             * Id заменяемого оборудования
              * Id заменённого (нового) оборудования
              * Id работы для которой производится замена
-             * Остальные данные находим из работы: Id ордера и Id заменяемого оборудования
+             * Id наряда
              * Заменяемое оборудование подлежит псевдо удалению. Все данные из него копируются в новое оборудование
              * В изменяемой работе меняется только Id оборудования
               */
@@ -61,38 +72,34 @@ namespace WebApplication3.Models.Services {
              *  В этом случае необходимо это предусмотерть
              * Для всех работ в наряде удаляемого оборудования назначается одна новая техника
              */
-
-
-
             var m = dto.GroupBy(x => x.MoSId);
 
             foreach (var x in m) {
-                foreach(var z in x) {
-
+                var mosid = x.First().MoSId;
+                foreach (var z in x.GroupBy(c => c.MachineId)) {
+                    var machinid = z.First().MachineId;
+                    var worksid = z.Select(b => b.WorkId).ToList();
+                    ResetMachineryWork(mosid, machinid, worksid);
                 }
             }
-
-            foreach (var c in dto ){
-
-                var work = dbManager.GetById<Work>(c.WorkId);
-                var mos = work.Parent;
-                var order = mos.Order;
-                // mos?.Delete(true);
-                var machine = dbManager.GetById<Machinery>(c.MachineId);
-
-
-
-
-            }
-
-
-
         }
 
-        private Machinery ChangeType(Machinery machine, int typeId, out IList<ConflictOrders> conflictOrders, out string message, out MachineryType newType) {
+        private void ResetMachineryWork(int mosId, int machineId, IList<int> worksId) {
+            var machine = dbManager.GetById<Machinery>(machineId);
+            var mos = dbManager.GetByIdForce<MachineryOnShift>(mosId);
+            var newMos = new MachineryOnShift(machine).GetAllParametres(mos);
+            foreach (int wId in worksId) {
+                var work = dbManager.GetById<Work>(wId);
+                work.SetParent(newMos);
+                newMos.AddWork(work);
+            }
+            mos.Delete(true);
+        }
+        private Machinery ChangeType(Machinery machine, int typeId, out IList<ConflictOrders> conflictOrders, out IList<Work> conflictWorks, out string message, out MachineryType newType) {
             conflictOrders = new List<ConflictOrders>();
             message = "Успешно";
             newType = dbManager.GetById<MachineryType>(typeId);
+            conflictWorks = new List<Work>();
             if (machine.Type.Id == typeId) {
                 return machine;
             }
@@ -104,10 +111,19 @@ namespace WebApplication3.Models.Services {
                 // Поиск конфликтов
 
                 var orders = dbManager.GetAll<Order>().Where(x => x.Machineries.Any(z => !z.IsDelete && z.MachineryId == machine.Id)).ToList();
+                var mos = new List<MachineryOnShift>(); 
+                var works = new List<Work>();
+
+                orders.ForEach(x => mos.AddRange(x.Machineries));
+                mos.ForEach(x => works.AddRange(x.Works.Where(z => !z.IsDelete)));
+                conflictWorks = works;
                 foreach (var order in orders)
                     conflictOrders.Add(new ConflictOrders(order));
-                foreach (var c in conflictOrders)
-                    c.FreeMachineries = orderManager.GetMachinesForOrder(c.Order);
+                
+                foreach (var c in conflictOrders) {
+
+                    c.FreeMachineries = orderManager.GetMachinesForOrder(dbManager.GetById<Order>(c.OrderVM.Id));
+                }
 
                 message = "Необходимо устранить конфликт";
                 return machine;

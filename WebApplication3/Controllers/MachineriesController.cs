@@ -25,20 +25,22 @@ namespace WebApplication3.Controllers {
             var model = machineryManager.SaveOrUpdateMachinery(dto);
             dbManager.Commit();
 
-            if (model.ConflictOrders.Count != 0)
+            if (model.ConflictWorks.Count != 0)
                 return View("Conflict", model);
 
 
             return View("Machineries", model);
         }
 
-        public IActionResult SolveConflict(IList<SolveConflictDTO> dto) {
-            machineryManager.SolveConflict(dto);
+        public IActionResult SolveConflict(IList<SolveConflictDTO> dto1, MachineryDTO dto) {
+            machineryManager.SolveConflict(dto1);
+            var model = machineryManager.SaveOrUpdateMachinery(dto);
 
-            var res = new ResultViewModel("asf","asdf");
             dbManager.Commit();
+            if (model.ConflictWorks.Count != 0)
+                return View("Conflict", model);
 
-            return View("Result", res);
+            return View("Machineries", model);
         }
 
         public IActionResult Delete(int delId) {

@@ -29,106 +29,50 @@ namespace WebApplication3.Models.Services {
 
         public MachineriesViewModel SaveOrUpdateMachinery(MachineryDTO dto) {
 
+            var machine = dto.Id > 0 ? dbManager.GetById<Machinery>(dto.Id) : new Machinery();
+            if (!String.IsNullOrEmpty(dto.Name) && machine.Name != dto.Name)
+                machine.SetName(dto.Name);
+            ChangeType(machine, dto.TypeId,out var conflictWorks);
 
-            IList<ConflictOrders> conflictOrders = null;
-            IList<Work> conflictWorks = null;
-            MachineryType newType = null;
-            string message ="";
-            
-            {
-                var machine = dto.Id > 0 ? dbManager.GetById<Machinery>(dto.Id) : new Machinery();
-                if(!String.IsNullOrEmpty(dto.Name)) machine.SetName(dto.Name);
-                ChangeType(machine, dto.TypeId, out conflictOrders, out conflictWorks, out message, out newType);
-                if (dto.Id == 0) dbManager.AddAsync(machine);
-            }
 
             var model = GetMachineryViewModel(dto.Id);
-            model.ConflictWorks = conflictWorks;
-            model.ConflictOrders = conflictOrders;
-            model.Message = message;
-            model.NewType = newType;
-            model.Id = dto.Id;
-            model.Name = dto.Name;
-            model.TypeId = dto.TypeId;
+            model.dto = dto;
+            if(conflictWorks !=null || conflictWorks.Count != 0) {
+                var moss = conflictWorks.Select(x => x.Parent).Distinct();
+                var orders = moss.Select(x => x.Order).Distinct();
+                foreach (var order in orders) {
+                    model.Conflict.Add(new ConflictOrders(order));
+                }
+                foreach(var conflict in model.Conflict) {
+                    conflict.FreeMachineries = orderManager.GetMachinesForOrder(conflict.Order);
+                }
+            }
 
             return model;
         }
 
-        internal void SolveConflict(IList<SolveConflictDTO> dto) {
-            /*
-             * В случае конфликта нам необходимо получить из представления следующие данные:
-             * Массив данных содержащий:
-             * Id заменяемого оборудования
-             * Id заменённого (нового) оборудования
-             * Id работы для которой производится замена
-             * Id наряда
-             * Заменяемое оборудование подлежит псевдо удалению. Все данные из него копируются в новое оборудование
-             * В изменяемой работе меняется только Id оборудования
-              */
-            /*
-             * Варианты событий:
-             * Для каждой работы назначается разная техника - самый простой вариант
-             * Для некоторых работ в наряде удаляемого оборудования назначется одинаковая техника
-             *  В этом случае необходимо это предусмотерть
-             * Для всех работ в наряде удаляемого оборудования назначается одна новая техника
-             */
-            var m = dto.GroupBy(x => x.MoSId);
-
-            foreach (var x in m) {
-                var mosid = x.First().MoSId;
-                foreach (var z in x.GroupBy(c => c.MachineId)) {
-                    var machinid = z.First().MachineId;
-                    var worksid = z.Select(b => b.WorkId).ToList();
-                    ResetMachineryWork(mosid, machinid, worksid);
+        private void ChangeType(Machinery machine, int typeId, out IList<Work> conflictWorks) {
+            conflictWorks = null;
+            if (machine.Type.Id != typeId) {
+                var newType = dbManager.GetById<MachineryType>(typeId);
+                if (CompareAreas(machine, newType)) {
+                    machine.SetType(newType);
+                } else {
+                    IList<Work> works = FindConflicts(machine);
+                    if (works.Count == 0)
+                        machine.SetType(newType);
+                    else
+                        conflictWorks = works;
                 }
             }
         }
 
-        private void ResetMachineryWork(int mosId, int machineId, IList<int> worksId) {
-            var machine = dbManager.GetById<Machinery>(machineId);
-            var mos = dbManager.GetByIdForce<MachineryOnShift>(mosId);
-            var newMos = new MachineryOnShift(machine).GetAllParametres(mos);
-            foreach (int wId in worksId) {
-                var work = dbManager.GetById<Work>(wId);
-                work.SetParent(newMos);
-                newMos.AddWork(work);
-            }
-            mos.Delete(true);
-        }
-        private Machinery ChangeType(Machinery machine, int typeId, out IList<ConflictOrders> conflictOrders, out IList<Work> conflictWorks, out string message, out MachineryType newType) {
-            conflictOrders = new List<ConflictOrders>();
-            message = "Успешно";
-            newType = dbManager.GetById<MachineryType>(typeId);
-            conflictWorks = new List<Work>();
-            if (machine.Type.Id == typeId) {
-                return machine;
-            }
-            if (newType.Areas.Any(x => machine.Type.Areas.Any(z => z.Id == x.Id))) {
-                machine.SetType(newType);
-                return machine;
-            } else {
-                // var changhes = dbManager.GetAll<MachineryOnShift>().Where(x => x.MachineryId == machine.Id);
-                // Поиск конфликтов
+        private IList<Work> FindConflicts(Machinery machine) 
+            => dbManager.GetAll<Work>().Where(x => x.Parent.MachineryId == machine.Id).ToList();
 
-                var orders = dbManager.GetAll<Order>().Where(x => x.Machineries.Any(z => !z.IsDelete && z.MachineryId == machine.Id)).ToList();
-                var mos = new List<MachineryOnShift>(); 
-                var works = new List<Work>();
 
-                orders.ForEach(x => mos.AddRange(x.Machineries));
-                mos.ForEach(x => works.AddRange(x.Works.Where(z => !z.IsDelete)));
-                conflictWorks = works;
-                foreach (var order in orders)
-                    conflictOrders.Add(new ConflictOrders(order));
-                
-                foreach (var c in conflictOrders) {
-
-                    c.FreeMachineries = orderManager.GetMachinesForOrder(dbManager.GetById<Order>(c.OrderVM.Id));
-                }
-
-                message = "Необходимо устранить конфликт";
-                return machine;
-            }
-        }
+        private bool CompareAreas(Machinery machine, MachineryType anyType)
+            => anyType.Areas.Any(x => machine.Type.Areas.Any(z => x.Id == z.Id));
 
         internal MachineriesViewModel Delete(int machineId) {
             var isDelete = dbManager.PseudoDelete<Machinery>(machineId);

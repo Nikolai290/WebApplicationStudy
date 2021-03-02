@@ -16,7 +16,7 @@ namespace WebApplication3.Models.Services {
             employeeManager = new EmployeeManager(dbManager as DbManager);
         }
 
-        public IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
+        private IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
             var machUnique = dbManager.GetAll<Machinery>().ToList();
             var busyMachs = GetAllBusyMachinesOnThisDateAndShift(order);
             return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId).Any()).ToList();
@@ -29,10 +29,10 @@ namespace WebApplication3.Models.Services {
             return machines1;
         }
 
-        public List<Order> GetAllOrderOnThisDateAndShift(Order order)
+        private List<Order> GetAllOrderOnThisDateAndShift(Order order)
             => GetAll().Where(x => x.Date == order.Date && x.Shift == order.Shift).ToList();
 
-        public List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
+        private List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
             var machs = new List<MachineryOnShift>();
             GetAllOrderOnThisDateAndShift(order).ForEach(x => machs.AddRange(x.Machineries));
             return machs.Where(x=> !x.IsDelete).ToList();
@@ -138,13 +138,6 @@ namespace WebApplication3.Models.Services {
 
             return model;
         }
-
-        //public bool DeleteMachineryOnShift(int id) {
-        //    var obj = dbManager.GetById<MachineryOnShift>(id);
-        //    obj.SetNulls();
-        //    return dbManager.DeleteAsync(obj);
-        //}
-
         public IQueryable<Order> GetAll() => dbManager.GetAll<Order>();
         public Order Get(DateTime date, int shiftId, int orderAreaId) {
             // date format: ("yyyy-MM-dd")

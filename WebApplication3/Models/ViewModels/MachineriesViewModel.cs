@@ -11,10 +11,9 @@ namespace WebApplication3.Models.ViewModels {
         public string Title { get; set; }
 
         public MachineryType NewType { get; set; }
-        public IList<ConflictOrders> ConflictOrders { get; set; }
-        public IList<Work> ConflictWorks { get; set; }
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int TypeId { get; set; }
+        public IList<ConflictOrders> Conflict { get; set; }
+
+        public MachineryDTO dto { get; set; }
+
     }
 }

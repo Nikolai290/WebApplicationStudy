@@ -6,7 +6,7 @@ namespace WebApplication3.Models.Mapping {
         public WorkMap() {
             Id(x => x.Id);
             Map(x => x.IsDelete);
-            References(x => x.Parent).Cascade.All();
+            References(x => x.Parent).Cascade.All().Not.LazyLoad();
             References(x => x.Type).Not.LazyLoad();
             Map(x => x.StartTime);
             Map(x => x.EndTime);

@@ -11,7 +11,7 @@ namespace WebApplication3.Models.Mapping {
             Map(x => x.IsDelete);
             Map(x => x.Name);
             Map(x => x.MachineryId);
-            References(x => x.Order).Cascade.All();
+            References(x => x.Order).Cascade.All().Not.LazyLoad();
 
             // Lacation
             References(x => x.Area).Not.LazyLoad().Cascade.All();

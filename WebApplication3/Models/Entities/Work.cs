@@ -40,13 +40,23 @@ namespace WebApplication3.Models.Entities {
         }
 
         public virtual Work SetTime(DateTime start, DateTime end, int shift) {
-            StartTime = start; // need external checking for right datetime
-            EndTime = end;
 
-            if (shift == 2) {
+            StartTime = start;
+            EndTime = end;
+            if (shift == 2 && start < end) {
+                StartTime = start.AddDays(1); // need external checking for right datetime
+                EndTime = end.AddDays(1);
+                start = start.AddHours(12);
+                end = end.AddHours(12);
+
+            } else if (shift == 2 && start > end) {
                 start = start.AddHours(-12);
-                end = end.AddHours(-12);
+                end = end.AddHours(12);
+                StartTime = start.AddHours(12); // need external checking for right datetime
+                EndTime = end.AddHours(12);
             }
+
+
 
             TimeSpan delta = (end - start);
             TotalMinutes = Convert.ToInt32(delta.TotalMinutes);

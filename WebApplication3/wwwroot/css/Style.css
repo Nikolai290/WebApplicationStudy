@@ -27,7 +27,7 @@ a:active {
 }
 
 #main {
-    padding: 20px;
+    padding: 10px;
     background-color: #dee;
 }
 
@@ -141,6 +141,9 @@ header {
 }
 .width7 {
     width: 6.9em;
+}
+.width7i2 {
+    width: 7.2em;
 }
 .width7i5 {
     width: 7.5em;
@@ -417,7 +420,7 @@ vertical-align: top;
     }
 
 .timeline-table tr td:first-child {
-    width: 180px;
+    width: 200px;
 }
 
 .timeline-cells {

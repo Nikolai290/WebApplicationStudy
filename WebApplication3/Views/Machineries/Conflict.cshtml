@@ -5,8 +5,8 @@
 *@
 @{
 
-  ViewData["Title"] = "Machineries";
-  Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Machineries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 <div class="attention">
@@ -37,36 +37,41 @@
 
       <td><h6>Оборудование</h6></td>
     </tr>
-    @foreach (var conflict in Model.ConflictOrders) {
-      foreach (var m in conflict.OrderVM.Machineries.Where(x => x.MachineryId == Model.Machine.Id)) {
-        int lenght = m.Works.Count();
+    @{
         int i = 0;
-        foreach (var w in m.Works) {
-          <tr>
-            <td><p>@conflict.OrderVM.Date.ToString("dd.MM.yyyy")</p></td>
-            <td><p>@conflict.OrderVM.Shift</p></td>
-            <td><p>@conflict.OrderVM.Area.Name</p></td>
-            <td><p>@w.Type.Name</p></td>
-            <td><p>@w.Note</p></td>
-            <td><p>@w.StartTime</p></td>
-            <td><p>@w.EndTime</p></td>
-            <td>
-              <p>
-                <input type="hidden" value="@conflict.OrderVM.Id" name="[@i].OrderId" />
-                <input type="hidden" value="@w.Id" name="[@i].WorkId" />
-                <select name="[@i].MachineId" required>
-                  <option selected disabled>@m.Name</option>
-                  @foreach (var n in conflict.FreeMachineries) {
-                    <option value="@n.Id">@n.Name</option>
-                  }
-                </select>
-              </p>
-            </td>
-          </tr>
-          i++;
+
+        foreach (var conflict in Model.ConflictOrders) {
+
+          foreach (var m in conflict.OrderVM.Machineries.Where(x => x.MachineryId == Model.Machine.Id)) {
+            int lenght = m.Works.Count();
+            foreach (var w in m.Works) {
+            <tr>
+              <td><p>@conflict.OrderVM.Date.ToString("dd.MM.yyyy")</p></td>
+              <td><p>@conflict.OrderVM.Shift</p></td>
+              <td><p>@conflict.OrderVM.Area.Name</p></td>
+              <td><p>@w.Type.Name</p></td>
+              <td><p>@w.Note</p></td>
+              <td><p>@w.StartTime</p></td>
+              <td><p>@w.EndTime</p></td>
+              <td>
+                <p>
+                  <input type="hidden" value="@m.Id" name="[@i].MoSId" />
+                  <input type="hidden" value="@conflict.OrderVM.Id" name="[@i].OrderId" />
+                  <input type="hidden" value="@w.Id" name="[@i].WorkId" />
+                  <select name="[@(i++)].MachineId" required>
+                    <option selected disabled>@m.Name</option>
+                    @foreach (var n in conflict.FreeMachineries) {
+                      <option value="@n.Id">@n.Name</option>
+                    }
+                  </select>
+                </p>
+              </td>
+            </tr>
+          }
         }
       }
     }
+
   </table>
 </form>
 

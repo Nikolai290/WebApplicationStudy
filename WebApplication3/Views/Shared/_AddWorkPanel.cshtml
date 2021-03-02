@@ -10,8 +10,9 @@
 *@
 @{
 }
+
 <div>
-  <h5>@Model.MachineName</h5>
+  <h6>@Model.MachineName</h6>
   <p>добавление работы</p>
 </div>
 
@@ -42,7 +43,7 @@
       <select name="typeworkId" id="typework" required>
         <option selected disabled></option>
         @foreach (var t in Model.WorkTypes) {
-          <option value="@t.Id" selected="@(Model.Work?.Type?.Id == t.Id)">@t.Name</option>
+          <option value="@t.Id" selected="@(Model?.Work?.Type?.Id == t.Id)">@t.Name</option>
         }
       </select>
     </div>
@@ -55,8 +56,8 @@
     <div @if (!Model.Work.Type.NeedsFields.Contains("sort")) { @: hidden
          }>
       <label for="sort">Сорт</label> <br />
-      <select name="sortId" id="sort"@if (Model.Work.Type.NeedsFields.Contains("sort")) { @: required
-         }>
+      <select name="sortId" id="sort" @if (Model.Work.Type.NeedsFields.Contains("sort")) { @: required
+              }>
         <option selected disabled></option>
         @foreach (var s in Model.CoalSorts) {
           <option value="@s.Id" selected="@(Model.Work?.Sort?.Id == s.Id)">@s.Name</option>
@@ -107,9 +108,9 @@
           </td>
           <td>
             <a class="button button-simple"
-               href="/timeline/delete?orderId=@Model?.Order.Id&workId=@Model?.Work?.Id"
                @if (Model?.Work == null) { @: hidden
-               }>Удалить</a>
+               }
+               href="/timeline/delete?orderId=@Model?.Order.Id&workId=@Model?.Work?.Id">Удалить</a>
           </td>
         </tr>
       </table>
@@ -117,3 +118,4 @@
 
   </form>
 </div>
+

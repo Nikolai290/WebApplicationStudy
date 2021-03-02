@@ -34,14 +34,10 @@ namespace WebApplication3.Controllers {
 
 
         [HttpGet]
-        public IActionResult Add(int id) {
-            ViewBag.Positions = positionManager.GetAll().ToList();
-            Employee emp = id > 0 ?
-                employeeManager.GetById(id) :
-                new Employee();
-
+        public IActionResult Add(AddEmployeeDTO dto) {
+            var model = employeeManager.GetAddEmployeeViewModel(dto);
             dbManager.Commit();
-            return View("Add", emp);
+            return View("Add", model);
         }
 
 

@@ -1,8 +1,8 @@
-﻿@using WebApplication3.Models.Entities;
-@model Employee
+﻿@using WebApplication3.Models.ViewModels;
+@model AddEmployeeViewModel
 
 @{
-  if (String.IsNullOrEmpty(Model.Name)) {
+  if (String.IsNullOrEmpty(Model.Emp.Name)) {
     ViewData["Title"] = "Adding";
   } else {
     ViewData["Title"] = "Change";
@@ -12,31 +12,31 @@
 
 <div class="form-div add-employee">
   <form class="form-add-employee" method="post">
-    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="Id" value="@Model.Emp.Id" />
 
     <table class="table add-employee-table">
       <tr>
         <td><label for="Lastname">Фамилия:</label></td>
-        <td><input size="40" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Lastname" maxlength="20" required /></td>
+        <td><input size="40" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Emp.Lastname" maxlength="20" required /></td>
       </tr>
       <tr>
         <td><label for="Name">Имя:</label></td>
-        <td><input size="40" type="text" name="Name" placeholder="Введите имя" value="@Model.Name" maxlength="20" required /></td>
+        <td><input size="40" type="text" name="Name" placeholder="Введите имя" value="@Model.Emp.Name" maxlength="20" required /></td>
       </tr>
       <tr>
         <td><label for="Fathername">Отчество:</label></td>
-        <td><input size="40" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Fathername" maxlength="20" /></td>
+        <td><input size="40" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Emp.Fathername" maxlength="20" /></td>
       </tr>
       <tr>
         <td><label for="TableNumber">Табельный номер:</label></td>
-        <td><input size="10" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.TableNumber" min="1000" max="999999" /></td>
+        <td><input size="10" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.Emp.TableNumber" min="1000" max="999999" /></td>
       </tr>
       <tr>
         <td><label for="Position">Должность:</label></td>
         <td>
           <select id="position" name="PosId">
-            @foreach (var pos in ViewBag.Positions) {
-              <option value="@pos.Id" selected="@(pos.Id == Model?.Position?.Id)">
+            @foreach (var pos in Model.Positions) {
+              <option value="@pos.Id" selected="@(pos.Id == Model?.Emp?.Position?.Id)">
                 @pos.Subname
               </option>
             }
@@ -44,7 +44,7 @@
         </td>
       </tr>
       <tr>
-        <td><button type="submit" href="~staff/add?@Model.Id" class="button button-simple">Отправить</button></td>
+        <td><button type="submit" href="~staff/add?@Model?.Emp?.Id" class="button button-simple">Отправить</button></td>
         <td><button type="reset" class="button button-simple">Сбросить</button></td>
       </tr>
 

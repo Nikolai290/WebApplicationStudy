@@ -64,10 +64,9 @@ namespace WebApplication3.Models.Services {
 
 
 
-            var o = dto.GroupBy(x => x.OrderId);
-            var m = dto.GroupBy(x => x.MachineId);
+            var m = dto.GroupBy(x => x.MoSId);
 
-            foreach(var x in o) {
+            foreach (var x in m) {
                 foreach(var z in x) {
 
                 }
@@ -76,9 +75,9 @@ namespace WebApplication3.Models.Services {
             foreach (var c in dto ){
 
                 var work = dbManager.GetById<Work>(c.WorkId);
-                var mos = dbManager.GetById<MachineryOnShift>(work.Parent.Id);
-                var order = dbManager.GetById<Order>(mos.Order.Id);
-                mos.Delete(true);
+                var mos = work.Parent;
+                var order = mos.Order;
+                // mos?.Delete(true);
                 var machine = dbManager.GetById<Machinery>(c.MachineId);
 
 

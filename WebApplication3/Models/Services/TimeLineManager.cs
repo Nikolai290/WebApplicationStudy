@@ -121,7 +121,6 @@ namespace WebApplication3.Models.Services {
             } else if( order.Shift ==2 && startTime > endTime) {
                 startTime = startTime.AddHours(-12);
                 endTime = endTime.AddHours(12);
-
             }
 
             if (startTime > endTime)

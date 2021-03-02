@@ -112,7 +112,7 @@ namespace WebApplication3.Models.DbAccess {
         public bool PseudoDelete<T>(int id) where T : DbEntities {
             try {
                 var obj = GetById<T>(id);
-                obj.Delete(true);
+                obj?.Delete(true);
                 return true;
             } catch {
                 return false;
@@ -122,7 +122,7 @@ namespace WebApplication3.Models.DbAccess {
 
         public bool PseudoDelete<T>(T obj) where T : DbEntities {
             try {
-                obj.Delete(true);
+                obj?.Delete(true);
                 return true;
             } catch {
                 return false;

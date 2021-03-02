@@ -38,7 +38,8 @@
 <div class="timeline-addwork-panel">
   <div @if (String.IsNullOrEmpty(Model.MachineName)) { @: hidden
        }>
-    @await Html.PartialAsync("_AddWorkPanel")
+    @if (Model.Work != null)
+      @await Html.PartialAsync("_AddWorkPanel")
   </div>
 </div>
 

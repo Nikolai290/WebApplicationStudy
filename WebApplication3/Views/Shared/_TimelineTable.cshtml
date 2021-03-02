@@ -31,7 +31,7 @@
       @foreach (var m in Model?.Order?.Machineries?.Where(x => !x.IsDelete)) {
         <tr>
           <td class="active-cell">
-            <a class="" href="~/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id">
+            <a href="~/timeline?OrderId=@Model?.Order.Id&MoSId=@m?.Id">
               @m?.Name
             </a>
           </td>

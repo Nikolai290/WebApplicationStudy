@@ -10,14 +10,15 @@
 
     <div class="find">
       <form class="find-form" method="get">
-        <input type="search" name="find" class="find-input"
+        <input type="hidden" name="id" value="0" />
+        <input type="text" name="find" class="find-input"
                placeholder="Введите строку для поиска" maxlength="50" />
         <button type="submit" class="button button-simple">
           <img class="icon" src="~/source/Image/find.png" alt="find" /> Поиск
         </button>
-
-        <a href="staff/add?0" class="button button-simple">Добавить</a>
-
+        <button type="submit" class="button button-simple" formaction="~/staff/add">
+          Добавить
+        </button>
       </form>
     </div>
     <table class="machinery-table">

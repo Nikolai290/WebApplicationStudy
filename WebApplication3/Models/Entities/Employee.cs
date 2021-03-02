@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.Entities {
@@ -19,6 +21,7 @@ namespace WebApplication3.Models.Entities {
             Fathername = fathername;
         }
 
+
         public Employee(string name, string lastname, string fathername, int tablenum) : this(name, lastname, fathername) {
             TableNumber = tablenum;
         }
@@ -35,6 +38,21 @@ namespace WebApplication3.Models.Entities {
             
 
             return source;
+        }
+        public virtual Employee SetNameByFind(string find) {
+            if (!String.IsNullOrEmpty(find)) {
+                IList<string> lines = find.Trim().Split(" ").Where(x => !String.IsNullOrEmpty(x)).ToList();
+                if(lines.Count >= 1)
+                    Lastname = lines[0];
+                if (lines.Count >= 2)
+                    Name = lines[1];
+                if (lines.Count >= 3) 
+                    Fathername = lines[2];
+                if (lines.Count >= 4)
+                    TableNumber = Int32.TryParse(lines[3],out int number)? number : 0;
+
+            }
+            return this;
         }
 
         public virtual string GetFIO()

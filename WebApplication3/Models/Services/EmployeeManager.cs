@@ -39,6 +39,17 @@ namespace WebApplication3.Models.Services {
             return emp;
         }
 
+        internal AddEmployeeViewModel GetAddEmployeeViewModel(AddEmployeeDTO dto) {
+            var model = new AddEmployeeViewModel();
+            model.Positions = dbManager.GetAll<Position>().ToList();
+            model.Emp = dto.Id > 0 ?
+                 dbManager.GetById<Employee>(dto.Id) :
+                 new Employee().SetNameByFind(dto.Find);
+
+
+            return model;
+        }
+
         public bool PseudoDelete(int id)
             => GetById(id).Delete(true);
 
@@ -92,12 +103,12 @@ namespace WebApplication3.Models.Services {
                 busyEmpls.Add(new Employee());
             var freeEmpls = GetEmployeesByStringFind("Машинист").Difference(busyEmpls);
 
-            if(machId > 0) {
+            if (machId > 0) {
                 var aurMach = dbManager.GetById<MachineryOnShift>(machId);
                 var isdeletedempls = aurMach.Crew.Where(x => x.IsDelete).ToList();
                 isdeletedempls.ForEach(x => freeEmpls.Insert(0, x));
             }
-            
+
 
             return freeEmpls;
         }

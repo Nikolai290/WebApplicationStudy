@@ -5,8 +5,8 @@ using WebApplication3.Models.ViewModels;
 namespace WebApplication3.Models.Entities {
     public class Position : DbEntities {
 
-        public virtual string Name { get; protected set; }
-        public virtual string Subname { get; protected set; }
+        public virtual string Name { get; set; }
+        public virtual string Subname { get; set; }
         public virtual IList<Employee> Employees { get; set; }
 
         public Position() {

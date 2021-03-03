@@ -9,28 +9,26 @@
   }
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div asp-validation-summary="ModelOnly"></div>
 <div class="form-div add-position">
-  <form class="form-add-position" method="post">
+  <form asp-action="Add">
     <input type="hidden" value="@Model.Id" name="Id" />
     @foreach (var emp in Model.Employees) {
-      <input type="hidden" value="@emp" name="Employees" />
     }
     <div>
       <p><label for="Name">Категория</label></p>
       <p>
-        <input size="40" type="text" list="Namelist" name="Name" id="Name"
-               value="@Model.Name" placeholder="Категория" maxlength="30" required />
+        <input asp-for="Name" /><span asp-validation-for="Name"></span>
       </p>
     </div>
     <div>
       <p><label for="Subname">Должность</label></p>
       <p>
-        <input size="40" type="text" name="Subname" id="Subname"
-               value="@Model.Subname" placeholder="Должность" maxlength="50" />
+        <input asp-for="Subname" /><span asp-validation-for="Subname"></span>
       </p>
     </div>
     <div>
+      <input type="submit" value="submit"/>
       <span><button type="submit" class="button button-simple">Отправить</button></span>
       <span><button type="reset" class="button button-simple">Сбросить</button></span>
     </div>

@@ -19,7 +19,7 @@ namespace WebApplication3.Models.Services {
         private IList<Machinery> GetAddingListMachinesExcludeRepeats(Order order) {
             var machUnique = dbManager.GetAll<Machinery>().ToList();
             var busyMachs = GetAllBusyMachinesOnThisDateAndShift(order);
-            return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId).Any()).ToList();
+            return machUnique.Where(x => !busyMachs.Where(z => x.Id == z.MachineryId && !x.IsDelete).Any()).ToList();
         }
 
         public IList<Machinery> GetMachinesForOrder(Order order) {
@@ -34,7 +34,7 @@ namespace WebApplication3.Models.Services {
 
         private List<MachineryOnShift> GetAllBusyMachinesOnThisDateAndShift(Order order) {
             var machs = new List<MachineryOnShift>();
-            GetAllOrderOnThisDateAndShift(order).ForEach(x => machs.AddRange(x.Machineries));
+            GetAllOrderOnThisDateAndShift(order).ForEach(x => machs.AddRange(x.Machineries.Where(z => !z.IsDelete)));
             return machs.Where(x=> !x.IsDelete).ToList();
         }
 
@@ -58,8 +58,14 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public bool DeleteMachineryOnShift(int mosId)
-            => dbManager.PseudoDelete<MachineryOnShift>(mosId);
+        public bool DeleteMachineryOnShift(int mosId) {
+            foreach( var work in dbManager.GetById<MachineryOnShift>(mosId).Works) {
+                work.Delete(true);
+            }
+
+
+            return dbManager.PseudoDelete<MachineryOnShift>(mosId);
+        } 
 
         public bool AddNewMachineryOnShift(AddMachintPostDTO dto) {
             bool result;

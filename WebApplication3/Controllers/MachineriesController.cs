@@ -24,16 +24,22 @@ namespace WebApplication3.Controllers {
         public IActionResult Index(MachineryDTO dto) {
             var model = machineryManager.SaveOrUpdateMachinery(dto);
             dbManager.Commit();
-            if(model.Conflict !=null || model.Conflict.Count != 0)
+            if(model.Conflict !=null)
                 return View("Conflict", model);
 
 
             return View("Machineries", model);
         }
 
-        public IActionResult SolveConflict(IList<SolveConflictDTO> dto) {
+        public IActionResult SolveConflict(IList<SolveConflictDTO> dto, MachineryDTO dto1) {
+            bool result = machineryManager.SolveConflict(dto);
 
-            return View("Machineries");
+            if (result) {
+                var model = machineryManager.SaveOrUpdateMachinery(dto1);
+                return View("Machineries", model);
+            }
+            dbManager.Commit();
+            return BadRequest("Не удалось. Выберите другое оборудование.");
         }
 
         public IActionResult Delete(int delId) {

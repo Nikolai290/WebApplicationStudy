@@ -36,6 +36,7 @@ namespace WebApplication3.Controllers {
 
             if (result) {
                 var model = machineryManager.SaveOrUpdateMachinery(dto1);
+                dbManager.Commit();
                 return View("Machineries", model);
             }
             dbManager.Commit();

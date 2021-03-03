@@ -46,7 +46,7 @@ namespace WebApplication3.Models.Services {
 
                     // Находим машину на которую будем менять. Если машина с таким названием уже есть в наряде и она не удалена, то берем её, иначе создаём новую.
                     var newMos = order.Machineries.Any(x=> x.MachineryId == machine.Id && !x.IsDelete)? 
-                        order.Machineries.First(x => x.MachineryId == machine.Id) : 
+                        order.Machineries.First(x => x.MachineryId == machine.Id && !x.IsDelete) : 
                         new MachineryOnShift(machine);
                     mos.Delete(true);
                     newMos.GetAllParametres(mos);

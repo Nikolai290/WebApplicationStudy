@@ -79,9 +79,9 @@
 <hr />
 <div class="buttons-bar">
   <form action="/Order/AddMachineToOrder" method="get" style="display: inline-block">
-    <input type="hidden" name="OrderId" value="@Model.Order.Id"/>
-    <select name="MachineId" required class="width15"  @if (Model.Order.Id == 0) { @: disabled
-           } >
+    <input type="hidden" name="OrderId" value="@Model.Order.Id" />
+    <select name="MachineId" required class="width15" @if (Model.Order.Id == 0) { @: disabled
+            }>
       <option selected disabled></option>
       @foreach (var m in Model?.Machines) {
         <option value="@m.Id">@m.Name</option>
@@ -95,7 +95,7 @@
   </form>
   <form style="display: inline-block">
     <input type="hidden" name="allPZO" value="true" />
-    <input type="submit" value="ПЗО всем" class="button button-simple width15" />
+    <input hidden type="submit" value="ПЗО всем" class="button button-simple width15" />
   </form>
 </div>
 <hr />

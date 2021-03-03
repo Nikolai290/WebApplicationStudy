@@ -38,10 +38,10 @@ namespace WebApplication3.Controllers {
 
         [HttpPost]
         public IActionResult Add(PositionsAddDTO pos) {
-            var result = positionManager.CreateNewPosition(pos);
+            var result = positionManager.CreateNewPosition(pos, out string message);
             dbManager.Commit();
 
-            string message = result ? $"Объект сохранён" : "Не удалось";
+            // string message = result ? $"Объект сохранён" : "Не удалось";
             var res = new ResultViewModel(message, message, $"/positions", "Назад");
             return View("Result", res);
         }

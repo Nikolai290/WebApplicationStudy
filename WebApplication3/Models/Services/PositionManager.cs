@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.FluentValidation;
 
 namespace WebApplication3.Models.Services {
     public class PositionManager {
+        PositionsAddDTOValidator validator = new PositionsAddDTOValidator();
 
         private readonly IDbManager dbManager;
 
@@ -22,18 +24,29 @@ namespace WebApplication3.Models.Services {
             return false;
         }
 
-        public bool CreateNewPosition(PositionsAddDTO model) {
-            if (IsWriteProtection(model.Id))
+        public bool CreateNewPosition(PositionsAddDTO dto, out string message) {
+            message = "";
+            if (IsWriteProtection(dto.Id)) {
+                message = "Запись защищена от изменений";
                 return false;
+            }
+
+            var res = validator.Validate(dto);
+            if(! res.IsValid) {
+                message = res.ToString();
+                return false;
+            }
+
             Position pos;
             bool result;
-            if (model.Id > 0) {
-                pos = GetById(model.Id).Create(model).Check();
+            if (dto.Id > 0) {
+                pos = GetById(dto.Id).Create(dto).Check();
                 result = true;
             } else {
-                pos = new Position().Create(model).Check();
+                pos = new Position().Create(dto).Check();
                 result = Create(pos);
             }
+            message = "Успешно!";
             return result;
         }
 

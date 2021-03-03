@@ -7,6 +7,7 @@ using WebApplication3.Models.ViewModels;
 using WebApplication3.Models.FluentValidation;
 
 
+
 namespace WebApplication3.Controllers {
     public class PositionsController : Controller {
         private readonly IDbManager dbManager;
@@ -29,32 +30,25 @@ namespace WebApplication3.Controllers {
 
         [HttpGet]
         public IActionResult Add(int id) {
-            var pos = id > 0 ?
-                positionManager.GetById(id) :
-                new Position();
-
-            ViewBag.Positions = positionManager.GetDistinctNames();
+            var model = positionManager.GetModelToAdd(id);
 
             dbManager.Commit();
-            return View("Add", pos);
+            return View("Add", model);
         }
 
-        [HttpPost]
-        public IActionResult Add(Position dto) {
-            
-            if (!ModelState.IsValid) {
-                ViewBag.Positions = positionManager.GetDistinctNames();
 
+        [HttpPost]
+        public IActionResult Add(PositionsAddDTO dto) {
+            if (!ModelState.IsValid) {
+                dto.Positions = positionManager.GetDistinctNames();
                 dbManager.Commit();
                 return View("Add", dto);
             }
-            // var result = positionManager.CreateNewPosition(dto, out string message);
+            positionManager.CreateNewPosition(dto, out string message);
             dbManager.Commit();
-            return BadRequest("Успешно!");
 
-            // string message = result ? $"Объект сохранён" : "Не удалось";
-            // var res = new ResultViewModel(message, message, $"/positions", "Назад");
-            return View("Result");
+            var res = new ResultViewModel(message, message, $"/positions", "Назад");
+            return View("Result", res);
         }
 
         [HttpGet]

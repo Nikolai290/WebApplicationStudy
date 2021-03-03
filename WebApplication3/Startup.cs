@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.FluentValidation;
+using WebApplication3.Models.ViewModels;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 
@@ -30,6 +31,7 @@ namespace WebApplication3 {
                 }); // Add Fluent Validation
             services.AddCors(options => options.AddDefaultPolicy(x => x.AllowAnyOrigin()));
             services.AddTransient<IValidator<Position>, PositionValidator>();
+            services.AddTransient<IValidator<PositionsAddDTO>, PositionsAddDTOValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +46,6 @@ namespace WebApplication3 {
             app.UseCors();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthorization();

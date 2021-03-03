@@ -49,6 +49,23 @@ namespace WebApplication3.Models.Services {
             return result;
         }
 
+        internal PositionsAddDTO GetModelToAdd(PositionsAddDTO dto) {
+            var model = GetModelToAdd(dto.Id);
+            return model;
+        }
+
+        internal PositionsAddDTO GetModelToAdd(int id) {
+            var model = new PositionsAddDTO();
+            model.Position = id > 0 ?
+                GetById(id) :
+                new Position();
+            model.Name = model.Position.Name;
+            model.Subname = model.Position.Subname;
+
+            model.Positions = GetDistinctNames();
+            return model;
+        }
+
         // Валидность
         private bool IsValid(Position pos, bool isNew = true) {
             if (isNew && IsAlreadyExist(pos)) return false;

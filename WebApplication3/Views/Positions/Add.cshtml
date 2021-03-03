@@ -1,5 +1,5 @@
-﻿@using WebApplication3.Models.Entities;
-@model Position;
+﻿@using WebApplication3.Models.ViewModels;
+@model PositionsAddDTO;
 
 @{
   if (String.IsNullOrEmpty(Model.Name)) {
@@ -11,20 +11,20 @@
 }
 <div asp-validation-summary="ModelOnly"></div>
 <div class="form-div add-position">
-  <form asp-action="Add">
-    <input type="hidden" value="@Model.Id" name="Id" />
-    @foreach (var emp in Model.Employees) {
-    }
+  <form asp-formhelper="true" asp-controller="Positions" asp-action="Add">
+    <input type="hidden" value="@Model?.Position?.Id" name="Id" />
     <div>
       <p><label for="Name">Категория</label></p>
       <p>
-        <input asp-for="Name" /><span asp-validation-for="Name"></span>
+        <input asp-for="Name" list="Namelist" /> <br />
+        <span class="error" asp-validation-for="Name"></span>
       </p>
     </div>
     <div>
       <p><label for="Subname">Должность</label></p>
       <p>
-        <input asp-for="Subname" /><span asp-validation-for="Subname"></span>
+        <input asp-for="Subname" /><br />
+        <span class="error" asp-validation-for="Subname"></span>
       </p>
     </div>
     <div>
@@ -34,7 +34,7 @@
     </div>
 
     <datalist id="Namelist">
-      @foreach (var pos in ViewBag.Positions) {
+      @foreach (var pos in Model?.Positions) {
         <option value="@pos"></option>
       }
     </datalist>

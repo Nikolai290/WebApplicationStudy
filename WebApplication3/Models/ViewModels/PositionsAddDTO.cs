@@ -10,7 +10,7 @@ namespace WebApplication3.Models.ViewModels {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual string Subname { get; set; }
-        public virtual IList<Employee> Employees { get; set; }
-        public virtual IList<int> emplsIds { get; set; }
+        public IList<string> Positions { get; set; }
+        public Position Position { get; set; }
     }
 }

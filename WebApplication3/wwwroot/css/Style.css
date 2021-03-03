@@ -40,6 +40,10 @@ a:active {
 .hide {
     display:none;
 }
+.error {
+    font-size: 0.7em;
+    color: red;
+}
 
 #wrapper {
     background-color: #ccc;

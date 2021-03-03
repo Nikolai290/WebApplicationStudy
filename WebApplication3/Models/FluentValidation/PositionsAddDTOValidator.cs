@@ -8,8 +8,8 @@ using WebApplication3.Models.ViewModels;
 namespace WebApplication3.Models.FluentValidation {
     public class PositionsAddDTOValidator : AbstractValidator<PositionsAddDTO> {
         public PositionsAddDTOValidator() {
-            RuleFor(PositionsAddDTO => PositionsAddDTO.Name).NotNull().NotEmpty().Length(1, 50);
-            RuleFor(PositionsAddDTO => PositionsAddDTO.Subname).NotNull().NotEmpty().Length(1, 50);
+            RuleFor(PositionsAddDTO => PositionsAddDTO.Name).NotNull().NotEmpty().Length(5, 50);
+            RuleFor(PositionsAddDTO => PositionsAddDTO.Subname).NotNull().NotEmpty().Length(5, 50);
         }
     }
 }

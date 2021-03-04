@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Employees;
 
 namespace WebApplication3.Models.Entities {
     public class Employee : DbEntities {

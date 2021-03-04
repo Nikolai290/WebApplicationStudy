@@ -6,6 +6,7 @@ using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.Services;
 using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Employees;
 
 
 namespace WebApplication3.Controllers {

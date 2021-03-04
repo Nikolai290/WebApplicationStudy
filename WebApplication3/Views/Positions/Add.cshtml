@@ -1,5 +1,5 @@
-﻿@using WebApplication3.Models.ViewModels;
-@model PositionsAddDTO;
+﻿@using WebApplication3.Models.ViewModels.Positions;
+@model PositionsViewModel;
 
 @{
   if (String.IsNullOrEmpty(Model.Name)) {
@@ -10,25 +10,24 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div asp-validation-summary="ModelOnly"></div>
-<div class="form-div add-position">
+<div class="add-employee-page">
   <form asp-formhelper="true" asp-controller="Positions" asp-action="Add">
-    <input type="hidden" value="@Model?.Position?.Id" name="Id" />
-    <div>
-      <p><label for="Name">Категория</label></p>
-      <p>
+    <input hidden asp-for="Id"/>
+    <div  class="form-div">
+      <p class="label-container"><label for="Name">Категория</label></p>
+      <p class="input-container">
         <input size="40" asp-for="Name" list="Namelist" /> <br />
         <span class="error" asp-validation-for="Name"></span>
       </p>
     </div>
-    <div>
-      <p><label for="Subname">Должность</label></p>
-      <p>
+    <div  class="form-div">
+      <p class="label-container"><label for="Subname">Должность</label></p>
+      <p class="input-container">
         <input size="40" asp-for="Subname" /><br />
         <span class="error" asp-validation-for="Subname"></span>
       </p>
     </div>
-    <div>
-      <input type="submit" value="submit"/>
+    <div  class="form-div button-container">
       <span><button type="submit" class="button button-simple">Отправить</button></span>
       <span><button type="reset" class="button button-simple">Сбросить</button></span>
     </div>

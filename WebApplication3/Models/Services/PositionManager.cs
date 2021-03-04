@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
-using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Positions;
 using WebApplication3.Models.FluentValidation;
 
 namespace WebApplication3.Models.Services {
     public class PositionManager {
-        PositionsAddDTOValidator validator = new PositionsAddDTOValidator();
+        PositionsViewModelValidator validator = new PositionsViewModelValidator();
 
         private readonly IDbManager dbManager;
 
@@ -23,7 +23,7 @@ namespace WebApplication3.Models.Services {
             return false;
         }
 
-        public bool CreateNewPosition(PositionsAddDTO dto, out string message) {
+        public bool CreateNewPosition(PositionsViewModel dto, out string message) {
             message = "";
             if (IsWriteProtection(dto.Id)) {
                 message = "Запись защищена от изменений";
@@ -49,18 +49,16 @@ namespace WebApplication3.Models.Services {
             return result;
         }
 
-        internal PositionsAddDTO GetModelToAdd(PositionsAddDTO dto) {
+        internal PositionsViewModel GetModelToAdd(PositionsViewModel dto) {
             var model = GetModelToAdd(dto.Id);
             return model;
         }
 
-        internal PositionsAddDTO GetModelToAdd(int id) {
-            var model = new PositionsAddDTO();
-            model.Position = id > 0 ?
+        internal PositionsViewModel GetModelToAdd(int id) {
+            var position = id > 0 ?
                 GetById(id) :
                 new Position();
-            model.Name = model.Position.Name;
-            model.Subname = model.Position.Subname;
+            var model = new PositionsViewModel(position);
 
             model.Positions = GetDistinctNames();
             return model;
@@ -102,10 +100,11 @@ namespace WebApplication3.Models.Services {
         public IQueryable<Position> GetAll()
             => dbManager.GetAll<Position>();
 
-        public IList<PositionsViewModel> GetAllClean() {
-            var model = new List<PositionsViewModel>();
-            dbManager.GetAll<Position>().ToList().ForEach( x => model.Add(new PositionsViewModel(x)));
-            model.ForEach(x => x.Employees = dbManager.GetAll<Employee>().Where(z => z.Position.Id == x.Id).ToList());
+        public IList<Position> GetAllClean() {
+            var model = dbManager.GetAll<Position>().ToList();
+            foreach(var m in model) {
+                m.Employees = m.Employees.Where(x => !x.IsDelete).ToList();
+            }
             return model;
         }
 

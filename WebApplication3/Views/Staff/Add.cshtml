@@ -1,4 +1,4 @@
-﻿@using WebApplication3.Models.ViewModels;
+﻿@using WebApplication3.Models.ViewModels.Employees;
 @model AddEmployeeViewModel
 
 @{
@@ -10,58 +10,67 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="form-div add-employee">
+<div class="add-employee-page">
   <form class="form-add-employee" method="post" asp-action="Add" asp-controller="Staff">
-    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-div">
+      <div class="label-container">
+        <label asp-for="Lastname"></label>
+      </div>
+      <div class="input-container">
+        <input asp-for="Lastname" size="40" /><br />
+        <span asp-validation-for="Lastname" class="error"> </span>
+      </div>
+    </div>
+    <div class="form-div">
+      <div class="label-container">
+        <label asp-for="Name"></label>
+      </div>
+      <div class="input-container">
+        <input asp-for="Name" size="40" /><br />
+        <span asp-validation-for="Name" class="error"> </span>
+      </div>
+    </div>
 
-    <table class="table add-employee-table">
-      <tr>
-        <td><label asp-for="Lastname"></label></td>
-        <td>
-          <input asp-for="Lastname" size="40" /><br />
-          <span asp-validation-for="Lastname" class="error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td><label asp-for="Name"></label></td>
-        <td>
-          <input asp-for="Name" size="40" /><br />
-          <span asp-validation-for="Name" class="error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td><label asp-for="Fathername"></label></td>
-        <td>
-          <input asp-for="Fathername" size="40" /><br />
-          <span asp-validation-for="Fathername" class="error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td><label asp-for="TableNumber"></label></td>
-        <td>
-          <input asp-for="TableNumber" size="10" type="number" /><br />
-          <span asp-validation-for="TableNumber" class="error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td><label asp-for="PositionId"></label></td>
-        <td>
-          <select asp-for="PositionId">
-            @foreach (var pos in Model.Positions) {
-              <option value="@pos.Id" selected="@(pos.Id == Model?.Position?.Id)">
-                @pos.Subname
-              </option>
-            }
-          </select><br />
-          <span asp-validation-for="PositionId" class="error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td><button type="submit" class="button button-simple">Отправить</button></td>
-        <td><a href="~/staff" class="button button-simple">Вернуться</a></td>
-      </tr>
+    <div class="form-div">
+      <div class="label-container">
+        <label asp-for="Fathername"></label>
+      </div>
+      <div class="input-container">
+        <input asp-for="Fathername" size="40" /><br />
+        <span asp-validation-for="Fathername" class="error"> </span>
+      </div>
+    </div>
 
-    </table>
+    <div class="form-div">
+      <div class="label-container">
+        <label asp-for="TableNumber"></label>
+      </div>
+      <div class="input-container">
+        <input asp-for="TableNumber" size="10" type="number" /><br />
+        <span asp-validation-for="TableNumber" class="error"> </span>
+      </div>
+    </div>
+
+    <div class="form-div">
+      <div class="label-container">
+        <label asp-for="PositionId"></label>
+      </div>
+      <div class="input-container">
+        <select asp-for="PositionId">
+          @foreach (var pos in Model.Positions) {
+            <option value="@pos.Id" selected="@(pos.Id == Model?.Position?.Id)">
+              @pos.Subname
+            </option>
+          }
+        </select><br />
+        <span asp-validation-for="PositionId" class="error"> </span>
+      </div>
+    </div>
+
+    <div class="form-div button-container">
+      <span><button type="submit" class="button button-simple">Отправить</button></span>
+      <span><a href="~/staff" class="button button-simple">Вернуться</a> </span>
+    </div>
   </form>
-
 </div>

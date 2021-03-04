@@ -2,7 +2,7 @@
 using WebApplication3.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication3.Models.ViewModels {
+namespace WebApplication3.Models.ViewModels.Employees {
     public class AddEmployeeViewModel {
 
         public int Id { get; set; }
@@ -24,7 +24,6 @@ namespace WebApplication3.Models.ViewModels {
 
         [Required(ErrorMessage = "Обязательно для заполнения")]
         [Range(1000,999999, ErrorMessage = "{0} должен содержать от 4 до 6 чисел")]
-        //[StringLength(6, MinimumLength = 4)]
         [Display(Name = "Табельный номер:")]
         public int TableNumber { get; set; }
 

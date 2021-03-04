@@ -1,11 +1,11 @@
-﻿@using WebApplication3.Models.ViewModels;
-@model IList<PositionsViewModel>
+﻿@using WebApplication3.Models.Entities;
+@model IList<Position>
 @{
     ViewData["Title"] = "Positions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="position-table">
+<div class="strong-center-page">
     <div class="submenu">
         <a href="positions/add" class="button button-simple">Добавить</a>
     </div>
@@ -23,7 +23,7 @@
                 <td><p>@pos.Name</p></td>
                 <td><p>@pos.Subname</p></td>
                 <td>
-                    @foreach(var emp in pos.Employees) {
+                    @foreach(var emp in pos.Employees.Where(x=> !x.IsDelete)) {
                     <p>@emp.GetFIO()</p>
                     }
                 </td>

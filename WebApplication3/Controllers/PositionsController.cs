@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using WebApplication3.Models.DbAccess;
-using WebApplication3.Models.Entities;
+using WebApplication3.Models.FluentValidation;
 using WebApplication3.Models.Services;
 using WebApplication3.Models.ViewModels;
-using WebApplication3.Models.FluentValidation;
+using WebApplication3.Models.ViewModels.Positions;
 
 
 
@@ -38,7 +37,7 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public IActionResult Add(PositionsAddDTO dto) {
+        public IActionResult Add(PositionsViewModel dto) {
             if (!ModelState.IsValid) {
                 dto.Positions = positionManager.GetDistinctNames();
                 dbManager.Commit();

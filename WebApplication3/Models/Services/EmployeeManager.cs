@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
-using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Employees;
 using System.Threading.Tasks;
 
 namespace WebApplication3.Models.Services {
@@ -51,8 +51,10 @@ namespace WebApplication3.Models.Services {
             return model;
         }
 
-        public bool PseudoDelete(int id)
-            => GetById(id).Delete(true);
+        public bool PseudoDelete(int id) {
+            var obj = GetById(id);
+            return obj.Delete(true);
+        }
 
         public IQueryable<Employee> GetAll()
             => dbManager.GetAll<Employee>();

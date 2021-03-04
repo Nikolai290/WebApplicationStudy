@@ -53,8 +53,13 @@ a:active {
 .border-radius {
     border-radius: 10px;
 }
+.strong-center-page {
+    width: 1100px;
+    margin: auto;
+}
 
 #main {
+
     padding: 10px;
     background-color: #dee;
 }
@@ -126,11 +131,33 @@ header {
 .input-long-text {
     width: 30em;
 }
-
-
+/* Добавление сотрудника */
+.add-employee-page {
+    max-width: 50em;
+    margin:auto;
+}
+.add-employee-page div{
+    margin-top: 10px;
+}
+.label-container {
+    text-align: right;
+    vertical-align: top;
+    display: inline-block;
+    width: 10em;
+    margin-right: 0.5em;
+}
+.label-container label {
+}
+.input-container {
+    display: inline-block;
+}
+.button-container{
+    margin-left: 20%;
+}
 
 /*Список сотрудников*/
 .submenu {
+    margin-left: 37.7%;
     margin-bottom: 10px;
 }
 
@@ -254,7 +281,7 @@ header {
 
 /* Строка поиска */
     .find {
-    margin: 10px 0;
+        margin-bottom: 10px;
 }
 
 .find-input {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Positions;
 
 namespace WebApplication3.Models.Entities {
     public class Position : DbEntities {
@@ -40,7 +40,7 @@ namespace WebApplication3.Models.Entities {
             return this;
         }
 
-        public virtual Position Create (PositionsAddDTO model) {
+        public virtual Position Create (PositionsViewModel model) {
             Name = model.Name;
             Subname = model.Subname;
 

@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 namespace WebApplication3.Models.Entities {
     public class MachineryType : DbEntities {
         public virtual string Name { get; set; }
-        public virtual IList<Machinery> Machineries  { get; protected set; }
-        public virtual IList<OrderArea> Areas  { get; set; }
+        public virtual IList<Machinery> Machineries { get; protected set; }
+        public virtual IList<OrderArea> Areas { get; set; }
         
-        public MachineryType() { }
+        public MachineryType() {
+            Machineries = new List<Machinery>();
+            Areas = new List<OrderArea>();
+        }
         public MachineryType(string name, params OrderArea[] areas) {
             Name = name;
             Areas = areas;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Services;
-using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.MachineriesTypes;
 
 namespace WebApplication3.Controllers {
     public class MachineryTypesController : Controller {
@@ -20,8 +20,13 @@ namespace WebApplication3.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Index(MachineryTypeDTO dto) {
-            var model = typesManager.SaveOrUpdateMachineryType(dto);
+        public IActionResult Index(MachinariesTypeViewModel model) {
+            if (!ModelState.IsValid) {
+                model = typesManager.FillViewModel(model);
+                dbManager.Commit();
+                return View("MachineryTypes", model);
+            }
+            model = typesManager.SaveOrUpdateMachineryType(model);
             dbManager.Commit();
             return View("MachineryTypes", model);
         }

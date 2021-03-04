@@ -8,7 +8,6 @@ using System.Collections.Generic;
 namespace WebApplication3.Models.Services {
     public class MachineryManager {
         private readonly IDbManager dbManager;
-        private readonly ValidationManager valid = new ValidationManager();
         private readonly OrderManager orderManager;
 
         public MachineryManager(IDbManager dbManager) {

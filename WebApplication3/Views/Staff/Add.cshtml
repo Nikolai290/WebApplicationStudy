@@ -2,7 +2,7 @@
 @model AddEmployeeViewModel
 
 @{
-  if (String.IsNullOrEmpty(Model.Emp.Name)) {
+  if (String.IsNullOrEmpty(Model.Name)) {
     ViewData["Title"] = "Adding";
   } else {
     ViewData["Title"] = "Change";
@@ -11,41 +11,54 @@
 }
 
 <div class="form-div add-employee">
-  <form class="form-add-employee" method="post">
-    <input type="hidden" name="Id" value="@Model.Emp.Id" />
+  <form class="form-add-employee" method="post" asp-action="Add" asp-controller="Staff">
+    <input type="hidden" asp-for="Id"/>
 
     <table class="table add-employee-table">
       <tr>
-        <td><label for="Lastname">Фамилия:</label></td>
-        <td><input size="40" type="text" name="Lastname" placeholder="Введите фамилию" value="@Model.Emp.Lastname" maxlength="20" required /></td>
-      </tr>
-      <tr>
-        <td><label for="Name">Имя:</label></td>
-        <td><input size="40" type="text" name="Name" placeholder="Введите имя" value="@Model.Emp.Name" maxlength="20" required /></td>
-      </tr>
-      <tr>
-        <td><label for="Fathername">Отчество:</label></td>
-        <td><input size="40" type="text" name="Fathername" placeholder="Введите отчество" value="@Model.Emp.Fathername" maxlength="20" /></td>
-      </tr>
-      <tr>
-        <td><label for="TableNumber">Табельный номер:</label></td>
-        <td><input size="10" type="number" name="TableNumber" placeholder="Введите табельный номер" value="@Model.Emp.TableNumber" min="1000" max="999999" /></td>
-      </tr>
-      <tr>
-        <td><label for="Position">Должность:</label></td>
+        <td><label asp-for="Lastname"></label></td>
         <td>
-          <select id="position" name="PosId">
-            @foreach (var pos in Model.Positions) {
-              <option value="@pos.Id" selected="@(pos.Id == Model?.Emp?.Position?.Id)">
-                @pos.Subname
-              </option>
-            }
-          </select>
+          <input asp-for="Lastname" size="40" /><br />
+          <span asp-validation-for="Lastname" class="error"></span>
         </td>
       </tr>
       <tr>
-        <td><button type="submit" href="~staff/add?@Model?.Emp?.Id" class="button button-simple">Отправить</button></td>
-        <td><button type="reset" class="button button-simple">Сбросить</button></td>
+        <td><label asp-for="Name"></label></td>
+        <td>
+          <input asp-for="Name" size="40" /><br />
+          <span asp-validation-for="Name" class="error"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><label asp-for="Fathername"></label></td>
+        <td>
+          <input asp-for="Fathername" size="40" /><br />
+          <span asp-validation-for="Fathername" class="error"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><label asp-for="TableNumber"></label></td>
+        <td>
+          <input asp-for="TableNumber" size="10" type="number" /><br />
+          <span asp-validation-for="TableNumber" class="error"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><label asp-for="PositionId"></label></td>
+        <td>
+          <select asp-for="PositionId">
+            @foreach (var pos in Model.Positions) {
+              <option value="@pos.Id" selected="@(pos.Id == Model?.Position?.Id)">
+                @pos.Subname
+              </option>
+            }
+          </select><br />
+          <span asp-validation-for="PositionId" class="error"></span>
+        </td>
+      </tr>
+      <tr>
+        <td><button type="submit" class="button button-simple">Отправить</button></td>
+        <td><a href="~/staff" class="button button-simple">Вернуться</a></td>
       </tr>
 
     </table>

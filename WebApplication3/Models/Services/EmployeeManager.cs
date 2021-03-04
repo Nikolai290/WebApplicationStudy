@@ -19,9 +19,9 @@ namespace WebApplication3.Models.Services {
             => dbManager.AddAsync(emp);
 
 
-        public Employee AddAsync(StaffAddDTO dto) {
+        public Employee AddAsync(AddEmployeeViewModel dto) {
             Employee emp;
-            dto.Position = dbManager.GetById<Position>(dto.PosId);
+            dto.Position = dbManager.GetById<Position>(dto.PositionId);
 
             if (dto.Id > 0) {
                 emp = dbManager.GetById<Employee>(dto.Id);
@@ -42,10 +42,11 @@ namespace WebApplication3.Models.Services {
         internal AddEmployeeViewModel GetAddEmployeeViewModel(AddEmployeeDTO dto) {
             var model = new AddEmployeeViewModel();
             model.Positions = dbManager.GetAll<Position>().ToList();
-            model.Emp = dto.Id > 0 ?
+
+            var emp = dto.Id > 0 ?
                  dbManager.GetById<Employee>(dto.Id) :
                  new Employee().SetNameByFind(dto.Find);
-
+            model.CopyFrom(emp);
 
             return model;
         }

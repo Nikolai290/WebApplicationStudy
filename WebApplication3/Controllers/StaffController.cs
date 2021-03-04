@@ -24,7 +24,7 @@ namespace WebApplication3.Controllers {
         [HttpGet]
         public IActionResult Index(string find) {
 
-            var empls = String.IsNullOrEmpty(find) ? 
+            var empls = String.IsNullOrEmpty(find) ?
                 employeeManager.GetAll().ToList() :
                 employeeManager.GetEmployeesByStringFind(find);
 
@@ -42,10 +42,16 @@ namespace WebApplication3.Controllers {
 
 
         [HttpPost]
-        public IActionResult Add(StaffAddDTO emp) {
+        public IActionResult Add(AddEmployeeViewModel dto) {
 
 
-            var result = employeeManager.AddAsync(emp);
+            if (!ModelState.IsValid) {
+                dto.Positions = dbManager.GetAll<Position>().ToList();
+                dbManager.Commit();
+                return View("Add", dto);
+            }
+
+            var result = employeeManager.AddAsync(dto);
 
             //string message = result ? "Объект сохранён" : "Не удалось";
 

@@ -78,7 +78,7 @@ namespace WebApplication3.Models.Entities {
             emp.Position = this.Position;
         }
 
-        public virtual Employee Create(StaffAddDTO model) {
+        public virtual Employee Create(AddEmployeeViewModel model) {
             Name = model.Name;
             Lastname = model.Lastname;
             Fathername = model.Fathername;

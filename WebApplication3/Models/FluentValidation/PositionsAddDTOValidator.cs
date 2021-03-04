@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using WebApplication3.Models.ViewModels;
 
 namespace WebApplication3.Models.FluentValidation {

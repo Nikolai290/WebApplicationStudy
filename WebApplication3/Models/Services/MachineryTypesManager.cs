@@ -2,7 +2,7 @@
 using System.Linq;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Entities;
-using WebApplication3.Models.ViewModels.MachineriesTypes;
+using WebApplication3.Models.ViewModels.Machineries;
 
 namespace WebApplication3.Models.Services {
     public class MachineryTypesManager {

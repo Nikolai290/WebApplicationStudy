@@ -2,6 +2,7 @@
 using WebApplication3.Models.Entities;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.ViewModels;
+using WebApplication3.Models.ViewModels.Machineries;
 using System;
 using System.Collections.Generic;
 
@@ -18,9 +19,10 @@ namespace WebApplication3.Models.Services {
         public MachineriesViewModel GetMachineryViewModel(int id) {
 
             var model = new MachineriesViewModel();
-            model.Machine = id > 0 ?
+            var machine = id > 0 ?
                 dbManager.GetById<Machinery>(id) :
                 new Machinery();
+            model.CopyFrom(machine);
             model.Machineries = dbManager.GetAll<Machinery>().ToList();
             model.Types = dbManager.GetAll<MachineryType>().ToList();
             model.Title = id > 0 ? "Редактирование" : "Добавление";
@@ -60,13 +62,15 @@ namespace WebApplication3.Models.Services {
             return true;
         }
 
-        public MachineriesViewModel SaveOrUpdateMachinery(MachineryDTO dto) {
-
+        public MachineriesViewModel SaveOrUpdateMachinery(MachineriesViewModel dto) {
+            string message = "";
             var machine = dto.Id > 0 ? dbManager.GetById<Machinery>(dto.Id) : new Machinery();
-            if (!String.IsNullOrEmpty(dto.Name) && machine.Name != dto.Name)
-                machine.SetName(dto.Name);
-            ChangeType(machine, dto.TypeId, out var conflictWorks);
-
+            machine.SetName(dto.Name);
+            ChangeType(machine, dto.NewTypeId, out var conflictWorks);
+            if (machine.Id == 0) {
+                message = "Объект сохранён";
+                dbManager.AddAsync(machine);
+            }
 
             var model = GetMachineryViewModel(dto.Id);
             if (conflictWorks != null) {
@@ -88,17 +92,16 @@ namespace WebApplication3.Models.Services {
                     }
                 }
             }
-
-            model.dto = dto;
-            model.NewType = dbManager.GetById<MachineryType>(dto.TypeId);
-
+            model.Message = message;
+            model.NewType = dbManager.GetById<MachineryType>(dto.NewTypeId);
+            model.NewTypeId = dto.NewTypeId;
             return model;
         }
 
-        private void ChangeType(Machinery machine, int typeId, out IList<Work> conflictWorks) {
+        private void ChangeType(Machinery machine, int newTypeId, out IList<Work> conflictWorks) {
             conflictWorks = null;
-            if (machine.Type.Id != typeId) {
-                var newType = dbManager.GetById<MachineryType>(typeId);
+            if (machine.Type.Id != newTypeId) {
+                var newType = dbManager.GetById<MachineryType>(newTypeId);
                 if (CompareAreas(machine, newType)) {
                     machine.SetType(newType);
                 } else {

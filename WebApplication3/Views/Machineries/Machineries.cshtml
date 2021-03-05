@@ -1,4 +1,4 @@
-﻿@using WebApplication3.Models.ViewModels
+﻿@using WebApplication3.Models.ViewModels.Machineries
 @model MachineriesViewModel
 @*
   For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,19 +41,22 @@
 
   <div class="adding-panel">
     <h3>@Model.Title</h3>
-    <form method="post" action="~/Machineries">
-      <input hidden name="id" value="@Model.Machine.Id" />
-      <div><label for="name">Название техники</label></div>
-      <input type="text" id="name" name="name" value="@Model.Machine?.Name" required class="width15"/><div>
-      </div>
-      <div><label for="typeid">Тип техники</label></div>
+    <form method="post" asp-controller="Machineries" asp-action="Index">
+      <input hidden asp-for="Id" />
+      <div><label asp-for="Name">Название техники</label></div>
       <div>
-        <select name="typeid" id="typeid" required class="width15">
+        <input asp-for="Name" class="width15" /> <br />
+        <span asp-validation-for="Name" class="error"></span>
+      </div>
+      <div><label asp-for="TypeId">Тип техники</label></div>
+      <div>
+        <select asp-for="NewTypeId" class="width15">
           <option selected disabled></option>
           @foreach (var t in Model?.Types) {
-            <option value="@t.Id" selected="@(Model?.Machine?.Type?.Id==t.Id)">@t.Name</option>
+            <option value="@t.Id" selected="@(Model.TypeId==t.Id)">@t.Name</option>
           }
-        </select>
+        </select> <br />
+        <span asp-validation-for="TypeId" class="error"></span>
       </div>
       <div>
         <input class="button button-simple width7i2" type="submit" value="Сохранить" />

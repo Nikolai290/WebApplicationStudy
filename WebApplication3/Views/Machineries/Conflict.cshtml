@@ -1,4 +1,4 @@
-﻿@using WebApplication3.Models.ViewModels
+﻿@using WebApplication3.Models.ViewModels.Machineries
 @model MachineriesViewModel 
 @*
   For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,12 +17,13 @@
   </p>
 
 
-  <p><b>@Model.Machine.Name</b> : <b>@Model.Machine.Type.Name </b>==> <b>@Model.NewType.Name</b></p>
+  <p><b>@Model.Name</b> : <b>@Model.TypeName </b>==> <b>@Model.NewType.Name</b></p>
 </div>
 <form method="post" action="~/Machineries/SolveConflict">
-  <input type="hidden" name="Id" value="@Model.dto.Id"/>
-  <input type="hidden" name="Name" value="@Model.dto.Name"/>
-  <input type="hidden" name="TypeId" value="@Model.dto.TypeId"/>
+  <input type="hidden" name="Id" value="@Model.Id"/>
+  <input type="hidden" name="Name" value="@Model.Name"/>
+  <input type="hidden" name="TypeId" value="@Model.TypeId"/>
+  <input type="hidden" name="NewTypeId" value="@Model.NewTypeId"/>
   <div>
     <button type="submit" class="button-simple button" formmethod="get">Подтвердить</button>
     <a class="button-simple button" href="~/Machineries">Отменить</a>
@@ -46,7 +47,7 @@
 
         foreach (var conflict in Model.Conflict) {
 
-          foreach (var m in conflict.Order.Machineries.Where(x => x.MachineryId == Model.Machine.Id)) {
+          foreach (var m in conflict.Order.Machineries.Where(x => x.MachineryId == Model.Id)) {
             foreach (var w in m.Works) {
             <tr>
               <td><p>@conflict.OrderVM.Date.ToString("dd.MM.yyyy")</p></td>

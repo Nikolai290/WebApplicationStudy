@@ -15,7 +15,6 @@
     <Folder Include="App_data\" />
     <Folder Include="Models\ViewModels\TimeLine\" />
     <Folder Include="Models\ViewModels\Order\" />
-    <Folder Include="Models\ViewModels\Machineries\" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,9 @@ namespace WebApplication3.Models.Entities {
         public virtual string Name { get; protected set; }
         public virtual MachineryType Type { get; protected set; }
 
-        public Machinery() { }
+        public Machinery() {
+            Type = new MachineryType();
+        }
         public Machinery(string name, MachineryType type) {
             Name = name;
             Type = type;

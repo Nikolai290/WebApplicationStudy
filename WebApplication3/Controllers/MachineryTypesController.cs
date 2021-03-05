@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Models.DbAccess;
 using WebApplication3.Models.Services;
-using WebApplication3.Models.ViewModels.MachineriesTypes;
+using WebApplication3.Models.ViewModels.Machineries;
 
 namespace WebApplication3.Controllers {
     public class MachineryTypesController : Controller {

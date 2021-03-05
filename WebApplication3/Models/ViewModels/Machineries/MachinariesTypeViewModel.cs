@@ -3,7 +3,7 @@ using WebApplication3.Models.Entities;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApplication3.Models.ViewModels.MachineriesTypes {
+namespace WebApplication3.Models.ViewModels.Machineries {
     public class MachinariesTypeViewModel {
 
 

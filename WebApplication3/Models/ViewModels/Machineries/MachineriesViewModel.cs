@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication3.Models.ViewModels.Machineries {
     public class MachineriesViewModel {
+
+        // to do: decompose viewModel for different actions
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Введите название оборудования")]

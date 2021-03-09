@@ -83,7 +83,7 @@ namespace WebApplication3.Models.Services {
                 }
                 foreach (var conflict in model.Conflict) {
                     if (conflict.FreeMachineries == null) conflict.FreeMachineries = new List<Machinery>();
-                    foreach(var m in conflict.OrderVM.Machineries.Where(x => x.MachineryId != machine.Id).Select(x => x.MachineryId)) {
+                    foreach(var m in conflict.OrderVM.MachineriesId) {
                         conflict.FreeMachineries.Add(dbManager.GetById<Machinery>(m));
                     }
                     var machines = orderManager.GetMachinesForOrder(conflict.Order);

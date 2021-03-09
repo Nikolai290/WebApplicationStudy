@@ -62,8 +62,6 @@ namespace WebApplication3.Models.Services {
             foreach( var work in dbManager.GetById<MachineryOnShift>(mosId).Works) {
                 work.Delete(true);
             }
-
-
             return dbManager.PseudoDelete<MachineryOnShift>(mosId);
         } 
 
@@ -78,10 +76,6 @@ namespace WebApplication3.Models.Services {
             bool PZO = dto.PZO == "on";
             bool HighAsh = dto.HighAsh == "on";
             var order = dbManager.GetById<Order>(dto.OrderId);
-
-            // insert validation here
-
-
             MachineryOnShift obj;
 
             if (dto.MoSId > 0) {
@@ -154,8 +148,6 @@ namespace WebApplication3.Models.Services {
             } catch {
                 result = DefaultOrder(date, shiftId, orderAreaId);
             }
-
-
             return result;
         }
         private Order DefaultOrder(DateTime date, int shiftId, int orderAreaId) {

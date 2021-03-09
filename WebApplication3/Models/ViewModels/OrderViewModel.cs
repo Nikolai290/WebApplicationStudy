@@ -17,14 +17,14 @@ namespace WebApplication3.Models.ViewModels {
         public int Shift { get; set; }
         public bool IsClose { get; set; }
         // Персонал
-        public Employee Dispetcher { get; set; }
-        public Employee Chief { get; set; }
-        public IList<Employee> MiningMaster { get; set; }
+        public int DispetcherId { get; set; }
+        public int ChiefId { get; set; }
+        public IList<int> MiningMasterId { get; set; }
 
         // Добыча, вскрыша, автовсркыша
-        public OrderArea Area { get; set; }
+        public int AreaId { get; set; }
 
-        public IList<MachineryOnShift> Machineries { get; set; }
+        public IList<int> MachineriesId { get; set; }
 
         public bool AllPzo { get; set; }
 
@@ -34,15 +34,13 @@ namespace WebApplication3.Models.ViewModels {
             Date = order.Date;
             Shift = order.Shift;
             IsClose = order.IsClose;
-            Dispetcher = order.Dispetcher; //?
-            Chief = order.Chief;
-            MiningMaster = order.MiningMaster;
-            Area = order.Area;
+            DispetcherId = order.Dispetcher.Id; 
+            ChiefId = order.Chief.Id;
+            MiningMasterId = order.MiningMaster.Select(x => x.Id).ToList();
+            AreaId = order.Area.Id;
             AllPzo = order.AllPzo;
-            Machineries = order.Machineries.Where(x => !x.IsDelete).ToList();
-            foreach (var m in Machineries) {
-                m.SetWorks(m.Works.Where(x => !x.IsDelete).ToList());
-            }
+            MachineriesId = order.Machineries.Where(x => !x.IsDelete).Select(x => x.Id).ToList();
+
         }
    }
 }

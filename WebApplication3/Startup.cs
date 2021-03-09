@@ -32,6 +32,7 @@ namespace WebApplication3 {
             services.AddCors(options => options.AddDefaultPolicy(x => x.AllowAnyOrigin()));
             services.AddTransient<IValidator<Position>, PositionValidator>();
             services.AddTransient<IValidator<PositionsViewModel>, PositionsViewModelValidator>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

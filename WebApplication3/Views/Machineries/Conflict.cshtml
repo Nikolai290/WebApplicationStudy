@@ -50,9 +50,9 @@
           foreach (var m in conflict.Order.Machineries.Where(x => x.MachineryId == Model.Id)) {
             foreach (var w in m.Works) {
             <tr>
-              <td><p>@conflict.OrderVM.Date.ToString("dd.MM.yyyy")</p></td>
-              <td><p>@conflict.OrderVM.Shift</p></td>
-              <td><p>@conflict.OrderVM.Area.Name</p></td>
+              <td><p>@conflict.Order.Date.ToString("dd.MM.yyyy")</p></td>
+              <td><p>@conflict.Order.Shift</p></td>
+              <td><p>@conflict.Order.Area.Name</p></td>
               <td><p>@w.Type.Name</p></td>
               <td><p>@w.Note</p></td>
               <td><p>@w.StartTime.ToString("HH:mm")</p></td>
